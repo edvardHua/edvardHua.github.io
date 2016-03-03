@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next mist use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -72,7 +72,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
+    scheme: 'Mist',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -152,6 +152,16 @@
               <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
           </a>
         </li>
       
@@ -449,6 +459,147 @@ for (final String url : urls) {
 
 
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/03/Docker安装与入门/" itemprop="url">
+                  Docker安装与入门
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-03T05:21:58+00:00" content="2016-02-03">
+              2016-02-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/03/Docker安装与入门/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/03/Docker安装与入门/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Docker_u5B89_u88C5_u4E0E_u5165_u95E8"><a href="#Docker_u5B89_u88C5_u4E0E_u5165_u95E8" class="headerlink" title="Docker安装与入门"></a>Docker安装与入门</h2><hr>
+<blockquote>
+<p><a href="https://docs.docker.com/linux/" target="_blank" rel="external">官方教程</a>的翻译简化版，环境为Ubuntu14.04</p>
+</blockquote>
+<hr>
+<h3 id="u5B89_u88C5Docker"><a href="#u5B89_u88C5Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>打开终端,如果没有wget，键入下面命令安装</p>
+<pre><code>$ sudo apt-get update
+$ sudo apt-get install wget
+</code></pre><p>随后，键入下面命令安装Docker,最好加上sudo，避免文件权限问题</p>
+<pre><code>$ sudo wget -qO- https://get.docker.com/ | sh
+</code></pre><p>然后，键入</p>
+<pre><code>$ docker run hello-world
+</code></pre><p>验证安装是否成功。但是我这里遇到问题，提示</p>
+<pre><code>`Cannot connect to the Docker daemon. Is the docker daemon running on this host?`
+</code></pre><p>谷歌后，原因是Docker用户和当前用户不在一个组的原因，键入下面命令修改</p>
+<pre><code>$ sudo usermod -aG docker &lt;your username&gt;
+</code></pre><p>随后，<code>重启系统</code></p>
+<hr>
+<h3 id="u8FD0_u884Cwhaleasy_image"><a href="#u8FD0_u884Cwhaleasy_image" class="headerlink" title="运行whaleasy image"></a>运行whaleasy image</h3><p>首先，需要在<a href="https://hub.docker.com" target="_blank" rel="external">DockerHub</a>注册一个账号，</p>
+<p>随后在搜索栏键入docker/whaleasy,可以看到搜索结果。<br>接下来键入下面命令</p>
+<pre><code>$ docker run docker/whalesay cowsay boo
+</code></pre><p>将DockerHub上的whaleasy下载下来在本机运行。</p>
+<img src="/2016/02/03/Docker安装与入门/whaleasy.png" alt="运行结果" title="运行结果">
+<hr>
+<h3 id="u521B_u5EFA_u81EA_u5DF1_u7684Image"><a href="#u521B_u5EFA_u81EA_u5DF1_u7684Image" class="headerlink" title="创建自己的Image"></a>创建自己的Image</h3><h4 id="u521B_u5EFADockerfile_u6587_u4EF6"><a href="#u521B_u5EFADockerfile_u6587_u4EF6" class="headerlink" title="创建Dockerfile文件"></a>创建Dockerfile文件</h4><p>选择一个目录，键入下面命令</p>
+<pre><code>$ mkdir mydockerbuild
+$ cd mydockerbuild
+$ touch Dockerfile 
+</code></pre><p>用一个文本编辑器打开Dockerfile，填入下面的内容</p>
+<pre><code>FROM docker/whalesay:latest
+RUN apt-get -y update &amp;&amp; apt-get install -y fortunes
+CMD /usr/games/fortune -a | cowsay
+</code></pre><p>其中，FROM命令表示你的基image，RUN表示你要为自己的image安装啥程序，在这里安装了一个fortune，这个东西可以让命令行的鲸鱼讲话，安装完成后。用CMD命令让fortune给一句俏皮的话给cowsay程序执行。</p>
+<h4 id="u7528Dockerfile_u521B_u5EFAImage"><a href="#u7528Dockerfile_u521B_u5EFAImage" class="headerlink" title="用Dockerfile创建Image"></a>用Dockerfile创建Image</h4><p> 在当前路径打开终端，键入命令</p>
+<pre><code>$ docker build -t docker-whale .
+</code></pre><p><strong>特别要注意不要忘记键入最后的</strong><code>.</code></p>
+<h4 id="u8FD0_u884C_u81EA_u5DF1_u7684Image"><a href="#u8FD0_u884C_u81EA_u5DF1_u7684Image" class="headerlink" title="运行自己的Image"></a>运行自己的Image</h4><p> 很简单，键入</p>
+<pre><code>$ docker run docker-whale
+</code></pre><p>待出现Successfully built之后，便创建了属于自己的Image，可以通过键入</p>
+<pre><code>$ docker images
+</code></pre><p>来查看本机上存在多少个images，其中有一个便是docker-whale。</p>
+<hr>
+<h3 id="Push_Image__u81F3_DockerHub"><a href="#Push_Image__u81F3_DockerHub" class="headerlink" title="Push Image 至 DockerHub"></a>Push Image 至 DockerHub</h3><p>这里Push刚才创建的docker-whale<br>首先需要在DockerHub创建一个Repository，并设置为公开，这个跟使用GitHub有点类似。<br>记住刚才创建的Repository Name，通过在终端键入docker iamges来得到docker-whale的IMAGE ID。<br>随后用docker tag来给你的docker-whale打上tag，键入如下命令</p>
+<pre><code>$ docker tag &lt;IMAGE ID&gt; &lt;DockerHub username&gt;/&lt;Repository Name&gt;:latest
+</code></pre><p>接下来，再次键入docker images可以看到本地新增了一个REPOSITORY，便是我们刚才创建的。最后在终端键入下面两条命令登录并Push到DockerHub上</p>
+<pre><code>$ docker login --username=yourhubusername --email=youremail@company.com
+$ docker push &lt;DockerHub username&gt;/&lt;Repository Name&gt;
+</code></pre><p>对应的，Pull Docker Image的命令如下</p>
+<pre><code>$ docker pull &lt;Repository Name&gt;/&lt;Repository Name&gt;
+</code></pre><p>如果要删除本地的Image，可以使用下面的命令</p>
+<pre><code>$ docker rmi -f &lt;IMAGE ID&gt;
+</code></pre>
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
 
   </section>
 
@@ -574,7 +725,7 @@ for (final String url : urls) {
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Mist
   </a>
 </div>
 
@@ -617,13 +768,6 @@ for (final String url : urls) {
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
-
-
 
   
 
