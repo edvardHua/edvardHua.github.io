@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Android," />
 
 
 
@@ -57,15 +57,41 @@
 
 
 
-<meta name="description" content="Edvard的博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Edvard's blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="原文链接 : Using concurrency to improve speed and performance in Android
+原文作者 : Ali Muzaffar
+译文出自 : 掘金翻译计划
+译者 : edvardHua
+校对者:
+状态 : 翻译完成
+
+
+我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我">
+<meta property="og:type" content="article">
+<meta property="og:title" content="(译)在Android中使用并发提高应用性能">
+<meta property="og:url" content="http://yoursite.com/2016/03/03/译-在Android中使用并发提高应用性能/index.html">
 <meta property="og:site_name" content="Edvard's blog">
-<meta property="og:description" content="Edvard的博客">
+<meta property="og:description" content="原文链接 : Using concurrency to improve speed and performance in Android
+原文作者 : Ali Muzaffar
+译文出自 : 掘金翻译计划
+译者 : edvardHua
+校对者:
+状态 : 翻译完成
+
+
+我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/9b5c8bd8jw1f1cvbu9fzaj20m80fj48q.jpg">
+<meta property="og:updated_time" content="2016-03-03T08:12:54.345Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Edvard's blog">
-<meta name="twitter:description" content="Edvard的博客">
+<meta name="twitter:title" content="(译)在Android中使用并发提高应用性能">
+<meta name="twitter:description" content="原文链接 : Using concurrency to improve speed and performance in Android
+原文作者 : Ali Muzaffar
+译文出自 : 掘金翻译计划
+译者 : edvardHua
+校对者:
+状态 : 翻译完成
+
+
+我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我">
 
 
 
@@ -83,7 +109,7 @@
   };
 </script>
 
-  <title> Edvard's blog </title>
+  <title> (译)在Android中使用并发提高应用性能 | Edvard's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -112,9 +138,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left 
-   page-home 
- ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -193,24 +217,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
 
+  <div id="posts" class="posts-expand">
     
-
-    
-    
-      
-      
-        
-        
-        
-      
-
-      
-    
-
-    
-      
 
   
   
@@ -230,10 +239,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2016/03/03/译-在Android中使用并发提高应用性能/" itemprop="url">
-                  (译)在Android中使用并发提高应用性能
-                </a>
+                (译)在Android中使用并发提高应用性能
               
             
           </h1>
@@ -278,9 +284,7 @@
       
 
       
-        
-          
-            <ul>
+        <ul>
 <li>原文链接 : <a href="https://medium.com/@ali.muzaffar/using-concurrency-and-speed-and-performance-on-android-d00ab4c5c8e3#.rt9z1k25u" target="_blank" rel="external">Using concurrency to improve speed and performance in Android</a></li>
 <li>原文作者 : <a href="https://medium.com/@ali.muzaffar" target="_blank" rel="external">Ali Muzaffar</a></li>
 <li>译文出自 : <a href="https://github.com/xitu/gold-miner" target="_blank" rel="external">掘金翻译计划</a></li>
@@ -430,29 +434,68 @@ for (final String url : urls) {
 <h3 id="u6700_u540E"><a href="#u6700_u540E" class="headerlink" title="最后"></a>最后</h3><p>如果想要开发更加快的应用程序, <a href="https://medium.com/@ali.muzaffar" target="_blank" rel="external">请阅读我的文章</a>.</p>
 <p>文章已经到底了，在Medium上Follow我吧。 <a href="https://www.linkedin.com/in/alimuzaffar" target="_blank" rel="external">LinkedIn</a>, <a href="https://plus.google.com/+AliMuzaffar" target="_blank" rel="external">Google+</a> or <a href="https://twitter.com/ali_muzaffar" target="_blank" rel="external">Twitter</a>.</p>
 
-          
-        
       
     </div>
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/Android/" rel="tag">#Android</a>
+          
+        </div>
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/03/Docker安装与入门/" rel="next" title="Docker安装与入门">
+                <i class="fa fa-chevron-left"></i> Docker安装与入门
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </article>
 
 
-    
 
-  </section>
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
 
-  
+      
+    </div>
+  </div>
 
 
           </div>
@@ -460,6 +503,14 @@ for (final String url : urls) {
 
 
           
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/03/译-在Android中使用并发提高应用性能/"
+           data-title="(译)在Android中使用并发提高应用性能" data-url="http://yoursite.com/2016/03/03/译-在Android中使用并发提高应用性能/">
+      </div>
+    
+  </div>
+
 
         </div>
         
@@ -479,8 +530,17 @@ for (final String url : urls) {
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -545,6 +605,23 @@ for (final String url : urls) {
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#u6211_u4EEC_u77E5_u9053_uFF0C_u5728Android_u6846_u67B6_u4E2D_u63D0_u4F9B_u4E86_u5F88_u591A_u5F02_u6B65_u5904_u7406_u7684_u5DE5_u5177_u7C7B_u3002_u7136_u800C_uFF0C_u4ED6_u4EEC_u4E2D_u5927_u90E8_u5206_u5B9E_u73B0_u662F_u901A_u8FC7_u63D0_u4F9B_u5355_u4E00_u7684_u540E_u53F0_u7EBF_u7A0B_u6765_u5904_u7406_u4EFB_u52A1_u961F_u5217_u7684_u3002_u5982_u679C_u6211_u4EEC_u9700_u8981_u66F4_u591A_u7684_u540E_u53F0_u7EBF_u7A0B_u7684_u65F6_u5019_u8BE5_u600E_u4E48_u529E_u5462_uFF1F"><span class="nav-number">1.</span> <span class="nav-text">我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我们需要更多的后台线程的时候该怎么办呢？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u521B_u5EFA_u591A_u7EBF_u7A0B_u5E38_u7528_u7684_u65B9_u6CD5"><span class="nav-number"></span> <span class="nav-text">创建多线程常用的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u8FD9_u79CD_u65B9_u6CD5_u5B58_u5728_u7684_u95EE_u9898"><span class="nav-number"></span> <span class="nav-text">这种方法存在的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4F7F_u7528ThreadPool_u5E76_u53D1_u5904_u7406_u4EFB_u52A1"><span class="nav-number"></span> <span class="nav-text">使用ThreadPool并发处理任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6700_u540E"><span class="nav-number"></span> <span class="nav-text">最后</span></a></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
       
 
     </div>
@@ -626,6 +703,167 @@ for (final String url : urls) {
 
 
   
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
 
   
 
