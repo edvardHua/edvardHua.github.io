@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next mist use-motion">
+<html class="theme-next pisces use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -72,7 +72,7 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Mist',
+    scheme: 'Pisces',
     sidebar: {"position":"left","display":"post"},
     fancybox: true,
     motion: true,
@@ -299,7 +299,8 @@
 <li>状态 : 翻译完成</li>
 </ul>
 <p><img src="http://ww1.sinaimg.cn/large/9b5c8bd8jw1f1cvbu9fzaj20m80fj48q.jpg" alt=""></p>
-<h4 id="u6211_u4EEC_u77E5_u9053_uFF0C_u5728Android_u6846_u67B6_u4E2D_u63D0_u4F9B_u4E86_u5F88_u591A_u5F02_u6B65_u5904_u7406_u7684_u5DE5_u5177_u7C7B_u3002_u7136_u800C_uFF0C_u4ED6_u4EEC_u4E2D_u5927_u90E8_u5206_u5B9E_u73B0_u662F_u901A_u8FC7_u63D0_u4F9B_u5355_u4E00_u7684_u540E_u53F0_u7EBF_u7A0B_u6765_u5904_u7406_u4EFB_u52A1_u961F_u5217_u7684_u3002_u5982_u679C_u6211_u4EEC_u9700_u8981_u66F4_u591A_u7684_u540E_u53F0_u7EBF_u7A0B_u7684_u65F6_u5019_u8BE5_u600E_u4E48_u529E_u5462_uFF1F"><a href="#u6211_u4EEC_u77E5_u9053_uFF0C_u5728Android_u6846_u67B6_u4E2D_u63D0_u4F9B_u4E86_u5F88_u591A_u5F02_u6B65_u5904_u7406_u7684_u5DE5_u5177_u7C7B_u3002_u7136_u800C_uFF0C_u4ED6_u4EEC_u4E2D_u5927_u90E8_u5206_u5B9E_u73B0_u662F_u901A_u8FC7_u63D0_u4F9B_u5355_u4E00_u7684_u540E_u53F0_u7EBF_u7A0B_u6765_u5904_u7406_u4EFB_u52A1_u961F_u5217_u7684_u3002_u5982_u679C_u6211_u4EEC_u9700_u8981_u66F4_u591A_u7684_u540E_u53F0_u7EBF_u7A0B_u7684_u65F6_u5019_u8BE5_u600E_u4E48_u529E_u5462_uFF1F" class="headerlink" title="我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我们需要更多的后台线程的时候该怎么办呢？"></a>我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我们需要更多的后台线程的时候该怎么办呢？</h4><p>大家都知道Android的UI更新是在UI线程中进行的（也称之为主线程）。所以如果我们在UI线程中编写耗时任务都可能会阻塞UI线程更新UI。为了避免这种情况我们可以使用 AsyncTask, IntentService和Threads。在之前我写的一篇文章介绍了<a href="https://medium.com/android-news/8-ways-to-do-asynchronous-processing-in-android-and-counting-f634dc6fae4e#.bkk6mudb4" target="_blank" rel="external">Android 中异步处理的8种方法</a>。但是，Android提供的<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">AsyncTasks</a>和<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">IntentService</a>都是利用单一的后台线程来处理异步任务的。那么，开发人员如何创建多线程呢？</p>
+<h3 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h3><p>我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我们需要更多的后台线程的时候该怎么办呢？</p>
+<p>大家都知道Android的UI更新是在UI线程中进行的（也称之为主线程）。所以如果我们在UI线程中编写耗时任务都可能会阻塞UI线程更新UI。为了避免这种情况我们可以使用 AsyncTask, IntentService和Threads。在之前我写的一篇文章介绍了<a href="https://medium.com/android-news/8-ways-to-do-asynchronous-processing-in-android-and-counting-f634dc6fae4e#.bkk6mudb4" target="_blank" rel="external">Android 中异步处理的8种方法</a>。但是，Android提供的<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">AsyncTasks</a>和<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">IntentService</a>都是利用单一的后台线程来处理异步任务的。那么，开发人员如何创建多线程呢？</p>
 <p><strong>更新:</strong> <a href="https://medium.com/u/b49242be2be7" target="_blank" rel="external">Marco Kotz</a> <a href="https://medium.com/@mrcktz/hi-ali-nice-article-thanks-for-sharing-ba72b07f1fb3" target="_blank" rel="external">指出</a>结合使用ThreadPool Executor和AsyncTask，后台可以有多个线程（默认为5个）同时处理AsyncTask。 </p>
 <h3 id="u521B_u5EFA_u591A_u7EBF_u7A0B_u5E38_u7528_u7684_u65B9_u6CD5"><a href="#u521B_u5EFA_u591A_u7EBF_u7A0B_u5E38_u7528_u7684_u65B9_u6CD5" class="headerlink" title="创建多线程常用的方法"></a>创建多线程常用的方法</h3><p>在大多数使用场景下，我们没有必要产生多线程，简单的创建AsyncTasks或者使用基于任务队列的IntentService就可以很好的满足我们对异步处理的需求。然而当我们真的需要多线程的时候，我们常常会使用下面的代码简单的创建多个线程。</p>
 <pre><code>String[] urls = …
@@ -725,7 +726,7 @@ $ docker push &lt;DockerHub username&gt;/&lt;Repository Name&gt;
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
+    NexT.Pisces
   </a>
 </div>
 
@@ -769,6 +770,13 @@ $ docker push &lt;DockerHub username&gt;/&lt;Repository Name&gt;
   
   
 
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
   
 
   
@@ -807,6 +815,30 @@ $ docker push &lt;DockerHub username&gt;/&lt;Repository Name&gt;
 
   
   
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
 
   
   
