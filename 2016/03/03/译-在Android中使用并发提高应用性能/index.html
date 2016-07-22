@@ -57,41 +57,42 @@
 
 
 
-<meta name="description" content="原文链接 : Using concurrency to improve speed and performance in Android
-原文作者 : Ali Muzaffar
-译文出自 : 掘金翻译计划
-译者 : edvardHua
-校对者:
-状态 : 翻译完成
+<meta name="description" content="原文链接 : Getting started with JRebel for Android
+原文作者 : Oleg Šelajev
+译者 : edvardhua
+校对者: DeadLion, circlelove
 
 
-前言我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如">
+只要你的项目相对较小，开发Android应用的用户体验还是很棒的。然而随着项目功能的增加，你会发现构建项目的时间也会随着增长。这种情况会导致你的大部分时间都花在如何更快的构建项目，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="(译)在Android中使用并发提高应用性能">
+<meta property="og:title" content="[译] 在Android中使用并发提高应用性能">
 <meta property="og:url" content="http://yoursite.com/2016/03/03/译-在Android中使用并发提高应用性能/index.html">
 <meta property="og:site_name" content="Edvard's blog">
-<meta property="og:description" content="原文链接 : Using concurrency to improve speed and performance in Android
-原文作者 : Ali Muzaffar
-译文出自 : 掘金翻译计划
-译者 : edvardHua
-校对者:
-状态 : 翻译完成
+<meta property="og:description" content="原文链接 : Getting started with JRebel for Android
+原文作者 : Oleg Šelajev
+译者 : edvardhua
+校对者: DeadLion, circlelove
 
 
-前言我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/9b5c8bd8jw1f1cvbu9fzaj20m80fj48q.jpg">
-<meta property="og:updated_time" content="2016-03-07T05:05:53.574Z">
+只要你的项目相对较小，开发Android应用的用户体验还是很棒的。然而随着项目功能的增加，你会发现构建项目的时间也会随着增长。这种情况会导致你的大部分时间都花在如何更快的构建项目，">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-dd03443274413e8e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-84f2635271fc02af.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-97f6212b91eaa6f9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-7d7e9601dc0bb07b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-ede2be6834a19fc9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-ac59f6bcd587c12b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-a2318544ae109e19.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-8502953211211fad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-07-22T03:36:38.231Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="(译)在Android中使用并发提高应用性能">
-<meta name="twitter:description" content="原文链接 : Using concurrency to improve speed and performance in Android
-原文作者 : Ali Muzaffar
-译文出自 : 掘金翻译计划
-译者 : edvardHua
-校对者:
-状态 : 翻译完成
+<meta name="twitter:title" content="[译] 在Android中使用并发提高应用性能">
+<meta name="twitter:description" content="原文链接 : Getting started with JRebel for Android
+原文作者 : Oleg Šelajev
+译者 : edvardhua
+校对者: DeadLion, circlelove
 
 
-前言我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如">
+只要你的项目相对较小，开发Android应用的用户体验还是很棒的。然而随着项目功能的增加，你会发现构建项目的时间也会随着增长。这种情况会导致你的大部分时间都花在如何更快的构建项目，">
 
 
 
@@ -109,7 +110,7 @@
   };
 </script>
 
-  <title> (译)在Android中使用并发提高应用性能 | Edvard's blog </title>
+  <title> [译] 在Android中使用并发提高应用性能 | Edvard's blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -249,7 +250,7 @@
             
             
               
-                (译)在Android中使用并发提高应用性能
+                [译] 在Android中使用并发提高应用性能
               
             
           </h1>
@@ -294,49 +295,80 @@
       
 
       
-        <ul>
-<li>原文链接 : <a href="https://medium.com/@ali.muzaffar/using-concurrency-and-speed-and-performance-on-android-d00ab4c5c8e3#.rt9z1k25u" target="_blank" rel="external">Using concurrency to improve speed and performance in Android</a></li>
-<li>原文作者 : <a href="https://medium.com/@ali.muzaffar" target="_blank" rel="external">Ali Muzaffar</a></li>
-<li>译文出自 : <a href="https://github.com/xitu/gold-miner" target="_blank" rel="external">掘金翻译计划</a></li>
-<li>译者 : <a href="https://github.com/edvardHua" target="_blank" rel="external">edvardHua</a></li>
-<li>校对者:</li>
-<li>状态 : 翻译完成</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/9b5c8bd8jw1f1cvbu9fzaj20m80fj48q.jpg" alt=""></p>
-<h3 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h3><p>我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我们需要更多的后台线程的时候该怎么办呢？</p>
-<p>大家都知道Android的UI更新是在UI线程中进行的（也称之为主线程）。所以如果我们在UI线程中编写耗时任务都可能会阻塞UI线程更新UI。为了避免这种情况我们可以使用 AsyncTask, IntentService和Threads。在之前我写的一篇文章介绍了<a href="https://medium.com/android-news/8-ways-to-do-asynchronous-processing-in-android-and-counting-f634dc6fae4e#.bkk6mudb4" target="_blank" rel="external">Android 中异步处理的8种方法</a>。但是，Android提供的<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">AsyncTasks</a>和<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">IntentService</a>都是利用单一的后台线程来处理异步任务的。那么，开发人员如何创建多个后台线程呢？</p>
-<p><strong>更新:</strong> <a href="https://medium.com/u/b49242be2be7" target="_blank" rel="external">Marco Kotz</a> <a href="https://medium.com/@mrcktz/hi-ali-nice-article-thanks-for-sharing-ba72b07f1fb3" target="_blank" rel="external">指出</a>结合使用ThreadPool Executor和AsyncTask，后台可以有多个线程（默认为5个）同时处理AsyncTask。 </p>
-<h3 id="u521B_u5EFA_u591A_u7EBF_u7A0B_u5E38_u7528_u7684_u65B9_u6CD5"><a href="#u521B_u5EFA_u591A_u7EBF_u7A0B_u5E38_u7528_u7684_u65B9_u6CD5" class="headerlink" title="创建多线程常用的方法"></a>创建多线程常用的方法</h3><p>在大多数使用场景下，我们没有必要产生多个后台线程，简单的创建AsyncTasks或者使用基于任务队列的IntentService就可以很好的满足我们对异步处理的需求。然而当我们真的需要多个后台线程的时候，我们常常会使用下面的代码简单的创建多个线程。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String[] urls = …</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">final</span> String url : urls) &#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 调用API、下载数据或图片</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>该方法有几个问题。一方面，操作系统限制了同一域下连接数（限制为4）。这意味着，你的代码并没有真的按照你的意愿执行。新建的线程如果超过数量限制则需要等待旧线程执行完毕。 另外，每一个线程都被创建来执行一个任务，然后销毁。这些线程也没有被重用。</p>
-<h3 id="u5E38_u7528_u65B9_u6CD5_u5B58_u5728_u7684_u95EE_u9898"><a href="#u5E38_u7528_u65B9_u6CD5_u5B58_u5728_u7684_u95EE_u9898" class="headerlink" title="常用方法存在的问题"></a>常用方法存在的问题</h3><p>举个例子，如果你想开发一个连拍应用能在1秒钟连拍10张图片（或者更多）。应用该具备如下的子任务：</p>
+        <blockquote>
 <ul>
-<li>在一秒的时间内扑捉10张以byte[]形式储存的照片，并且不能够阻塞UI线程。</li>
-<li>将byte[]储存的数据格式从YUV转换成RGB。</li>
-<li>使用转换后的数据创建Bitmap。</li>
-<li>变换Bitmap的方向。</li>
-<li>生成缩略图大小的Bitmap。</li>
-<li>将全尺寸的Bitmap以Jpeg压缩文件的格式写入磁盘中。</li>
-<li>使用上传队列将图片保存到服务器中。</li>
+<li>原文链接 : <a href="https://medium.com/@shelajev/getting-started-with-jrebel-for-android-426633cde736#.dtldka9ua" target="_blank" rel="external">Getting started with JRebel for Android</a></li>
+<li>原文作者 : <a href="https://medium.com/@shelajev" target="_blank" rel="external">Oleg Šelajev</a></li>
+<li>译者 : <a href="https://github.com/edvardHua" target="_blank" rel="external">edvardhua</a></li>
+<li>校对者: <a href="https://github.com/DeadLion" target="_blank" rel="external">DeadLion</a>, <a href="https://github.com/circlelove" target="_blank" rel="external">circlelove</a></li>
 </ul>
-<p>很明显，如果你将太多的子任务放在UI线程中，你的应用在性能上的表现将不会太好。在这种情况下，唯一的解决方案就是先将相机预览的数据缓存起来，当UI线程闲置的时候再来利用缓存的数据执行剩下的任务。</p>
-<p>另外一个可选的解决方案是创建一个长时间在后台运行的HandlerThread，它能够接受相机预览的数据，并处理完剩下的全部任务。当然这种做法的性能会好些，但是如果用户想再连拍的话，将会面临较大的延迟，因为他需要等待HandlerThread处理完前一次连拍。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">    public class CameraHandlerThread extends HandlerThread</span><br><span class="line">            implements Camera.PictureCallback, Camera.PreviewCallback &#123;</span><br><span class="line">        private static String TAG = "CameraHandlerThread";</span><br><span class="line">       private static final int WHAT_PROCESS_IMAGE = 0;</span><br><span class="line"></span><br><span class="line">        Handler mHandler = null;</span><br><span class="line">        WeakReference&lt;camerapreviewfragment&gt; ref = null;</span><br><span class="line"></span><br><span class="line">        private PictureUploadHandlerThread mPictureUploadThread;</span><br><span class="line">        private boolean mBurst = false;</span><br><span class="line">        private int mCounter = 1;</span><br><span class="line"></span><br><span class="line">        CameraHandlerThread(CameraPreviewFragment cameraPreview) &#123;</span><br><span class="line">            super(TAG);</span><br><span class="line">            start();</span><br><span class="line">            mHandler = new Handler(getLooper(), new Handler.Callback() &#123;</span><br><span class="line"></span><br><span class="line">                @Override</span><br><span class="line">                public boolean handleMessage(Message msg) &#123;</span><br><span class="line">                    if (msg.what == WHAT_PROCESS_IMAGE) &#123;</span><br><span class="line">                        // 业务逻辑</span><br><span class="line">                    &#125;</span><br><span class="line">                    return true;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            ref = new WeakReference&lt;&gt;(cameraPreview);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">       ...</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void onPreviewFrame(byte[] data, Camera camera) &#123;</span><br><span class="line">            if (mBurst) &#123;</span><br><span class="line">                CameraPreviewFragment f = ref.get();</span><br><span class="line">                if (f != null) &#123;</span><br><span class="line">                    mHandler.obtainMessage(WHAT_PROCESS_IMAGE, data)</span><br><span class="line">                   .sendToTarget();</span><br><span class="line">                    try &#123;</span><br><span class="line">                        sleep(100);</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    if (f.isAdded()) &#123;</span><br><span class="line">                        f.readyForPicture();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                if (mCounter++ == 10) &#123;</span><br><span class="line">                    mBurst = false;</span><br><span class="line">                    mCounter = 1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">```    </span><br><span class="line"></span><br><span class="line">**提醒：** 如果你需要学习更多有关于HandlerThreads内容以及如何使用它，请阅读[我发表的关于HandlerThreads的文章。](https://medium.com/@ali.muzaffar/handlerthreads-and-why-you-should-be-using-them-in-your-android-apps-dc8bf1540341#.co4ilm67m)</span><br><span class="line"></span><br><span class="line">看起来所有的任务都被后台的单一线程处理完毕了，我们性能提升主要得益于后台线程长期运行并不会被销毁和重建。然而，我们后台的单一线程却要和其他优先等级更高的任务共享，而且这些任务只能够顺序执行。</span><br><span class="line"></span><br><span class="line">我们也可以创建第二个HandlerThread来处理我们的图像，然后创建第三个HandlerThread来将照片写入磁盘，最后再创建第四个HandlerThread来将照片上传到服务器中。我们能够加快拍照的速度，但是，这些线程相互之间还是遵循顺序执行的规则，并不是真的并发。因为每张照片是顺序处理的，而且处理每一张照片需要一定的时间，导致用户在点击拍照按钮到显示全部缩略图的时候仍然能够明显的感觉到延迟。</span><br><span class="line"></span><br><span class="line">### 使用ThreadPool并发处理任务</span><br><span class="line"></span><br><span class="line">我们可以根据需求创建多个线程，但是创建过多的线程会消耗CPU周期影响性能，并且线程的创建和销毁也需要时间成本。所以我们不想创建多余的线程，但是又想能够充分的利用设备的硬件资源。这个时候我们可以使用ThreadPool。</span><br><span class="line"></span><br><span class="line">通过创建ThreadPool对象的单例来在你的应用中使用ThreadPool。</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">    public class BitmapThreadPool &#123;</span><br><span class="line">        private static BitmapThreadPool mInstance;</span><br><span class="line">        private ThreadPoolExecutor mThreadPoolExec;</span><br><span class="line">        private static int MAX_POOL_SIZE;</span><br><span class="line">        private static final int KEEP_ALIVE = 10;</span><br><span class="line">        BlockingQueue&lt;runnable&gt; workQueue = new LinkedBlockingQueue&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        public static synchronized void post(Runnable runnable) &#123;</span><br><span class="line">            if (mInstance == null) &#123;</span><br><span class="line">                mInstance = new BitmapThreadPool();</span><br><span class="line">            &#125;</span><br><span class="line">            mInstance.mThreadPoolExec.execute(runnable);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private BitmapThreadPool() &#123;</span><br><span class="line">            int coreNum = Runtime.getRuntime().availableProcessors();</span><br><span class="line">            MAX_POOL_SIZE = coreNum * 2;</span><br><span class="line">            mThreadPoolExec = new ThreadPoolExecutor(</span><br><span class="line">                    coreNum,</span><br><span class="line">                    MAX_POOL_SIZE,</span><br><span class="line">                    KEEP_ALIVE,</span><br><span class="line">                    TimeUnit.SECONDS,</span><br><span class="line">                    workQueue);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static void finish() &#123;</span><br><span class="line">            mInstance.mThreadPoolExec.shutdown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>然后，在上面的代码中，简单的修改Handler的回调函数为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mHandler = <span class="keyword">new</span> Handler(getLooper(), <span class="keyword">new</span> Handler.Callback() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (msg.what == WHAT_PROCESS_IMAGE) &#123;</span><br><span class="line">            BitmapThreadPool.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    <span class="comment">// 做你想做的任何事情</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>优化已经完成！通过下面的视频，我们观察到加载缩略图的速度提升是非常明显的。</p>
-<p>这种做法的优点是我们可以定义线程池的大小并且指定空余线程保持活动的时间。我们也可以创建多个ThreadPools来处理多个任务或者使用单个ThreadPool来处理多个任务。但是在使用完后记得清理资源。</p>
-<p>我们甚至可以为每一个功能创建一个独立的ThreadPool。譬如说在这个例子中我们可以创建三个ThreadPool,第一个ThreadPool负责数据转换成Bitmap，第二个ThreadPool负责写数据到磁盘中去，第三个ThreadPool上传Bitmap到服务器中去。这样做的话，如果我们的ThreadPool最大拥有4条线程，那么我们就能够同时的转换，写入，上传四张相片。用户将看到4张缩略图是同时显示而不是一个个的显示出来的。</p>
-<p>上面这个简单例子代码可以在<a href="https://github.com/alphamu/ThreadPoolWithCameraPreview" target="_blank" rel="external">我的GitHub</a>上得到，欢迎看完代码后给我反馈</p>
-<p>另外，你也可以在<a href="https://play.google.com/store/apps/details?id=au.com.alphamu.camerapreviewcaptureimage" target="_blank" rel="external">Google Play</a>上面下载演示应用。</p>
-<p><strong>使用ThreadPool前:</strong> 如果可以，从顶部观察计数器的变化来得知当底部缩略图从开始显示到全部显示完成所耗费的时间。在程序中除了adapter中的notifyDataSetChanged()方法外，我已经将大部分的操作从主线程中剥离，所以计数器的运行是很流畅的。</p>
-<figure><iframe frameborder="0" allowfullscreen="1" title="YouTube video player" width="640" height="360" src="https://www.youtube.com/embed/YmU8ogom_5g?wmode=opaque&amp;widget_referrer=https%3A%2F%2Fmedium.com%2Fmedia%2F6a9266d6d49e3e234f9d60f5763602df%3FmaxWidth%3D640&amp;enablejsapi=1&amp;origin=https%3A%2F%2Fcdn.embedly.com"></iframe></figure>
+</blockquote>
+<p>只要你的项目相对较小，开发Android应用的用户体验还是很棒的。然而随着项目功能的增加，你会发现构建项目的时间也会随着增长。这种情况会导致你的大部分时间都花在如何更快的构建项目，而不是为应用增加更多的价值。</p>
+<p>网上有很多教你如何加快Gradle构建速度的教程。有一些很好的文章，譬如“<a href="http://zeroturnaround.com/rebellabs/making-gradle-builds-faster/" target="_blank" rel="external">Making Gradle builds faster</a>”。 通过这些方法我们可以节省几秒甚至几分钟的构建时间，但是仍然存在一些构建上的瓶颈。举个例子，基于注释的依赖注入使得项目架构清晰，但是这对项目构建时间是有很大影响的。</p>
+<p>但是你可以尝试一下使用<a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a>。每次改动代码后不需要重新安装新的 apk。而是在安装完一次应用后，通过增量包传递到设备或者模拟器上，并且能够在应用运行时进行更新。这个想法（热部署）已经在JRebel的java开发工具上面使用超过8年的时间。</p>
+<p>拿Google IO 2015 app来看看如何使用JRebel for Android，以及它能为我们节省多少宝贵的时间。</p>
+<h3 id="u5B89_u88C5_JRebel_for_Android"><a href="#u5B89_u88C5_JRebel_for_Android" class="headerlink" title="安装 JRebel for Android"></a>安装 JRebel for Android</h3><p><a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a> 是一个Android Studio的插件，你可以直接点击IDE的 <em>Plugins &gt; Browse Repositories</em> 键入“JRebel for Android”来搜索和安装插件。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-dd03443274413e8e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>如果因为某些原因你无法访问 maven 的公有仓库，你可以直接在 JetBrians 官网下载，然后通过 <em>Plugins &gt; Install plugin from disk…</em> 来安装插件。</p>
+<p>当你安装完插件后，你需要重启Android Studio，在重启之后，你需要提供你的姓名和邮箱来得到JRebel for Android的21天免费使用。</p>
+<h3 id="u7528_JRebel_for_Android__u6765_u8FD0_u884C_u4F60_u7684_u5E94_u7528_u7A0B_u5E8F"><a href="#u7528_JRebel_for_Android__u6765_u8FD0_u884C_u4F60_u7684_u5E94_u7528_u7A0B_u5E8F" class="headerlink" title="用 JRebel for Android 来运行你的应用程序"></a>用 JRebel for Android 来运行你的应用程序</h3><p>安装完插件后，只需要点击 <em>Run with JRebel for Android</em> 按钮，它会检测这次代码与上次是否有改动，然后决定是否构建一个新的apk。<em>Run with JRebel for Android</em> 其实和Android Studio中的 <em>Run</em> 操作是一样的。所以有同样的运行流程，首先需要你选择一个设备，然后再构建apk安装到那台设备上去。</p>
+<p>为了更新代码和资源，JRebel for Android 需要处理项目 classes，并嵌入一个代理应用。JRebel for Android只会运行在调试模式下，所以对于正式发布的版本来说是没有影响的。另外，使用该插件也不需要你在项目中做任何改动。想要知道更多JRebel for Android的细节，请看<a href="http://zeroturnaround.com/rebellabs/under-the-hood-of-jrebel-for-android/" target="_blank" rel="external">under the hood post</a>。（译者注：InfoQ的一篇介绍JRebel for Android的<a href="http://www.infoq.com/cn/news/2016/01/jrebel-for-android-stable?appinstall=0" target="_blank" rel="external">文章</a>写的不错。）</p>
+<p>所以在Google IO 2015应用上点击 <em>Run with JRebel for Android</em> 将会得到如下的结果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-84f2635271fc02af.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u5728JRebel_for_Android_u5E94_u7528_u4EE3_u7801_u4FEE_u6539"><a href="#u5728JRebel_for_Android_u5E94_u7528_u4EE3_u7801_u4FEE_u6539" class="headerlink" title="在JRebel for Android应用代码修改"></a>在JRebel for Android应用代码修改</h3><p> <em>Apply changes</em> 按钮是使用 JRebel for Android的关键，它将会做最少的工作来将你代码的改动更新到你的设备上去。如果你没有使用 <em>Run with JRebel for Android</em> 来部署应用的话，<em>Apply changes</em> 将会帮你做这部分的工作。</p>
+<p>现在让我们在应用上做一个简单的功能改动。针对于GoogleIO中每一个举行的子会场你都可以发送反馈问卷，我们给这个问卷添加多一个输入框输入你的姓名，当你完成反馈的时候会弹出Toast来感谢你的反馈。</p>
+<p><strong>步骤一：</strong> 在  _session_feedback<em>fragment.xml</em> 中添加一个EditTex组件。</p>
+<pre><code>&lt;FrameLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;&gt;
+    &lt;EditText
+        android:id=&quot;@+id/name_input&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;/&gt;
+&lt;/FrameLayout&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-97f6212b91eaa6f9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>步骤2：</strong> 调整间距</p>
+<pre><code>&lt;FrameLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:paddingLeft=&quot;@dimen/padding_normal&quot;
+    android:paddingStart=&quot;@dimen/padding_normal&quot;
+    android:paddingRight=&quot;@dimen/padding_normal&quot;
+    android:paddingEnd=&quot;@dimen/padding_normal&quot;
+    android:paddingTop=&quot;@dimen/spacing_micro&quot;
+    android:paddingBottom=&quot;@dimen/padding_normal&quot;&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-7d7e9601dc0bb07b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>步骤3：</strong> 添加提示</p>
+<pre><code>&lt;EditText
+    android:id=&quot;@+id/name_input&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:hint=&quot;@string/name_hint&quot;/&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-ede2be6834a19fc9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这些改动现在都是在同一个页面上，每一次按下 <em>Apply change</em>  按钮后，JRebel for Android都会调用<a href="https://developer.android.com/reference/android/app/Activity.html#recreate%28%29" target="_blank" rel="external">Activity.recreate()</a>。在最顶部的activity将会同样的回调方法，就像设备从纵向切换到横向那样。</p>
+<p>到目前为止我们都还只是改动resource文件，下面我们来改动Java代码。</p>
+<p><strong>步骤4：</strong> 在 <em>SessionFeedbackFragment.sumbitFeedback()</em> 方法中弹出Toast</p>
+<pre><code>EditText nameInput = (EditText) 
 
-<p><strong>使用ThreadPool后:</strong> 通过顶部的计数器，我们发现使用了ThreadPool后，照片的缩略图加载速度明显变快。</p>
-<figure><iframe frameborder="0" allowfullscreen="1" title="YouTube video player" width="640" height="360" src="https://www.youtube.com/embed/77Lh9XpXArw?wmode=opaque&amp;widget_referrer=https%3A%2F%2Fmedium.com%2Fmedia%2F53c35a233037c20ad1c4f2cba7528580%3FmaxWidth%3D640&amp;enablejsapi=1&amp;origin=https%3A%2F%2Fcdn.embedly.com"></iframe></figure>
+getView().findViewById(R.id.name_input);
 
-<h3 id="u6700_u540E"><a href="#u6700_u540E" class="headerlink" title="最后"></a>最后</h3><p>如果想要开发更加快的应用程序, <a href="https://medium.com/@ali.muzaffar" target="_blank" rel="external">请阅读我的文章</a>.</p>
-<p>文章已经到底了，在Medium上Follow我吧。 <a href="https://www.linkedin.com/in/alimuzaffar" target="_blank" rel="external">LinkedIn</a>, <a href="https://plus.google.com/+AliMuzaffar" target="_blank" rel="external">Google+</a> or <a href="https://twitter.com/ali_muzaffar" target="_blank" rel="external">Twitter</a>.</p>
+Toast.makeText(getActivity(), &quot;Thanks for the feedback &quot; + 
+
+nameInput.getEditableText().toString(), Toast.LENGTH_SHORT).show();
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-ac59f6bcd587c12b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u5E94_u7528_u91CD_u542F_u52A8_vs_Activity_u91CD_u542F_u52A8"><a href="#u5E94_u7528_u91CD_u542F_u52A8_vs_Activity_u91CD_u542F_u52A8" class="headerlink" title="应用重启动 vs Activity重启动"></a>应用重启动 vs Activity重启动</h3><p>并不是所有的改动都会触发调用<a href="https://developer.android.com/reference/android/app/Activity.html#recreate%28%29" target="_blank" rel="external">Activity.recreate()</a>的。如果你在AndroidManifest改动了一些内容，一个新的 apk 将会被构建并增加安装。在这种情况下，应用将会重新启动。或者你替换或改动了已经被实现的superclass或者interfaces的时候也会导致应用重启动。下面有一份完整的对照表：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-a2318544ae109e19.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u4E3A_u4EC0_u4E48_u6211_u8981_u5C1D_u8BD5_u4F7F_u7528_JRebel_for_Android"><a href="#u4E3A_u4EC0_u4E48_u6211_u8981_u5C1D_u8BD5_u4F7F_u7528_JRebel_for_Android" class="headerlink" title="为什么我要尝试使用 JRebel for Android"></a>为什么我要尝试使用 JRebel for Android</h3><p>下面我列出了最有说服力的理由，来让你使用它。</p>
+<ul>
+<li>可以快速看到自己代码改动的效果。</li>
+<li>可以有时间打磨素完美的UI，而不用浪费时间在构建上。</li>
+<li>不需要在项目中做任何改动来支持 JRebel for Android。</li>
+<li>在调试程序的同时还能更新代码和资源文件。没错，<a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a>支持调试器的全部特性。</li>
+</ul>
+<h3 id="u8BD1_u8005_u6CE8"><a href="#u8BD1_u8005_u6CE8" class="headerlink" title="译者注"></a>译者注</h3><p>另外，Google 在前不久发布的 Android Studio 2.0 中也增加了类似 JRebel 功能，称之为 Instant Run。可谓良心，毕竟不用花银子去购买收费的 JRebel for Android, 不仅为我们节约了银子还节约了时间。使用方法也很简单，具体的可以查看<a href="https://developer.android.com/studio/run/index.html#instant-run" target="_blank" rel="external">官方文档</a></p>
+<p>但是 JRebel for Android 与 Instant Run 之间还是存在区别的，我在 JRebel 的官网中找到一篇对比的<a href="https://zeroturnaround.com/rebellabs/jrebel-for-android-and-instant-run-compared/" target="_blank" rel="external">文章</a>，他们之间的差别可以用下面这张图概括。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-8502953211211fad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="JRebel for Android vs Instant Run"></p>
+<p>从对比图中了解到其实 JRebel for Android 所支持的特性是比 Instant Run 多的多的，当然，希望 Google 后续能够让 Instant Run 支持更多的特性。</p>
 
       
     </div>
@@ -361,6 +393,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/" rel="prev" title="[译] 我是如何为Mac应用Flinto设计UI图标的">
+                [译] 我是如何为Mac应用Flinto设计UI图标的 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -410,7 +446,7 @@
   <div class="comments" id="comments">
     
       <div class="ds-thread" data-thread-key="2016/03/03/译-在Android中使用并发提高应用性能/"
-           data-title="(译)在Android中使用并发提高应用性能" data-url="http://yoursite.com/2016/03/03/译-在Android中使用并发提高应用性能/">
+           data-title="[译] 在Android中使用并发提高应用性能" data-url="http://yoursite.com/2016/03/03/译-在Android中使用并发提高应用性能/">
       </div>
     
   </div>
@@ -455,7 +491,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -469,7 +505,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -519,7 +555,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u524D_u8A00"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u521B_u5EFA_u591A_u7EBF_u7A0B_u5E38_u7528_u7684_u65B9_u6CD5"><span class="nav-number">2.</span> <span class="nav-text">创建多线程常用的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5E38_u7528_u65B9_u6CD5_u5B58_u5728_u7684_u95EE_u9898"><span class="nav-number">3.</span> <span class="nav-text">常用方法存在的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u6700_u540E"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#u5B89_u88C5_JRebel_for_Android"><span class="nav-number">1.</span> <span class="nav-text">安装 JRebel for Android</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u7528_JRebel_for_Android__u6765_u8FD0_u884C_u4F60_u7684_u5E94_u7528_u7A0B_u5E8F"><span class="nav-number">2.</span> <span class="nav-text">用 JRebel for Android 来运行你的应用程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5728JRebel_for_Android_u5E94_u7528_u4EE3_u7801_u4FEE_u6539"><span class="nav-number">3.</span> <span class="nav-text">在JRebel for Android应用代码修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u5E94_u7528_u91CD_u542F_u52A8_vs_Activity_u91CD_u542F_u52A8"><span class="nav-number">4.</span> <span class="nav-text">应用重启动 vs Activity重启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u4E3A_u4EC0_u4E48_u6211_u8981_u5C1D_u8BD5_u4F7F_u7528_JRebel_for_Android"><span class="nav-number">5.</span> <span class="nav-text">为什么我要尝试使用 JRebel for Android</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#u8BD1_u8005_u6CE8"><span class="nav-number">6.</span> <span class="nav-text">译者注</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

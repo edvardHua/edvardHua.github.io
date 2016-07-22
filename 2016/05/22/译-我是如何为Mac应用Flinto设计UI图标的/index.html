@@ -1,0 +1,856 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Design," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="原文链接: Designing the Icons for Flinto’s UI
+原文作者 : Peter Nowell
+译者 : edvardhua
+校对者 : Ruixi, CoderBOBO
+
+
+Flinto 团队 最近采访了我关于Flinto用户界面图标背后的设计流程。
+你是怎么为Mac版本的Flinto贡献自己的设计？我参与了Flinto新的Mac版本的用户界面部分和用户体验部分的设计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译] 我是如何为Mac应用Flinto设计UI图标的">
+<meta property="og:url" content="http://yoursite.com/2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/index.html">
+<meta property="og:site_name" content="Edvard's blog">
+<meta property="og:description" content="原文链接: Designing the Icons for Flinto’s UI
+原文作者 : Peter Nowell
+译者 : edvardhua
+校对者 : Ruixi, CoderBOBO
+
+
+Flinto 团队 最近采访了我关于Flinto用户界面图标背后的设计流程。
+你是怎么为Mac版本的Flinto贡献自己的设计？我参与了Flinto新的Mac版本的用户界面部分和用户体验部分的设计">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-eb4535b74cc6a066.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-17a1b170870ef331.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-eb3a9786bd5527f9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-c4682f60d9bb207e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-731c377c2cdd35e2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-95366f77f1183a52.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-763cf2afdcb517db.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-71f9f6c03b48ec04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-244218bf2af2aaf2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-07-22T03:40:09.423Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译] 我是如何为Mac应用Flinto设计UI图标的">
+<meta name="twitter:description" content="原文链接: Designing the Icons for Flinto’s UI
+原文作者 : Peter Nowell
+译者 : edvardhua
+校对者 : Ruixi, CoderBOBO
+
+
+Flinto 团队 最近采访了我关于Flinto用户界面图标背后的设计流程。
+你是怎么为Mac版本的Flinto贡献自己的设计？我参与了Flinto新的Mac版本的用户界面部分和用户体验部分的设计">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> [译] 我是如何为Mac应用Flinto设计UI图标的 | Edvard's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?3b96e2d4198c9923a8699b18166df5ab";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Edvard's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">技术&生活</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                [译] 我是如何为Mac应用Flinto设计UI图标的
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-22T03:37:54+00:00" content="2016-05-22">
+              2016-05-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<ul>
+<li>原文链接: <a href="https://medium.com/flinto-software/designing-the-icons-for-flinto-s-ui-ddd9e5788cce#.yr5asvf9c" target="_blank" rel="external">Designing the Icons for Flinto’s UI</a></li>
+<li>原文作者 : <a href="https://medium.com/@pnowelldesign" target="_blank" rel="external">Peter Nowell</a></li>
+<li>译者 : <a href="https://github.com/edvardHua" target="_blank" rel="external">edvardhua</a></li>
+<li>校对者 : <a href="https://github.com/Ruixi" target="_blank" rel="external">Ruixi</a>, <a href="https://github.com/CoderBOBO" target="_blank" rel="external">CoderBOBO</a></li>
+</ul>
+</blockquote>
+<p><a href="https://www.flinto.com/mac" target="_blank" rel="external">Flinto 团队</a> 最近采访了我关于Flinto用户界面图标背后的设计流程。</p>
+<h4 id="u4F60_u662F_u600E_u4E48_u4E3AMac_u7248_u672C_u7684Flinto_u8D21_u732E_u81EA_u5DF1_u7684_u8BBE_u8BA1_uFF1F"><a href="#u4F60_u662F_u600E_u4E48_u4E3AMac_u7248_u672C_u7684Flinto_u8D21_u732E_u81EA_u5DF1_u7684_u8BBE_u8BA1_uFF1F" class="headerlink" title="你是怎么为Mac版本的Flinto贡献自己的设计？"></a>你是怎么为Mac版本的Flinto贡献自己的设计？</h4><p>我参与了<a href="https://www.flinto.com/mac" target="_blank" rel="external">Flinto</a>新的Mac版本的用户界面部分和用户体验部分的设计，就在他发布之前的几个月。但是因为Flinto是一个特殊的工具，我们越是深入思考每一部分的用户体验，我们越感觉到Flinto需要大量的定制icons。譬如说Flinto应用的列表（List），工具栏（Toolbar），动画的设计面板（Transition Designer），下拉手势（Gestures dropdown）都需要他们独自的一套图标。所以，如何快速的设计图标变成了我的主要工作。</p>
+<h4 id="u5F53_u8BBE_u8BA1_u5927_u578B_u5E94_u7528_u7684_u56FE_u6807_u548C_u83DC_u5355_u7684_u65F6_u5019_uFF0C_u4F60_u91C7_u7528_u4EC0_u4E48_u6837_u7684_u8BBE_u8BA1_u7B56_u7565_uFF1F"><a href="#u5F53_u8BBE_u8BA1_u5927_u578B_u5E94_u7528_u7684_u56FE_u6807_u548C_u83DC_u5355_u7684_u65F6_u5019_uFF0C_u4F60_u91C7_u7528_u4EC0_u4E48_u6837_u7684_u8BBE_u8BA1_u7B56_u7565_uFF1F" class="headerlink" title="当设计大型应用的图标和菜单的时候，你采用什么样的设计策略？"></a>当设计大型应用的图标和菜单的时候，你采用什么样的设计策略？</h4><p>设计总是情境驱动的。我惊奇的发现专业Mac应用的情境设计是最复杂的工作之一，就算你只是设计图标。工具栏（Toolbar）的图标大小必须一致，而且最好根据图标知道用途。这与侧边栏的图标和下拉菜单看到的图标的设计原则上有所差异。 一些图标会以不同的尺寸和不同的样式重复出现在不同的地方。不是只要调整图标尺寸或者样式就能够适用于每一个用户界面的，所以我在设计图标的时候需要考虑到图标是否具有通用性以及不破坏用户界面的整体一致性。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-eb4535b74cc6a066.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>我都是在纸上开始设计图标的，我一直坚信这个原则。我会在纸上画下我想象中这个图标的所有可能性，譬如设计的这个图标包含了什么暗喻以及图标可能需要/产生的变化。所以在<strong>概念设计</strong>的这个阶段上，我尽量让自己将所有的内容都写在我的纸上，甚至是一些不相关的想法。下一步则<strong>分析</strong>概念设计中的内容如何能够更好符合我们设计的目标，已有的限制以及这个图标的情境联系。</p>
+<blockquote>
+<p>我发现将绘图构思和评估这两个过程分开进行是很至关重要的。前者的工作需要想象力，好奇心，而且持有自己主观的判断，是一个加法的过程，是心血来潮的创作。评估则需要批判性，实用性，以及需要考虑图标背后一连串所延伸出来的隐喻，是一个做减法的过程。如果你尝试同时做这两件事情，那么你会考虑不过来从而得不到任何结果。</p>
+</blockquote>
+<p>我最近还在网上授课讲述我认为在<a href="http://shrsl.com/?~boxl" target="_blank" rel="external">设计图标</a>中最重要的原则。里面还包含了我是如何来评估我的想法和草稿的。</p>
+<p>通常来说，只有一部分的设计想法会被保存到电脑里面。使用sketch可以提高我的生产效率并且在生产的过程中会有一些创造性的决定。但最主要的目的还是要完善和精炼图标的形式，保证每一个图标都是像素完美的。我对此具备相当大的热情，我对其他忽视这个细节的人感到很烦恼。</p>
+<h4 id="u80FD_u591F_u4E3A_u6211_u4EEC_u518D_u7A0D_u5FAE_u89E3_u91CA_u4E00_u4E0B_u4EC0_u4E48_u662F_u201C_u50CF_u7D20_u5B8C_u7F8E_u201D_u548C_u5982_u4F55_u5B9E_u73B0_uFF1F"><a href="#u80FD_u591F_u4E3A_u6211_u4EEC_u518D_u7A0D_u5FAE_u89E3_u91CA_u4E00_u4E0B_u4EC0_u4E48_u662F_u201C_u50CF_u7D20_u5B8C_u7F8E_u201D_u548C_u5982_u4F55_u5B9E_u73B0_uFF1F" class="headerlink" title="能够为我们再稍微解释一下什么是“像素完美”和如何实现？"></a>能够为我们再稍微解释一下什么是“像素完美”和如何实现？</h4><p>像素完美其实意味着很多东西，它更像是一个想法而不是一个能够具体描述的特征。像“注意细节”一样，当被忽视的时候我们能够很容易的感觉出来。完美的像素对小图标的可辨别度有巨大的影响。想要实现像素完美不仅仅是将设计元素的像素网格对齐（如下图）。这基本上来说就是在和锯齿做斗争。使用抗锯齿是很好的一件事情，但它会让图像一些地方产生模糊，尤其是在对角线和曲线中。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-17a1b170870ef331.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>举个例子，我们想在图层列表中加上一些注释来表明哪些层是被隐藏或者是被锁住的。当然给图层加上隐藏和锁定是很简单的事情，只需要点击按钮操作一下就好了。我们考虑的是我们有一个小的注释，他会占用一小部分空间，来注释两个已经隐藏和锁定图标。为了完成这个目标，我们的图标必须要做到像素完美。我对我设计的8x8大小的图标感到非常的自豪。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-eb3a9786bd5527f9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>对于使用retina显示屏的读者，我们显示<strong>“一半尺寸”</strong>的位图，如图1x的全像素图标。对于非retina显示屏的读者，则使用<strong>“双倍尺寸”</strong>的位图，如图2x的全像素图标。 请以横向模式显示上图来获得最好的显示效果。</p>
+<p>在一个理想的世界中，一枚制作精良矢量图标可以轻易地适应各种像素密度的输出，并在所有对应尺寸中显示效果良好。但是大部分时候，使用一倍大小的图标并不能够处理得到更高尺寸的图标。你可能需要先做一个完美的两倍尺寸的图标，然后再调整成一倍尺寸来创建一个新的视觉满意的图标。在Flinto中至少一半的图标都有其对应1倍和2倍尺寸，譬如贯穿整个过渡动画设计面板的”概念图层”图标。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-c4682f60d9bb207e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>针对于这块感兴趣的读者，这里有我是如何对Flinto图标的抗锯齿进行细调的技术细节。</strong></p>
+<ul>
+<li>重新调整和重新定位图形来获得看上去视觉舒服的图形，尽管这样处理后位置或者像素值会有小数点，但在这个阶段视觉是重点。</li>
+<li>只使用曲线或者圆角时，至少要使用2px来渲染 90° 角的半径圆，或者使用3px渲染180°角的半径圆，来作为圆的线段末尾（如下图）。1pt大小线的线段的圆角线帽的效果是很糟糕的，至少我们使用的屏幕都会将其放大三倍来显示。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-731c377c2cdd35e2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>没有人想要模糊的线帽！只有三倍大小（或者更大）的显示器才能够对1pt大小的线条渲染清晰可见的圆角线帽。</p>
+<ul>
+<li>为了让线条粗细更加一致，调整边框宽度/粗细来达到稍宽或者稍厚会比使用1pt的细曲线或者斜线更好。</li>
+<li>消除不必要的模糊像素。这在你需要使用图形自身标记自己的时候将会很有效。</li>
+<li>通过复制图形或者边框（同一方向）来轻微调整图形的粗细。</li>
+<li>如果图标可以有小模糊锯齿能够为图标的其他部分提供一定帮助，这也是可以的。</li>
+</ul>
+<p>当然还有其他有关于如何平滑抗锯齿的技巧，但是我刚才所说的是我从中获益最大的。</p>
+<h4 id="u4EC0_u4E48_u9020_u5C31_u4E86_u4E00_u679A_u597D_u56FE_u6807_uFF1F"><a href="#u4EC0_u4E48_u9020_u5C31_u4E86_u4E00_u679A_u597D_u56FE_u6807_uFF1F" class="headerlink" title="什么造就了一枚好图标？"></a>什么造就了一枚好图标？</h4><p>这是个问题！尤其是当图标包含了很多设计原则的时候。我在我的<a href="http://shrsl.com/?~boxl" target="_blank" rel="external">图标设计课程</a>里面通过讲我在Flinto工作遇到的一些故事来描述我是如何造就一枚好图标的。</p>
+<p>其中的一个原则就是<strong>使用熟悉的符号并且让他显眼</strong>。当我们开始为Flinto的主页面的画布设计图标的时候，内森有一个想法，我们可以设计一个图标让我们回忆起<a href="http://www.sj33.cn/architecture/slsj/jiaju/201405/38754_3.html" target="_blank" rel="external">艾西勒的住宅</a>。艾西勒是一位建筑师，他设计了中世纪现代建筑的住宅，这种风格的住宅在加州很流行。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-95366f77f1183a52.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-763cf2afdcb517db.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<figcaption>艾西勒的中世纪现代建筑的住宅给了我们灵感去探索设计一个独特的“home”图标。</figcaption>
+
+<p>我们认为这个想法很酷而且内森也买了一套使用这种设计元素的房子，所以我们对这个想法很有热情。我做了很多个home图标的概念设计，尝试着将艾西勒住宅的特点萃取到一个16*16正方形的图标里面，而且在图标不添加色彩和透明度效果。我们发现这些看似巧妙的图标并没有很好展现图标本身的职责而且作为home图标也不够显眼。于是我们决定做一个直观并且能够表达艾西勒住宅不对称特点而且对其他用户而言有高辨别度的图标。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-71f9f6c03b48ec04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>直观胜过巧妙，我们选择了底部中间图标作为home键。</p>
+<p>另外评价一个好图标的原则是他是否能够与周围的元素看上去融洽。这些元素包括图标周围的UI，邻接文本的大小和 权重，操作系统的约定（譬如说，在mac os下cmd+s是保存，而在win下则是ctrl + s），以及其他图标的集合。</p>
+<p>所以尽管home图标基本上是单独存在的，但是工具图标，手势图标，排版图标都是集合方式存在的。设计图标的集合的挑战是很大的。你会在设计一个图标集合设计到一半的时候发现你所使用的视觉隐喻不能够适应每一个这个集合里面需要的图标，这意味着你需要重新做一遍。 🙈</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-244218bf2af2aaf2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这种情况通常发生在手势图标上（上图是以200%比例显示）现在这些图标看上去很简单和直观，然而我们在设计他时是有很多限制条件的，并且还要考虑未来的兼容性。一些我们在这里展示的图标还没有出现在Flinto中…但很重要的一点是，在遇到有需要的时候，我们设计的图标集能够扩展并且容纳它们。</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Design/" rel="tag">#Design</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/03/译-在Android中使用并发提高应用性能/" rel="next" title="[译] 在Android中使用并发提高应用性能">
+                <i class="fa fa-chevron-left"></i> [译] 在Android中使用并发提高应用性能
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/06/02/怎样用-JRebel-for-Android/" rel="prev" title="[译] 怎样用 JRebel for Android">
+                [译] 怎样用 JRebel for Android <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/"
+           data-title="[译] 我是如何为Mac应用Flinto设计UI图标的" data-url="http://yoursite.com/2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Edvard" />
+          <p class="site-author-name" itemprop="name">Edvard</p>
+          <p class="site-description motion-element" itemprop="description">Edvard的博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/edvardHua" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/ceng-zi-hua" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> zhihu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#u4F60_u662F_u600E_u4E48_u4E3AMac_u7248_u672C_u7684Flinto_u8D21_u732E_u81EA_u5DF1_u7684_u8BBE_u8BA1_uFF1F"><span class="nav-number">1.</span> <span class="nav-text">你是怎么为Mac版本的Flinto贡献自己的设计？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u5F53_u8BBE_u8BA1_u5927_u578B_u5E94_u7528_u7684_u56FE_u6807_u548C_u83DC_u5355_u7684_u65F6_u5019_uFF0C_u4F60_u91C7_u7528_u4EC0_u4E48_u6837_u7684_u8BBE_u8BA1_u7B56_u7565_uFF1F"><span class="nav-number">2.</span> <span class="nav-text">当设计大型应用的图标和菜单的时候，你采用什么样的设计策略？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u80FD_u591F_u4E3A_u6211_u4EEC_u518D_u7A0D_u5FAE_u89E3_u91CA_u4E00_u4E0B_u4EC0_u4E48_u662F_u201C_u50CF_u7D20_u5B8C_u7F8E_u201D_u548C_u5982_u4F55_u5B9E_u73B0_uFF1F"><span class="nav-number">3.</span> <span class="nav-text">能够为我们再稍微解释一下什么是“像素完美”和如何实现？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#u4EC0_u4E48_u9020_u5C31_u4E86_u4E00_u679A_u597D_u56FE_u6807_uFF1F"><span class="nav-number">4.</span> <span class="nav-text">什么造就了一枚好图标？</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edvard</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"edvard-hua"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+
+</body>
+</html>

@@ -1,0 +1,1211 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Software Engineering," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="原文链接 : Unit tests with Mockito - Tutorial
+原文作者 : vogella
+译者 : edvardhua
+校对者: hackerkevin, futureshine 
+
+这篇教程介绍了如何使用 Mockito 框架来给软件写测试用例
+
+1. 预备知识如果需要往下学习，你需要先理解 Junit 框架中的单元测试。
+如果你不熟悉 JUnit，请查看下面的教程：ht">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[译] 使用强大的 Mockito 来测试你的代码">
+<meta property="og:url" content="http://yoursite.com/2016/07/22/译-使用强大的-Mockito-来测试你的代码/index.html">
+<meta property="og:site_name" content="Edvard's blog">
+<meta property="og:description" content="原文链接 : Unit tests with Mockito - Tutorial
+原文作者 : vogella
+译者 : edvardhua
+校对者: hackerkevin, futureshine 
+
+这篇教程介绍了如何使用 Mockito 框架来给软件写测试用例
+
+1. 预备知识如果需要往下学习，你需要先理解 Junit 框架中的单元测试。
+如果你不熟悉 JUnit，请查看下面的教程：ht">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-7a85af97f7d72e05?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/207577-00735620fa48adcc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2016-07-22T03:40:01.483Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[译] 使用强大的 Mockito 来测试你的代码">
+<meta name="twitter:description" content="原文链接 : Unit tests with Mockito - Tutorial
+原文作者 : vogella
+译者 : edvardhua
+校对者: hackerkevin, futureshine 
+
+这篇教程介绍了如何使用 Mockito 框架来给软件写测试用例
+
+1. 预备知识如果需要往下学习，你需要先理解 Junit 框架中的单元测试。
+如果你不熟悉 JUnit，请查看下面的教程：ht">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> [译] 使用强大的 Mockito 来测试你的代码 | Edvard's blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?3b96e2d4198c9923a8699b18166df5ab";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Edvard's blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">技术&生活</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                [译] 使用强大的 Mockito 来测试你的代码
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-22T03:39:06+00:00" content="2016-07-22">
+              2016-07-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/22/译-使用强大的-Mockito-来测试你的代码/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/22/译-使用强大的-Mockito-来测试你的代码/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<ul>
+<li>原文链接 : <a href="http://www.vogella.com/tutorials/Mockito/article.html" target="_blank" rel="external">Unit tests with Mockito - Tutorial</a></li>
+<li>原文作者 : <a href="http://www.vogella.com/" target="_blank" rel="external">vogella</a></li>
+<li>译者 : <a href="https://github.com/edvardHua/" target="_blank" rel="external">edvardhua</a></li>
+<li>校对者: <a href="https://github.com/hackerkevin" target="_blank" rel="external">hackerkevin</a>, <a href="https://github.com/futureshine" target="_blank" rel="external">futureshine</a> </li>
+</ul>
+<p>这篇教程介绍了如何使用 Mockito 框架来给软件写测试用例</p>
+</blockquote>
+<h2 id="1-__u9884_u5907_u77E5_u8BC6"><a href="#1-__u9884_u5907_u77E5_u8BC6" class="headerlink" title="1. 预备知识"></a>1. 预备知识</h2><p>如果需要往下学习，你需要先理解 Junit 框架中的单元测试。</p>
+<p>如果你不熟悉 JUnit，请查看下面的教程：<br><a href="http://www.vogella.com/tutorials/JUnit/article.html" target="_blank" rel="external">http://www.vogella.com/tutorials/JUnit/article.html</a></p>
+<h2 id="2-__u4F7F_u7528mock_u5BF9_u8C61_u6765_u8FDB_u884C_u6D4B_u8BD5"><a href="#2-__u4F7F_u7528mock_u5BF9_u8C61_u6765_u8FDB_u884C_u6D4B_u8BD5" class="headerlink" title="2. 使用mock对象来进行测试"></a>2. 使用mock对象来进行测试</h2><h3 id="2-1-__u5355_u5143_u6D4B_u8BD5_u7684_u76EE_u6807_u548C_u6311_u6218"><a href="#2-1-__u5355_u5143_u6D4B_u8BD5_u7684_u76EE_u6807_u548C_u6311_u6218" class="headerlink" title="2.1. 单元测试的目标和挑战"></a>2.1. 单元测试的目标和挑战</h3><p>单元测试的思路是在不涉及依赖关系的情况下测试代码（隔离性），所以测试代码与其他类或者系统的关系应该尽量被消除。一个可行的消除方法是替换掉依赖类（测试替换），也就是说我们可以使用替身来替换掉真正的依赖对象。</p>
+<h3 id="2-2-__u6D4B_u8BD5_u7C7B_u7684_u5206_u7C7B"><a href="#2-2-__u6D4B_u8BD5_u7C7B_u7684_u5206_u7C7B" class="headerlink" title="2.2. 测试类的分类"></a>2.2. 测试类的分类</h3><p><em>dummy object</em> 做为参数传递给方法但是绝对不会被使用。譬如说，这种测试类内部的方法不会被调用，或者是用来填充某个方法的参数。</p>
+<p><em>Fake</em> 是真正接口或抽象类的实现体，但给对象内部实现很简单。譬如说，它存在内存中而不是真正的数据库中。（译者注：<em>Fake</em> 实现了真正的逻辑，但它的存在只是为了测试，而不适合于用在产品中。）</p>
+<p><em>stub</em> 类是依赖类的部分方法实现，而这些方法在你测试类和接口的时候会被用到，也就是说 <em>stub</em> 类在测试中会被实例化。<em>stub</em> 类会回应任何外部测试的调用。<em>stub</em> 类有时候还会记录调用的一些信息。</p>
+<p><em>mock object</em> 是指类或者接口的模拟实现，你可以自定义这个对象中某个方法的输出结果。</p>
+<p>测试替代技术能够在测试中模拟测试类以外对象。因此你可以验证测试类是否响应正常。譬如说，你可以验证在 Mock 对象的某一个方法是否被调用。这可以确保隔离了外部依赖的干扰只测试测试类。</p>
+<p>我们选择 Mock 对象的原因是因为 Mock 对象只需要少量代码的配置。</p>
+<h3 id="2-3-_Mock__u5BF9_u8C61_u7684_u4EA7_u751F"><a href="#2-3-_Mock__u5BF9_u8C61_u7684_u4EA7_u751F" class="headerlink" title="2.3. Mock 对象的产生"></a>2.3. Mock 对象的产生</h3><p>你可以手动创建一个 Mock 对象或者使用 Mock 框架来模拟这些类，Mock 框架允许你在运行时创建 Mock 对象并且定义它的行为。</p>
+<p>一个典型的例子是把 Mock 对象模拟成数据的提供者。在正式的生产环境中它会被实现用来连接数据源。但是我们在测试的时候 Mock 对象将会模拟成数据提供者来确保我们的测试环境始终是相同的。</p>
+<p>Mock 对象可以被提供来进行测试。因此，我们测试的类应该避免任何外部数据的强依赖。</p>
+<p>通过 Mock 对象或者 Mock 框架，我们可以测试代码中期望的行为。譬如说，验证只有某个存在 Mock 对象的方法是否被调用了。</p>
+<h3 id="2-4-__u4F7F_u7528_Mockito__u751F_u6210_Mock__u5BF9_u8C61"><a href="#2-4-__u4F7F_u7528_Mockito__u751F_u6210_Mock__u5BF9_u8C61" class="headerlink" title="2.4. 使用 Mockito 生成 Mock 对象"></a>2.4. 使用 Mockito 生成 Mock 对象</h3><p><em>Mockito</em> 是一个流行 mock 框架，可以和JUnit结合起来使用。Mockito 允许你创建和配置 mock 对象。使用Mockito可以明显的简化对外部依赖的测试类的开发。</p>
+<p>一般使用 Mockito 需要执行下面三步</p>
+<ul>
+<li><p>模拟并替换测试代码中外部依赖。</p>
+</li>
+<li><p>执行测试代码</p>
+</li>
+<li><p>验证测试代码是否被正确的执行</p>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-7a85af97f7d72e05?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mockitousagevisualization"></p>
+<h2 id="3-__u4E3A_u81EA_u5DF1_u7684_u9879_u76EE_u6DFB_u52A0_Mockito__u4F9D_u8D56"><a href="#3-__u4E3A_u81EA_u5DF1_u7684_u9879_u76EE_u6DFB_u52A0_Mockito__u4F9D_u8D56" class="headerlink" title="3. 为自己的项目添加 Mockito 依赖"></a>3. 为自己的项目添加 Mockito 依赖</h2><h3 id="3-1-__u5728_Gradle__u6DFB_u52A0_Mockito__u4F9D_u8D56"><a href="#3-1-__u5728_Gradle__u6DFB_u52A0_Mockito__u4F9D_u8D56" class="headerlink" title="3.1. 在 Gradle 添加 Mockito 依赖"></a>3.1. 在 Gradle 添加 Mockito 依赖</h3><p>如果你的项目使用 Gradle 构建，将下面代码加入 Gradle 的构建文件中为自己项目添加 Mockito 依赖</p>
+<pre><code>repositories { jcenter() }
+dependencies { testCompile &quot;org.mockito:mockito-core:2.0.57-beta&quot; }
+</code></pre><h3 id="3-2-__u5728_Maven__u6DFB_u52A0_Mockito__u4F9D_u8D56"><a href="#3-2-__u5728_Maven__u6DFB_u52A0_Mockito__u4F9D_u8D56" class="headerlink" title="3.2. 在 Maven 添加 Mockito 依赖"></a>3.2. 在 Maven 添加 Mockito 依赖</h3><p>需要在 Maven 声明依赖，您可以在 <a href="http://search.maven.org" target="_blank" rel="external">http://search.maven.org</a> 网站中搜索 g:”org.mockito”, a:”mockito-core” 来得到具体的声明方式。</p>
+<h3 id="3-3-__u5728_Eclipse_IDE__u4F7F_u7528_Mockito"><a href="#3-3-__u5728_Eclipse_IDE__u4F7F_u7528_Mockito" class="headerlink" title="3.3. 在 Eclipse IDE 使用 Mockito"></a>3.3. 在 Eclipse IDE 使用 Mockito</h3><p>Eclipse IDE 支持 Gradle 和 Maven 两种构建工具，所以在 Eclipse IDE 添加依赖取决你使用的是哪一个构建工具。</p>
+<h3 id="3-4-__u4EE5_OSGi__u6216_u8005_Eclipse__u63D2_u4EF6_u5F62_u5F0F_u6DFB_u52A0_Mockito__u4F9D_u8D56"><a href="#3-4-__u4EE5_OSGi__u6216_u8005_Eclipse__u63D2_u4EF6_u5F62_u5F0F_u6DFB_u52A0_Mockito__u4F9D_u8D56" class="headerlink" title="3.4. 以 OSGi 或者 Eclipse 插件形式添加 Mockito 依赖"></a>3.4. 以 OSGi 或者 Eclipse 插件形式添加 Mockito 依赖</h3><p>在 Eclipse RCP 应用依赖通常可以在 p2 update 上得到。Orbit 是一个很好的第三方仓库，我们可以在里面寻找能在 Eclipse 上使用的应用和插件。</p>
+<p>Orbit 仓库地址 <a href="http://download.eclipse.org/tools/orbit/downloads" target="_blank" rel="external">http://download.eclipse.org/tools/orbit/downloads</a></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-00735620fa48adcc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="orbit p2 mockito"></p>
+<h2 id="4-__u4F7F_u7528Mockito_API"><a href="#4-__u4F7F_u7528Mockito_API" class="headerlink" title="4. 使用Mockito API"></a>4. 使用Mockito API</h2><h3 id="4-1-__u9759_u6001_u5F15_u7528"><a href="#4-1-__u9759_u6001_u5F15_u7528" class="headerlink" title="4.1. 静态引用"></a>4.1. 静态引用</h3><p>如果在代码中静态引用了<code>org.mockito.Mockito.*;</code>，那你你就可以直接调用静态方法和静态变量而不用创建对象，譬如直接调用 mock() 方法。</p>
+<h3 id="4-2-__u4F7F_u7528_Mockito__u521B_u5EFA_u548C_u914D_u7F6E_mock__u5BF9_u8C61"><a href="#4-2-__u4F7F_u7528_Mockito__u521B_u5EFA_u548C_u914D_u7F6E_mock__u5BF9_u8C61" class="headerlink" title="4.2. 使用 Mockito 创建和配置 mock 对象"></a>4.2. 使用 Mockito 创建和配置 mock 对象</h3><p>除了上面所说的使用 mock() 静态方法外，Mockito 还支持通过 <code>@Mock</code> 注解的方式来创建 mock 对象。</p>
+<p>如果你使用注解，那么必须要实例化 mock 对象。Mockito 在遇到使用注解的字段的时候，会调用<code>MockitoAnnotations.initMocks(this)</code> 来初始化该 mock 对象。另外也可以通过使用<code>@RunWith(MockitoJUnitRunner.class)</code>来达到相同的效果。</p>
+<p>通过下面的例子我们可以了解到使用<code>@Mock</code> 的方法和<code>MockitoRule</code>规则。</p>
+<pre><code>import static org.mockito.Mockito.*;
+
+public class MockitoTest  {
+
+        @Mock
+        MyDatabase databaseMock; (1)
+
+        @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); (2)
+
+        @Test
+        public void testQuery()  {
+                ClassToTest t  = new ClassToTest(databaseMock); (3)
+                boolean check = t.query(&quot;* from t&quot;); (4)
+                assertTrue(check); (5)
+                verify(databaseMock).query(&quot;* from t&quot;); (6)
+        }
+}
+</code></pre><ol>
+<li><p>告诉 Mockito 模拟 databaseMock 实例</p>
+</li>
+<li><p>Mockito 通过 @mock 注解创建 mock 对象</p>
+</li>
+<li><p>使用已经创建的mock初始化这个类</p>
+</li>
+<li><p>在测试环境下，执行测试类中的代码</p>
+</li>
+<li><p>使用断言确保调用的方法返回值为 true</p>
+</li>
+<li><p>验证 query 方法是否被 <code>MyDatabase</code> 的 mock 对象调用</p>
+</li>
+</ol>
+<h3 id="4-3-__u914D_u7F6E_mock"><a href="#4-3-__u914D_u7F6E_mock" class="headerlink" title="4.3. 配置 mock"></a>4.3. 配置 mock</h3><p>当我们需要配置某个方法的返回值的时候，Mockito 提供了链式的 API 供我们方便的调用</p>
+<p><code>when(…​.).thenReturn(…​.)</code>可以被用来定义当条件满足时函数的返回值，如果你需要定义多个返回值，可以多次定义。当你多次调用函数的时候，Mockito 会根据你定义的先后顺序来返回返回值。Mocks 还可以根据传入参数的不同来定义不同的返回值。譬如说你的函数可以将<code>anyString</code> 或者 <code>anyInt</code>作为输入参数，然后定义其特定的放回值。</p>
+<pre><code>import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
+@Test
+public void test1()  {
+        //  创建 mock
+        MyClass test = Mockito.mock(MyClass.class);
+
+        // 自定义 getUniqueId() 的返回值
+        when(test.getUniqueId()).thenReturn(43);
+
+        // 在测试中使用mock对象
+        assertEquals(test.getUniqueId(), 43);
+}
+
+// 返回多个值
+@Test
+public void testMoreThanOneReturnValue()  {
+        Iterator i= mock(Iterator.class);
+        when(i.next()).thenReturn(&quot;Mockito&quot;).thenReturn(&quot;rocks&quot;);
+        String result=i.next()+&quot; &quot;+i.next();
+        // 断言
+        assertEquals(&quot;Mockito rocks&quot;, result);
+}
+
+// 如何根据输入来返回值
+@Test
+public void testReturnValueDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(&quot;Mockito&quot;)).thenReturn(1);
+        when(c.compareTo(&quot;Eclipse&quot;)).thenReturn(2);
+        // 断言
+        assertEquals(1,c.compareTo(&quot;Mockito&quot;));
+}
+
+// 如何让返回值不依赖于输入
+@Test
+public void testReturnValueInDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(anyInt())).thenReturn(-1);
+        // 断言
+        assertEquals(-1 ,c.compareTo(9));
+}
+
+// 根据参数类型来返回值
+@Test
+public void testReturnValueInDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(isA(Todo.class))).thenReturn(0);
+        // 断言
+        Todo todo = new Todo(5);
+        assertEquals(todo ,c.compareTo(new Todo(1)));
+}
+</code></pre><p>对于无返回值的函数，我们可以使用<code>doReturn(…​).when(…​).methodCall</code>来获得类似的效果。例如我们想在调用某些无返回值函数的时候抛出异常，那么可以使用<code>doThrow</code> 方法。如下面代码片段所示</p>
+<pre><code>import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
+// 下面测试用例描述了如何使用doThrow()方法
+
+@Test(expected=IOException.class)
+public void testForIOException() {
+        // 创建并配置 mock 对象
+        OutputStream mockStream = mock(OutputStream.class);
+        doThrow(new IOException()).when(mockStream).close();
+
+        // 使用 mock
+        OutputStreamWriter streamWriter= new OutputStreamWriter(mockStream);
+        streamWriter.close();
+}
+</code></pre><h3 id="4-4-__u9A8C_u8BC1_mock__u5BF9_u8C61_u65B9_u6CD5_u662F_u5426_u88AB_u8C03_u7528"><a href="#4-4-__u9A8C_u8BC1_mock__u5BF9_u8C61_u65B9_u6CD5_u662F_u5426_u88AB_u8C03_u7528" class="headerlink" title="4.4. 验证 mock 对象方法是否被调用"></a>4.4. 验证 mock 对象方法是否被调用</h3><p>Mockito 会跟踪 mock 对象里面所有的方法和变量。所以我们可以用来验证函数在传入特定参数的时候是否被调用。这种方式的测试称行为测试，行为测试并不会检查函数的返回值，而是检查在传入正确参数时候函数是否被调用。</p>
+<pre><code>import static org.mockito.Mockito.*;
+
+@Test
+public void testVerify()  {
+        // 创建并配置 mock 对象
+        MyClass test = Mockito.mock(MyClass.class);
+        when(test.getUniqueId()).thenReturn(43);
+
+        // 调用mock对象里面的方法并传入参数为12
+        test.testing(12);
+        test.getUniqueId();
+        test.getUniqueId();
+
+        // 查看在传入参数为12的时候方法是否被调用
+        verify(test).testing(Matchers.eq(12));
+
+        // 方法是否被调用两次
+        verify(test, times(2)).getUniqueId();
+
+        // 其他用来验证函数是否被调用的方法
+        verify(mock, never()).someMethod(&quot;never called&quot;);
+        verify(mock, atLeastOnce()).someMethod(&quot;called at least once&quot;);
+        verify(mock, atLeast(2)).someMethod(&quot;called at least twice&quot;);
+        verify(mock, times(5)).someMethod(&quot;called five times&quot;);
+        verify(mock, atMost(3)).someMethod(&quot;called at most 3 times&quot;);
+}
+</code></pre><h3 id="4-5-__u4F7F_u7528_Spy__u5C01_u88C5_java__u5BF9_u8C61"><a href="#4-5-__u4F7F_u7528_Spy__u5C01_u88C5_java__u5BF9_u8C61" class="headerlink" title="4.5. 使用 Spy 封装 java 对象"></a>4.5. 使用 Spy 封装 java 对象</h3><p>@Spy或者<code>spy()</code>方法可以被用来封装 java 对象。被封装后，除非特殊声明（打桩 <em>stub</em>），否则都会真正的调用对象里面的每一个方法</p>
+<pre><code>import static org.mockito.Mockito.*;
+
+// Lets mock a LinkedList
+List list = new LinkedList();
+List spy = spy(list);
+
+// 可用 doReturn() 来打桩
+doReturn(&quot;foo&quot;).when(spy).get(0);
+
+// 下面代码不生效
+// 真正的方法会被调用
+// 将会抛出 IndexOutOfBoundsException 的异常，因为 List 为空
+when(spy.get(0)).thenReturn(&quot;foo&quot;);
+</code></pre><p>方法<code>verifyNoMoreInteractions()</code>允许你检查没有其他的方法被调用了。</p>
+<h3 id="4-6-__u4F7F_u7528_@InjectMocks__u5728_Mockito__u4E2D_u8FDB_u884C_u4F9D_u8D56_u6CE8_u5165"><a href="#4-6-__u4F7F_u7528_@InjectMocks__u5728_Mockito__u4E2D_u8FDB_u884C_u4F9D_u8D56_u6CE8_u5165" class="headerlink" title="4.6. 使用 @InjectMocks 在 Mockito 中进行依赖注入"></a>4.6. 使用 @InjectMocks 在 Mockito 中进行依赖注入</h3><p>我们也可以使用<code>@InjectMocks</code> 注解来创建对象，它会根据类型来注入对象里面的成员方法和变量。假定我们有 ArticleManager 类</p>
+<pre><code>public class ArticleManager {
+    private User user;
+    private ArticleDatabase database;
+
+    ArticleManager(User user) {
+     this.user = user;
+    }
+
+    void setDatabase(ArticleDatabase database) { }
+}
+</code></pre><p>这个类会被 Mockito 构造，而类的成员方法和变量都会被 mock 对象所代替，正如下面的代码片段所示：</p>
+<pre><code>@RunWith(MockitoJUnitRunner.class)
+public class ArticleManagerTest  {
+
+       @Mock ArticleCalculator calculator;
+       @Mock ArticleDatabase database;
+       @Most User user;
+
+       @Spy private UserProvider userProvider = new ConsumerUserProvider();
+
+       @InjectMocks private ArticleManager manager; (1)
+
+       @Test public void shouldDoSomething() {
+               // 假定 ArticleManager 有一个叫 initialize() 的方法被调用了
+               // 使用 ArticleListener 来调用 addListener 方法
+               manager.initialize();
+
+               // 验证 addListener 方法被调用
+               verify(database).addListener(any(ArticleListener.class));
+       }
+}
+</code></pre><ol>
+<li>创建ArticleManager实例并注入Mock对象</li>
+</ol>
+<p>更多的详情可以查看<br><a href="http://docs.mockito.googlecode.com/hg/1.9.5/org/mockito/InjectMocks.html" target="_blank" rel="external">http://docs.mockito.googlecode.com/hg/1.9.5/org/mockito/InjectMocks.html</a>.</p>
+<h3 id="4-7-__u6355_u6349_u53C2_u6570"><a href="#4-7-__u6355_u6349_u53C2_u6570" class="headerlink" title="4.7. 捕捉参数"></a>4.7. 捕捉参数</h3><p><code>ArgumentCaptor</code>类允许我们在verification期间访问方法的参数。得到方法的参数后我们可以使用它进行测试。</p>
+<pre><code>import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
+public class MockitoTests {
+
+        @Rule public MockitoRule rule = MockitoJUnit.rule();
+
+        @Captor
+    private ArgumentCaptor&gt; captor;
+
+        @Test
+    public final void shouldContainCertainListItem() {
+        List asList = Arrays.asList(&quot;someElement_test&quot;, &quot;someElement&quot;);
+        final List mockedList = mock(List.class);
+        mockedList.addAll(asList);
+
+        verify(mockedList).addAll(captor.capture());
+        final List capturedArgument = captor.&gt;getValue();
+        assertThat(capturedArgument, hasItem(&quot;someElement&quot;));
+    }
+}
+</code></pre><h3 id="4-8-_Mockito_u7684_u9650_u5236"><a href="#4-8-_Mockito_u7684_u9650_u5236" class="headerlink" title="4.8. Mockito的限制"></a>4.8. Mockito的限制</h3><p>Mockito当然也有一定的限制。而下面三种数据类型则不能够被测试</p>
+<ul>
+<li><p>final classes</p>
+</li>
+<li><p>anonymous classes</p>
+</li>
+<li><p>primitive types</p>
+</li>
+</ul>
+<h2 id="5-__u5728Android_u4E2D_u4F7F_u7528Mockito"><a href="#5-__u5728Android_u4E2D_u4F7F_u7528Mockito" class="headerlink" title="5. 在Android中使用Mockito"></a>5. 在Android中使用Mockito</h2><p>在 Android 中的 Gradle 构建文件中加入 Mockito 依赖后就可以直接使用 Mockito 了。若想使用 Android Instrumented tests 的话，还需要添加 dexmaker 和 dexmaker-mockito 依赖到 Gradle 的构建文件中。（需要 Mockito 1.9.5版本以上）</p>
+<pre><code>dependencies {
+    testCompile &apos;junit:junit:4.12&apos;
+    // Mockito unit test 的依赖
+    testCompile &apos;org.mockito:mockito-core:1.+&apos;
+    // Mockito Android instrumentation tests 的依赖
+    androidTestCompile &apos;org.mockito:mockito-core:1.+&apos;
+    androidTestCompile &quot;com.google.dexmaker:dexmaker:1.2&quot;
+    androidTestCompile &quot;com.google.dexmaker:dexmaker-mockito:1.2&quot;
+}
+</code></pre><h2 id="6-__u5B9E_u4F8B_uFF1A_u4F7F_u7528Mockito_u5199_u4E00_u4E2AInstrumented_Unit_Test"><a href="#6-__u5B9E_u4F8B_uFF1A_u4F7F_u7528Mockito_u5199_u4E00_u4E2AInstrumented_Unit_Test" class="headerlink" title="6. 实例：使用Mockito写一个Instrumented Unit Test"></a>6. 实例：使用Mockito写一个Instrumented Unit Test</h2><h3 id="6-1-__u521B_u5EFA_u4E00_u4E2A_u6D4B_u8BD5_u7684Android__u5E94_u7528"><a href="#6-1-__u521B_u5EFA_u4E00_u4E2A_u6D4B_u8BD5_u7684Android__u5E94_u7528" class="headerlink" title="6.1. 创建一个测试的Android 应用"></a>6.1. 创建一个测试的Android 应用</h3><p>创建一个包名为<code>com.vogella.android.testing.mockito.contextmock</code>的Android应用，添加一个静态方法<br>，方法里面创建一个包含参数的Intent，如下代码所示：</p>
+<pre><code>public static Intent createQuery(Context context, String query, String value) {
+    // 简单起见，重用MainActivity
+    Intent i = new Intent(context, MainActivity.class);
+    i.putExtra(&quot;QUERY&quot;, query);
+    i.putExtra(&quot;VALUE&quot;, value);
+    return i;
+}
+</code></pre><h3 id="6-2-__u5728app/build-gradle_u6587_u4EF6_u4E2D_u6DFB_u52A0Mockito_u4F9D_u8D56"><a href="#6-2-__u5728app/build-gradle_u6587_u4EF6_u4E2D_u6DFB_u52A0Mockito_u4F9D_u8D56" class="headerlink" title="6.2. 在app/build.gradle文件中添加Mockito依赖"></a>6.2. 在app/build.gradle文件中添加Mockito依赖</h3><pre><code>dependencies {
+    // Mockito 和 JUnit 的依赖
+    // instrumentation unit tests on the JVM
+    androidTestCompile &apos;junit:junit:4.12&apos;
+    androidTestCompile &apos;org.mockito:mockito-core:2.0.57-beta&apos;
+    androidTestCompile &apos;com.android.support.test:runner:0.3&apos;
+    androidTestCompile &quot;com.google.dexmaker:dexmaker:1.2&quot;
+    androidTestCompile &quot;com.google.dexmaker:dexmaker-mockito:1.2&quot;
+
+    // Mockito 和 JUnit 的依赖
+    // tests on the JVM
+    testCompile &apos;junit:junit:4.12&apos;
+    testCompile &apos;org.mockito:mockito-core:1.+&apos;
+
+}
+</code></pre><h3 id="6-3-__u521B_u5EFA_u6D4B_u8BD5"><a href="#6-3-__u521B_u5EFA_u6D4B_u8BD5" class="headerlink" title="6.3. 创建测试"></a>6.3. 创建测试</h3><p>使用 Mockito 创建一个单元测试来验证在传递正确 extra data 的情况下，intent 是否被触发。</p>
+<p>因此我们需要使用 Mockito 来 mock 一个<code>Context</code>对象，如下代码所示：</p>
+<pre><code>package com.vogella.android.testing.mockitocontextmock;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+public class TextIntentCreation {
+
+    @Test
+    public void testIntentShouldBeCreated() {
+        Context context = Mockito.mock(Context.class);
+        Intent intent = MainActivity.createQuery(context, &quot;query&quot;, &quot;value&quot;);
+        assertNotNull(intent);
+        Bundle extras = intent.getExtras();
+        assertNotNull(extras);
+        assertEquals(&quot;query&quot;, extras.getString(&quot;QUERY&quot;));
+        assertEquals(&quot;value&quot;, extras.getString(&quot;VALUE&quot;));
+    }
+}
+</code></pre><h2 id="7-__u5B9E_u4F8B_uFF1A_u4F7F_u7528_Mockito__u521B_u5EFA_u4E00_u4E2A_mock__u5BF9_u8C61"><a href="#7-__u5B9E_u4F8B_uFF1A_u4F7F_u7528_Mockito__u521B_u5EFA_u4E00_u4E2A_mock__u5BF9_u8C61" class="headerlink" title="7. 实例：使用 Mockito 创建一个 mock 对象"></a>7. 实例：使用 Mockito 创建一个 mock 对象</h2><h3 id="7-1-__u76EE_u6807"><a href="#7-1-__u76EE_u6807" class="headerlink" title="7.1. 目标"></a>7.1. 目标</h3><p>创建一个 Api，它可以被 Mockito 来模拟并做一些工作</p>
+<h3 id="7-2-__u521B_u5EFA_u4E00_u4E2ATwitter_API__u7684_u4F8B_u5B50"><a href="#7-2-__u521B_u5EFA_u4E00_u4E2ATwitter_API__u7684_u4F8B_u5B50" class="headerlink" title="7.2. 创建一个Twitter API 的例子"></a>7.2. 创建一个Twitter API 的例子</h3><p>实现 <code>TwitterClient</code>类，它内部使用到了 <code>ITweet</code> 的实现。但是<code>ITweet</code>实例很难得到，譬如说他需要启动一个很复杂的服务来得到。</p>
+<pre><code>public interface ITweet {
+
+        String getMessage();
+}
+
+
+public class TwitterClient {
+
+        public void sendTweet(ITweet tweet) {
+                String message = tweet.getMessage();
+
+                // send the message to Twitter
+        }
+}
+</code></pre><h3 id="7-3-__u6A21_u62DF_ITweet__u7684_u5B9E_u4F8B"><a href="#7-3-__u6A21_u62DF_ITweet__u7684_u5B9E_u4F8B" class="headerlink" title="7.3. 模拟 ITweet 的实例"></a>7.3. 模拟 ITweet 的实例</h3><p>为了能够不启动复杂的服务来得到 <code>ITweet</code>，我们可以使用 Mockito 来模拟得到该实例。</p>
+<pre><code>@Test
+public void testSendingTweet() {
+        TwitterClient twitterClient = new TwitterClient();
+
+        ITweet iTweet = mock(ITweet.class);
+
+        when(iTweet.getMessage()).thenReturn(&quot;Using mockito is great&quot;);
+
+        twitterClient.sendTweet(iTweet);
+}
+</code></pre><p>现在 <code>TwitterClient</code> 可以使用 <code>ITweet</code> 接口的实现，当调用 <code>getMessage()</code> 方法的时候将会打印 “Using Mockito is great” 信息。</p>
+<h3 id="7-4-__u9A8C_u8BC1_u65B9_u6CD5_u8C03_u7528"><a href="#7-4-__u9A8C_u8BC1_u65B9_u6CD5_u8C03_u7528" class="headerlink" title="7.4. 验证方法调用"></a>7.4. 验证方法调用</h3><p>确保 getMessage() 方法至少调用一次。</p>
+<pre><code>@Test
+public void testSendingTweet() {
+        TwitterClient twitterClient = new TwitterClient();
+
+        ITweet iTweet = mock(ITweet.class);
+
+        when(iTweet.getMessage()).thenReturn(&quot;Using mockito is great&quot;);
+
+        twitterClient.sendTweet(iTweet);
+
+        verify(iTweet, atLeastOnce()).getMessage();
+}
+</code></pre><h3 id="7-5-__u9A8C_u8BC1"><a href="#7-5-__u9A8C_u8BC1" class="headerlink" title="7.5. 验证"></a>7.5. 验证</h3><p>运行测试，查看代码是否测试通过。</p>
+<h2 id="8-__u6A21_u62DF_u9759_u6001_u65B9_u6CD5"><a href="#8-__u6A21_u62DF_u9759_u6001_u65B9_u6CD5" class="headerlink" title="8. 模拟静态方法"></a>8. 模拟静态方法</h2><h3 id="8-1-__u4F7F_u7528_Powermock__u6765_u6A21_u62DF_u9759_u6001_u65B9_u6CD5"><a href="#8-1-__u4F7F_u7528_Powermock__u6765_u6A21_u62DF_u9759_u6001_u65B9_u6CD5" class="headerlink" title="8.1. 使用 Powermock 来模拟静态方法"></a>8.1. 使用 Powermock 来模拟静态方法</h3><p>因为 Mockito 不能够 mock 静态方法，因此我们可以使用 <code>Powermock</code>。</p>
+<pre><code>import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public final class NetworkReader {
+    public static String getLocalHostname() {
+        String hostname = &quot;&quot;;
+        try {
+            InetAddress addr = InetAddress.getLocalHost();
+            // Get hostname
+            hostname = addr.getHostName();
+        } catch ( UnknownHostException e ) {
+        }
+        return hostname;
+    }
+}
+</code></pre><p>我们模拟了 NetworkReader 的依赖，如下代码所示：</p>
+<pre><code>import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+
+@RunWith( PowerMockRunner.class )
+@PrepareForTest( NetworkReader.class )
+public class MyTest {
+
+// 测试代码
+
+ @Test
+public void testSomething() {
+    mockStatic( NetworkUtil.class );
+    when( NetworkReader.getLocalHostname() ).andReturn( &quot;localhost&quot; );
+
+    // 与 NetworkReader 协作的测试
+}
+</code></pre><h3 id="8-2-_u7528_u5C01_u88C5_u7684_u65B9_u6CD5_u4EE3_u66FFPowermock"><a href="#8-2-_u7528_u5C01_u88C5_u7684_u65B9_u6CD5_u4EE3_u66FFPowermock" class="headerlink" title="8.2.用封装的方法代替Powermock"></a>8.2.用封装的方法代替Powermock</h3><p>有时候我们可以在静态方法周围包含非静态的方法来达到和 Powermock 同样的效果。</p>
+<pre><code>class FooWraper { 
+      void someMethod() { 
+           Foo.someStaticMethod() 
+       } 
+}
+</code></pre><h3 id="9-_Mockito__u53C2_u8003_u8D44_u6599"><a href="#9-_Mockito__u53C2_u8003_u8D44_u6599" class="headerlink" title="9. Mockito 参考资料"></a>9. Mockito 参考资料</h3><p><a href="http://site.mockito.org" target="_blank" rel="external">http://site.mockito.org</a> - Mockito 官网</p>
+<p><a href="https://github.com/mockito/mockito-" target="_blank" rel="external">https://github.com/mockito/mockito-</a> Mockito Github</p>
+<p><a href="https://github.com/mockito/mockito/blob/master/doc/release-notes/official.md" target="_blank" rel="external">https://github.com/mockito/mockito/blob/master/doc/release-notes/official.md</a> - Mockito 发行说明</p>
+<p><a href="http://martinfowler.com/articles/mocksArentStubs.html" target="_blank" rel="external">http://martinfowler.com/articles/mocksArentStubs.html</a> 与Mocks，Stub有关的文章</p>
+<p><a href="http://chiuki.github.io/advanced-android-espresso/" target="_blank" rel="external">http://chiuki.github.io/advanced-android-espresso/</a> 高级android教程（竟然是个妹子）</p>
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Software-Engineering/" rel="tag">#Software Engineering</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/22/译-在-Android-中使用-VectorDrawable/" rel="next" title="[译] 在 Android 中使用 VectorDrawable">
+                <i class="fa fa-chevron-left"></i> [译] 在 Android 中使用 VectorDrawable
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+  <a class="jiathis_button_tsina"></a>
+  <a class="jiathis_button_tqq"></a>
+  <a class="jiathis_button_weixin"></a>
+  <a class="jiathis_button_cqq"></a>
+  <a class="jiathis_button_douban"></a>
+  <a class="jiathis_button_renren"></a>
+  <a class="jiathis_button_qzone"></a>
+  <a class="jiathis_button_kaixin001"></a>
+  <a class="jiathis_button_copy"></a>
+  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
+  <a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+  var jiathis_config={
+    hideMore:false
+  }
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/07/22/译-使用强大的-Mockito-来测试你的代码/"
+           data-title="[译] 使用强大的 Mockito 来测试你的代码" data-url="http://yoursite.com/2016/07/22/译-使用强大的-Mockito-来测试你的代码/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="Edvard" />
+          <p class="site-author-name" itemprop="name">Edvard</p>
+          <p class="site-description motion-element" itemprop="description">Edvard的博客</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/edvardHua" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/ceng-zi-hua" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> zhihu
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-__u9884_u5907_u77E5_u8BC6"><span class="nav-number">1.</span> <span class="nav-text">1. 预备知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-__u4F7F_u7528mock_u5BF9_u8C61_u6765_u8FDB_u884C_u6D4B_u8BD5"><span class="nav-number">2.</span> <span class="nav-text">2. 使用mock对象来进行测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-__u5355_u5143_u6D4B_u8BD5_u7684_u76EE_u6807_u548C_u6311_u6218"><span class="nav-number">2.1.</span> <span class="nav-text">2.1. 单元测试的目标和挑战</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-__u6D4B_u8BD5_u7C7B_u7684_u5206_u7C7B"><span class="nav-number">2.2.</span> <span class="nav-text">2.2. 测试类的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-_Mock__u5BF9_u8C61_u7684_u4EA7_u751F"><span class="nav-number">2.3.</span> <span class="nav-text">2.3. Mock 对象的产生</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-__u4F7F_u7528_Mockito__u751F_u6210_Mock__u5BF9_u8C61"><span class="nav-number">2.4.</span> <span class="nav-text">2.4. 使用 Mockito 生成 Mock 对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-__u4E3A_u81EA_u5DF1_u7684_u9879_u76EE_u6DFB_u52A0_Mockito__u4F9D_u8D56"><span class="nav-number">3.</span> <span class="nav-text">3. 为自己的项目添加 Mockito 依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-__u5728_Gradle__u6DFB_u52A0_Mockito__u4F9D_u8D56"><span class="nav-number">3.1.</span> <span class="nav-text">3.1. 在 Gradle 添加 Mockito 依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-__u5728_Maven__u6DFB_u52A0_Mockito__u4F9D_u8D56"><span class="nav-number">3.2.</span> <span class="nav-text">3.2. 在 Maven 添加 Mockito 依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-__u5728_Eclipse_IDE__u4F7F_u7528_Mockito"><span class="nav-number">3.3.</span> <span class="nav-text">3.3. 在 Eclipse IDE 使用 Mockito</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-__u4EE5_OSGi__u6216_u8005_Eclipse__u63D2_u4EF6_u5F62_u5F0F_u6DFB_u52A0_Mockito__u4F9D_u8D56"><span class="nav-number">3.4.</span> <span class="nav-text">3.4. 以 OSGi 或者 Eclipse 插件形式添加 Mockito 依赖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-__u4F7F_u7528Mockito_API"><span class="nav-number">4.</span> <span class="nav-text">4. 使用Mockito API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-__u9759_u6001_u5F15_u7528"><span class="nav-number">4.1.</span> <span class="nav-text">4.1. 静态引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-__u4F7F_u7528_Mockito__u521B_u5EFA_u548C_u914D_u7F6E_mock__u5BF9_u8C61"><span class="nav-number">4.2.</span> <span class="nav-text">4.2. 使用 Mockito 创建和配置 mock 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-__u914D_u7F6E_mock"><span class="nav-number">4.3.</span> <span class="nav-text">4.3. 配置 mock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-4-__u9A8C_u8BC1_mock__u5BF9_u8C61_u65B9_u6CD5_u662F_u5426_u88AB_u8C03_u7528"><span class="nav-number">4.4.</span> <span class="nav-text">4.4. 验证 mock 对象方法是否被调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-5-__u4F7F_u7528_Spy__u5C01_u88C5_java__u5BF9_u8C61"><span class="nav-number">4.5.</span> <span class="nav-text">4.5. 使用 Spy 封装 java 对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-6-__u4F7F_u7528_@InjectMocks__u5728_Mockito__u4E2D_u8FDB_u884C_u4F9D_u8D56_u6CE8_u5165"><span class="nav-number">4.6.</span> <span class="nav-text">4.6. 使用 @InjectMocks 在 Mockito 中进行依赖注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-7-__u6355_u6349_u53C2_u6570"><span class="nav-number">4.7.</span> <span class="nav-text">4.7. 捕捉参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-8-_Mockito_u7684_u9650_u5236"><span class="nav-number">4.8.</span> <span class="nav-text">4.8. Mockito的限制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-__u5728Android_u4E2D_u4F7F_u7528Mockito"><span class="nav-number">5.</span> <span class="nav-text">5. 在Android中使用Mockito</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-__u5B9E_u4F8B_uFF1A_u4F7F_u7528Mockito_u5199_u4E00_u4E2AInstrumented_Unit_Test"><span class="nav-number">6.</span> <span class="nav-text">6. 实例：使用Mockito写一个Instrumented Unit Test</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-__u521B_u5EFA_u4E00_u4E2A_u6D4B_u8BD5_u7684Android__u5E94_u7528"><span class="nav-number">6.1.</span> <span class="nav-text">6.1. 创建一个测试的Android 应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-__u5728app/build-gradle_u6587_u4EF6_u4E2D_u6DFB_u52A0Mockito_u4F9D_u8D56"><span class="nav-number">6.2.</span> <span class="nav-text">6.2. 在app/build.gradle文件中添加Mockito依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-__u521B_u5EFA_u6D4B_u8BD5"><span class="nav-number">6.3.</span> <span class="nav-text">6.3. 创建测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-__u5B9E_u4F8B_uFF1A_u4F7F_u7528_Mockito__u521B_u5EFA_u4E00_u4E2A_mock__u5BF9_u8C61"><span class="nav-number">7.</span> <span class="nav-text">7. 实例：使用 Mockito 创建一个 mock 对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-__u76EE_u6807"><span class="nav-number">7.1.</span> <span class="nav-text">7.1. 目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-__u521B_u5EFA_u4E00_u4E2ATwitter_API__u7684_u4F8B_u5B50"><span class="nav-number">7.2.</span> <span class="nav-text">7.2. 创建一个Twitter API 的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-__u6A21_u62DF_ITweet__u7684_u5B9E_u4F8B"><span class="nav-number">7.3.</span> <span class="nav-text">7.3. 模拟 ITweet 的实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-4-__u9A8C_u8BC1_u65B9_u6CD5_u8C03_u7528"><span class="nav-number">7.4.</span> <span class="nav-text">7.4. 验证方法调用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-5-__u9A8C_u8BC1"><span class="nav-number">7.5.</span> <span class="nav-text">7.5. 验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-__u6A21_u62DF_u9759_u6001_u65B9_u6CD5"><span class="nav-number">8.</span> <span class="nav-text">8. 模拟静态方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-__u4F7F_u7528_Powermock__u6765_u6A21_u62DF_u9759_u6001_u65B9_u6CD5"><span class="nav-number">8.1.</span> <span class="nav-text">8.1. 使用 Powermock 来模拟静态方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-_u7528_u5C01_u88C5_u7684_u65B9_u6CD5_u4EE3_u66FFPowermock"><span class="nav-number">8.2.</span> <span class="nav-text">8.2.用封装的方法代替Powermock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-_Mockito__u53C2_u8003_u8D44_u6599"><span class="nav-number">8.3.</span> <span class="nav-text">9. Mockito 参考资料</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Edvard</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  
+
+
+  
+
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.sidebar === 'post') {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"edvard-hua"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+
+</body>
+</html>

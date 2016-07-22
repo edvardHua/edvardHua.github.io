@@ -209,15 +209,988 @@
 
     
     
+
+    
       
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/07/22/译-使用强大的-Mockito-来测试你的代码/" itemprop="url">
+                  [译] 使用强大的 Mockito 来测试你的代码
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-22T03:39:06+00:00" content="2016-07-22">
+              2016-07-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/07/22/译-使用强大的-Mockito-来测试你的代码/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/22/译-使用强大的-Mockito-来测试你的代码/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
       
-        
-        
-        
       
 
       
+        
+          
+            <blockquote>
+<ul>
+<li>原文链接 : <a href="http://www.vogella.com/tutorials/Mockito/article.html" target="_blank" rel="external">Unit tests with Mockito - Tutorial</a></li>
+<li>原文作者 : <a href="http://www.vogella.com/" target="_blank" rel="external">vogella</a></li>
+<li>译者 : <a href="https://github.com/edvardHua/" target="_blank" rel="external">edvardhua</a></li>
+<li>校对者: <a href="https://github.com/hackerkevin" target="_blank" rel="external">hackerkevin</a>, <a href="https://github.com/futureshine" target="_blank" rel="external">futureshine</a> </li>
+</ul>
+<p>这篇教程介绍了如何使用 Mockito 框架来给软件写测试用例</p>
+</blockquote>
+<h2 id="1-__u9884_u5907_u77E5_u8BC6"><a href="#1-__u9884_u5907_u77E5_u8BC6" class="headerlink" title="1. 预备知识"></a>1. 预备知识</h2><p>如果需要往下学习，你需要先理解 Junit 框架中的单元测试。</p>
+<p>如果你不熟悉 JUnit，请查看下面的教程：<br><a href="http://www.vogella.com/tutorials/JUnit/article.html" target="_blank" rel="external">http://www.vogella.com/tutorials/JUnit/article.html</a></p>
+<h2 id="2-__u4F7F_u7528mock_u5BF9_u8C61_u6765_u8FDB_u884C_u6D4B_u8BD5"><a href="#2-__u4F7F_u7528mock_u5BF9_u8C61_u6765_u8FDB_u884C_u6D4B_u8BD5" class="headerlink" title="2. 使用mock对象来进行测试"></a>2. 使用mock对象来进行测试</h2><h3 id="2-1-__u5355_u5143_u6D4B_u8BD5_u7684_u76EE_u6807_u548C_u6311_u6218"><a href="#2-1-__u5355_u5143_u6D4B_u8BD5_u7684_u76EE_u6807_u548C_u6311_u6218" class="headerlink" title="2.1. 单元测试的目标和挑战"></a>2.1. 单元测试的目标和挑战</h3><p>单元测试的思路是在不涉及依赖关系的情况下测试代码（隔离性），所以测试代码与其他类或者系统的关系应该尽量被消除。一个可行的消除方法是替换掉依赖类（测试替换），也就是说我们可以使用替身来替换掉真正的依赖对象。</p>
+<h3 id="2-2-__u6D4B_u8BD5_u7C7B_u7684_u5206_u7C7B"><a href="#2-2-__u6D4B_u8BD5_u7C7B_u7684_u5206_u7C7B" class="headerlink" title="2.2. 测试类的分类"></a>2.2. 测试类的分类</h3><p><em>dummy object</em> 做为参数传递给方法但是绝对不会被使用。譬如说，这种测试类内部的方法不会被调用，或者是用来填充某个方法的参数。</p>
+<p><em>Fake</em> 是真正接口或抽象类的实现体，但给对象内部实现很简单。譬如说，它存在内存中而不是真正的数据库中。（译者注：<em>Fake</em> 实现了真正的逻辑，但它的存在只是为了测试，而不适合于用在产品中。）</p>
+<p><em>stub</em> 类是依赖类的部分方法实现，而这些方法在你测试类和接口的时候会被用到，也就是说 <em>stub</em> 类在测试中会被实例化。<em>stub</em> 类会回应任何外部测试的调用。<em>stub</em> 类有时候还会记录调用的一些信息。</p>
+<p><em>mock object</em> 是指类或者接口的模拟实现，你可以自定义这个对象中某个方法的输出结果。</p>
+<p>测试替代技术能够在测试中模拟测试类以外对象。因此你可以验证测试类是否响应正常。譬如说，你可以验证在 Mock 对象的某一个方法是否被调用。这可以确保隔离了外部依赖的干扰只测试测试类。</p>
+<p>我们选择 Mock 对象的原因是因为 Mock 对象只需要少量代码的配置。</p>
+<h3 id="2-3-_Mock__u5BF9_u8C61_u7684_u4EA7_u751F"><a href="#2-3-_Mock__u5BF9_u8C61_u7684_u4EA7_u751F" class="headerlink" title="2.3. Mock 对象的产生"></a>2.3. Mock 对象的产生</h3><p>你可以手动创建一个 Mock 对象或者使用 Mock 框架来模拟这些类，Mock 框架允许你在运行时创建 Mock 对象并且定义它的行为。</p>
+<p>一个典型的例子是把 Mock 对象模拟成数据的提供者。在正式的生产环境中它会被实现用来连接数据源。但是我们在测试的时候 Mock 对象将会模拟成数据提供者来确保我们的测试环境始终是相同的。</p>
+<p>Mock 对象可以被提供来进行测试。因此，我们测试的类应该避免任何外部数据的强依赖。</p>
+<p>通过 Mock 对象或者 Mock 框架，我们可以测试代码中期望的行为。譬如说，验证只有某个存在 Mock 对象的方法是否被调用了。</p>
+<h3 id="2-4-__u4F7F_u7528_Mockito__u751F_u6210_Mock__u5BF9_u8C61"><a href="#2-4-__u4F7F_u7528_Mockito__u751F_u6210_Mock__u5BF9_u8C61" class="headerlink" title="2.4. 使用 Mockito 生成 Mock 对象"></a>2.4. 使用 Mockito 生成 Mock 对象</h3><p><em>Mockito</em> 是一个流行 mock 框架，可以和JUnit结合起来使用。Mockito 允许你创建和配置 mock 对象。使用Mockito可以明显的简化对外部依赖的测试类的开发。</p>
+<p>一般使用 Mockito 需要执行下面三步</p>
+<ul>
+<li><p>模拟并替换测试代码中外部依赖。</p>
+</li>
+<li><p>执行测试代码</p>
+</li>
+<li><p>验证测试代码是否被正确的执行</p>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-7a85af97f7d72e05?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="mockitousagevisualization"></p>
+<h2 id="3-__u4E3A_u81EA_u5DF1_u7684_u9879_u76EE_u6DFB_u52A0_Mockito__u4F9D_u8D56"><a href="#3-__u4E3A_u81EA_u5DF1_u7684_u9879_u76EE_u6DFB_u52A0_Mockito__u4F9D_u8D56" class="headerlink" title="3. 为自己的项目添加 Mockito 依赖"></a>3. 为自己的项目添加 Mockito 依赖</h2><h3 id="3-1-__u5728_Gradle__u6DFB_u52A0_Mockito__u4F9D_u8D56"><a href="#3-1-__u5728_Gradle__u6DFB_u52A0_Mockito__u4F9D_u8D56" class="headerlink" title="3.1. 在 Gradle 添加 Mockito 依赖"></a>3.1. 在 Gradle 添加 Mockito 依赖</h3><p>如果你的项目使用 Gradle 构建，将下面代码加入 Gradle 的构建文件中为自己项目添加 Mockito 依赖</p>
+<pre><code>repositories { jcenter() }
+dependencies { testCompile &quot;org.mockito:mockito-core:2.0.57-beta&quot; }
+</code></pre><h3 id="3-2-__u5728_Maven__u6DFB_u52A0_Mockito__u4F9D_u8D56"><a href="#3-2-__u5728_Maven__u6DFB_u52A0_Mockito__u4F9D_u8D56" class="headerlink" title="3.2. 在 Maven 添加 Mockito 依赖"></a>3.2. 在 Maven 添加 Mockito 依赖</h3><p>需要在 Maven 声明依赖，您可以在 <a href="http://search.maven.org" target="_blank" rel="external">http://search.maven.org</a> 网站中搜索 g:”org.mockito”, a:”mockito-core” 来得到具体的声明方式。</p>
+<h3 id="3-3-__u5728_Eclipse_IDE__u4F7F_u7528_Mockito"><a href="#3-3-__u5728_Eclipse_IDE__u4F7F_u7528_Mockito" class="headerlink" title="3.3. 在 Eclipse IDE 使用 Mockito"></a>3.3. 在 Eclipse IDE 使用 Mockito</h3><p>Eclipse IDE 支持 Gradle 和 Maven 两种构建工具，所以在 Eclipse IDE 添加依赖取决你使用的是哪一个构建工具。</p>
+<h3 id="3-4-__u4EE5_OSGi__u6216_u8005_Eclipse__u63D2_u4EF6_u5F62_u5F0F_u6DFB_u52A0_Mockito__u4F9D_u8D56"><a href="#3-4-__u4EE5_OSGi__u6216_u8005_Eclipse__u63D2_u4EF6_u5F62_u5F0F_u6DFB_u52A0_Mockito__u4F9D_u8D56" class="headerlink" title="3.4. 以 OSGi 或者 Eclipse 插件形式添加 Mockito 依赖"></a>3.4. 以 OSGi 或者 Eclipse 插件形式添加 Mockito 依赖</h3><p>在 Eclipse RCP 应用依赖通常可以在 p2 update 上得到。Orbit 是一个很好的第三方仓库，我们可以在里面寻找能在 Eclipse 上使用的应用和插件。</p>
+<p>Orbit 仓库地址 <a href="http://download.eclipse.org/tools/orbit/downloads" target="_blank" rel="external">http://download.eclipse.org/tools/orbit/downloads</a></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-00735620fa48adcc?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="orbit p2 mockito"></p>
+<h2 id="4-__u4F7F_u7528Mockito_API"><a href="#4-__u4F7F_u7528Mockito_API" class="headerlink" title="4. 使用Mockito API"></a>4. 使用Mockito API</h2><h3 id="4-1-__u9759_u6001_u5F15_u7528"><a href="#4-1-__u9759_u6001_u5F15_u7528" class="headerlink" title="4.1. 静态引用"></a>4.1. 静态引用</h3><p>如果在代码中静态引用了<code>org.mockito.Mockito.*;</code>，那你你就可以直接调用静态方法和静态变量而不用创建对象，譬如直接调用 mock() 方法。</p>
+<h3 id="4-2-__u4F7F_u7528_Mockito__u521B_u5EFA_u548C_u914D_u7F6E_mock__u5BF9_u8C61"><a href="#4-2-__u4F7F_u7528_Mockito__u521B_u5EFA_u548C_u914D_u7F6E_mock__u5BF9_u8C61" class="headerlink" title="4.2. 使用 Mockito 创建和配置 mock 对象"></a>4.2. 使用 Mockito 创建和配置 mock 对象</h3><p>除了上面所说的使用 mock() 静态方法外，Mockito 还支持通过 <code>@Mock</code> 注解的方式来创建 mock 对象。</p>
+<p>如果你使用注解，那么必须要实例化 mock 对象。Mockito 在遇到使用注解的字段的时候，会调用<code>MockitoAnnotations.initMocks(this)</code> 来初始化该 mock 对象。另外也可以通过使用<code>@RunWith(MockitoJUnitRunner.class)</code>来达到相同的效果。</p>
+<p>通过下面的例子我们可以了解到使用<code>@Mock</code> 的方法和<code>MockitoRule</code>规则。</p>
+<pre><code>import static org.mockito.Mockito.*;
+
+public class MockitoTest  {
+
+        @Mock
+        MyDatabase databaseMock; (1)
+
+        @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); (2)
+
+        @Test
+        public void testQuery()  {
+                ClassToTest t  = new ClassToTest(databaseMock); (3)
+                boolean check = t.query(&quot;* from t&quot;); (4)
+                assertTrue(check); (5)
+                verify(databaseMock).query(&quot;* from t&quot;); (6)
+        }
+}
+</code></pre><ol>
+<li><p>告诉 Mockito 模拟 databaseMock 实例</p>
+</li>
+<li><p>Mockito 通过 @mock 注解创建 mock 对象</p>
+</li>
+<li><p>使用已经创建的mock初始化这个类</p>
+</li>
+<li><p>在测试环境下，执行测试类中的代码</p>
+</li>
+<li><p>使用断言确保调用的方法返回值为 true</p>
+</li>
+<li><p>验证 query 方法是否被 <code>MyDatabase</code> 的 mock 对象调用</p>
+</li>
+</ol>
+<h3 id="4-3-__u914D_u7F6E_mock"><a href="#4-3-__u914D_u7F6E_mock" class="headerlink" title="4.3. 配置 mock"></a>4.3. 配置 mock</h3><p>当我们需要配置某个方法的返回值的时候，Mockito 提供了链式的 API 供我们方便的调用</p>
+<p><code>when(…​.).thenReturn(…​.)</code>可以被用来定义当条件满足时函数的返回值，如果你需要定义多个返回值，可以多次定义。当你多次调用函数的时候，Mockito 会根据你定义的先后顺序来返回返回值。Mocks 还可以根据传入参数的不同来定义不同的返回值。譬如说你的函数可以将<code>anyString</code> 或者 <code>anyInt</code>作为输入参数，然后定义其特定的放回值。</p>
+<pre><code>import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
+@Test
+public void test1()  {
+        //  创建 mock
+        MyClass test = Mockito.mock(MyClass.class);
+
+        // 自定义 getUniqueId() 的返回值
+        when(test.getUniqueId()).thenReturn(43);
+
+        // 在测试中使用mock对象
+        assertEquals(test.getUniqueId(), 43);
+}
+
+// 返回多个值
+@Test
+public void testMoreThanOneReturnValue()  {
+        Iterator i= mock(Iterator.class);
+        when(i.next()).thenReturn(&quot;Mockito&quot;).thenReturn(&quot;rocks&quot;);
+        String result=i.next()+&quot; &quot;+i.next();
+        // 断言
+        assertEquals(&quot;Mockito rocks&quot;, result);
+}
+
+// 如何根据输入来返回值
+@Test
+public void testReturnValueDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(&quot;Mockito&quot;)).thenReturn(1);
+        when(c.compareTo(&quot;Eclipse&quot;)).thenReturn(2);
+        // 断言
+        assertEquals(1,c.compareTo(&quot;Mockito&quot;));
+}
+
+// 如何让返回值不依赖于输入
+@Test
+public void testReturnValueInDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(anyInt())).thenReturn(-1);
+        // 断言
+        assertEquals(-1 ,c.compareTo(9));
+}
+
+// 根据参数类型来返回值
+@Test
+public void testReturnValueInDependentOnMethodParameter()  {
+        Comparable c= mock(Comparable.class);
+        when(c.compareTo(isA(Todo.class))).thenReturn(0);
+        // 断言
+        Todo todo = new Todo(5);
+        assertEquals(todo ,c.compareTo(new Todo(1)));
+}
+</code></pre><p>对于无返回值的函数，我们可以使用<code>doReturn(…​).when(…​).methodCall</code>来获得类似的效果。例如我们想在调用某些无返回值函数的时候抛出异常，那么可以使用<code>doThrow</code> 方法。如下面代码片段所示</p>
+<pre><code>import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
+// 下面测试用例描述了如何使用doThrow()方法
+
+@Test(expected=IOException.class)
+public void testForIOException() {
+        // 创建并配置 mock 对象
+        OutputStream mockStream = mock(OutputStream.class);
+        doThrow(new IOException()).when(mockStream).close();
+
+        // 使用 mock
+        OutputStreamWriter streamWriter= new OutputStreamWriter(mockStream);
+        streamWriter.close();
+}
+</code></pre><h3 id="4-4-__u9A8C_u8BC1_mock__u5BF9_u8C61_u65B9_u6CD5_u662F_u5426_u88AB_u8C03_u7528"><a href="#4-4-__u9A8C_u8BC1_mock__u5BF9_u8C61_u65B9_u6CD5_u662F_u5426_u88AB_u8C03_u7528" class="headerlink" title="4.4. 验证 mock 对象方法是否被调用"></a>4.4. 验证 mock 对象方法是否被调用</h3><p>Mockito 会跟踪 mock 对象里面所有的方法和变量。所以我们可以用来验证函数在传入特定参数的时候是否被调用。这种方式的测试称行为测试，行为测试并不会检查函数的返回值，而是检查在传入正确参数时候函数是否被调用。</p>
+<pre><code>import static org.mockito.Mockito.*;
+
+@Test
+public void testVerify()  {
+        // 创建并配置 mock 对象
+        MyClass test = Mockito.mock(MyClass.class);
+        when(test.getUniqueId()).thenReturn(43);
+
+        // 调用mock对象里面的方法并传入参数为12
+        test.testing(12);
+        test.getUniqueId();
+        test.getUniqueId();
+
+        // 查看在传入参数为12的时候方法是否被调用
+        verify(test).testing(Matchers.eq(12));
+
+        // 方法是否被调用两次
+        verify(test, times(2)).getUniqueId();
+
+        // 其他用来验证函数是否被调用的方法
+        verify(mock, never()).someMethod(&quot;never called&quot;);
+        verify(mock, atLeastOnce()).someMethod(&quot;called at least once&quot;);
+        verify(mock, atLeast(2)).someMethod(&quot;called at least twice&quot;);
+        verify(mock, times(5)).someMethod(&quot;called five times&quot;);
+        verify(mock, atMost(3)).someMethod(&quot;called at most 3 times&quot;);
+}
+</code></pre><h3 id="4-5-__u4F7F_u7528_Spy__u5C01_u88C5_java__u5BF9_u8C61"><a href="#4-5-__u4F7F_u7528_Spy__u5C01_u88C5_java__u5BF9_u8C61" class="headerlink" title="4.5. 使用 Spy 封装 java 对象"></a>4.5. 使用 Spy 封装 java 对象</h3><p>@Spy或者<code>spy()</code>方法可以被用来封装 java 对象。被封装后，除非特殊声明（打桩 <em>stub</em>），否则都会真正的调用对象里面的每一个方法</p>
+<pre><code>import static org.mockito.Mockito.*;
+
+// Lets mock a LinkedList
+List list = new LinkedList();
+List spy = spy(list);
+
+// 可用 doReturn() 来打桩
+doReturn(&quot;foo&quot;).when(spy).get(0);
+
+// 下面代码不生效
+// 真正的方法会被调用
+// 将会抛出 IndexOutOfBoundsException 的异常，因为 List 为空
+when(spy.get(0)).thenReturn(&quot;foo&quot;);
+</code></pre><p>方法<code>verifyNoMoreInteractions()</code>允许你检查没有其他的方法被调用了。</p>
+<h3 id="4-6-__u4F7F_u7528_@InjectMocks__u5728_Mockito__u4E2D_u8FDB_u884C_u4F9D_u8D56_u6CE8_u5165"><a href="#4-6-__u4F7F_u7528_@InjectMocks__u5728_Mockito__u4E2D_u8FDB_u884C_u4F9D_u8D56_u6CE8_u5165" class="headerlink" title="4.6. 使用 @InjectMocks 在 Mockito 中进行依赖注入"></a>4.6. 使用 @InjectMocks 在 Mockito 中进行依赖注入</h3><p>我们也可以使用<code>@InjectMocks</code> 注解来创建对象，它会根据类型来注入对象里面的成员方法和变量。假定我们有 ArticleManager 类</p>
+<pre><code>public class ArticleManager {
+    private User user;
+    private ArticleDatabase database;
+
+    ArticleManager(User user) {
+     this.user = user;
+    }
+
+    void setDatabase(ArticleDatabase database) { }
+}
+</code></pre><p>这个类会被 Mockito 构造，而类的成员方法和变量都会被 mock 对象所代替，正如下面的代码片段所示：</p>
+<pre><code>@RunWith(MockitoJUnitRunner.class)
+public class ArticleManagerTest  {
+
+       @Mock ArticleCalculator calculator;
+       @Mock ArticleDatabase database;
+       @Most User user;
+
+       @Spy private UserProvider userProvider = new ConsumerUserProvider();
+
+       @InjectMocks private ArticleManager manager; (1)
+
+       @Test public void shouldDoSomething() {
+               // 假定 ArticleManager 有一个叫 initialize() 的方法被调用了
+               // 使用 ArticleListener 来调用 addListener 方法
+               manager.initialize();
+
+               // 验证 addListener 方法被调用
+               verify(database).addListener(any(ArticleListener.class));
+       }
+}
+</code></pre><ol>
+<li>创建ArticleManager实例并注入Mock对象</li>
+</ol>
+<p>更多的详情可以查看<br><a href="http://docs.mockito.googlecode.com/hg/1.9.5/org/mockito/InjectMocks.html" target="_blank" rel="external">http://docs.mockito.googlecode.com/hg/1.9.5/org/mockito/InjectMocks.html</a>.</p>
+<h3 id="4-7-__u6355_u6349_u53C2_u6570"><a href="#4-7-__u6355_u6349_u53C2_u6570" class="headerlink" title="4.7. 捕捉参数"></a>4.7. 捕捉参数</h3><p><code>ArgumentCaptor</code>类允许我们在verification期间访问方法的参数。得到方法的参数后我们可以使用它进行测试。</p>
+<pre><code>import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
+public class MockitoTests {
+
+        @Rule public MockitoRule rule = MockitoJUnit.rule();
+
+        @Captor
+    private ArgumentCaptor&gt; captor;
+
+        @Test
+    public final void shouldContainCertainListItem() {
+        List asList = Arrays.asList(&quot;someElement_test&quot;, &quot;someElement&quot;);
+        final List mockedList = mock(List.class);
+        mockedList.addAll(asList);
+
+        verify(mockedList).addAll(captor.capture());
+        final List capturedArgument = captor.&gt;getValue();
+        assertThat(capturedArgument, hasItem(&quot;someElement&quot;));
+    }
+}
+</code></pre><h3 id="4-8-_Mockito_u7684_u9650_u5236"><a href="#4-8-_Mockito_u7684_u9650_u5236" class="headerlink" title="4.8. Mockito的限制"></a>4.8. Mockito的限制</h3><p>Mockito当然也有一定的限制。而下面三种数据类型则不能够被测试</p>
+<ul>
+<li><p>final classes</p>
+</li>
+<li><p>anonymous classes</p>
+</li>
+<li><p>primitive types</p>
+</li>
+</ul>
+<h2 id="5-__u5728Android_u4E2D_u4F7F_u7528Mockito"><a href="#5-__u5728Android_u4E2D_u4F7F_u7528Mockito" class="headerlink" title="5. 在Android中使用Mockito"></a>5. 在Android中使用Mockito</h2><p>在 Android 中的 Gradle 构建文件中加入 Mockito 依赖后就可以直接使用 Mockito 了。若想使用 Android Instrumented tests 的话，还需要添加 dexmaker 和 dexmaker-mockito 依赖到 Gradle 的构建文件中。（需要 Mockito 1.9.5版本以上）</p>
+<pre><code>dependencies {
+    testCompile &apos;junit:junit:4.12&apos;
+    // Mockito unit test 的依赖
+    testCompile &apos;org.mockito:mockito-core:1.+&apos;
+    // Mockito Android instrumentation tests 的依赖
+    androidTestCompile &apos;org.mockito:mockito-core:1.+&apos;
+    androidTestCompile &quot;com.google.dexmaker:dexmaker:1.2&quot;
+    androidTestCompile &quot;com.google.dexmaker:dexmaker-mockito:1.2&quot;
+}
+</code></pre><h2 id="6-__u5B9E_u4F8B_uFF1A_u4F7F_u7528Mockito_u5199_u4E00_u4E2AInstrumented_Unit_Test"><a href="#6-__u5B9E_u4F8B_uFF1A_u4F7F_u7528Mockito_u5199_u4E00_u4E2AInstrumented_Unit_Test" class="headerlink" title="6. 实例：使用Mockito写一个Instrumented Unit Test"></a>6. 实例：使用Mockito写一个Instrumented Unit Test</h2><h3 id="6-1-__u521B_u5EFA_u4E00_u4E2A_u6D4B_u8BD5_u7684Android__u5E94_u7528"><a href="#6-1-__u521B_u5EFA_u4E00_u4E2A_u6D4B_u8BD5_u7684Android__u5E94_u7528" class="headerlink" title="6.1. 创建一个测试的Android 应用"></a>6.1. 创建一个测试的Android 应用</h3><p>创建一个包名为<code>com.vogella.android.testing.mockito.contextmock</code>的Android应用，添加一个静态方法<br>，方法里面创建一个包含参数的Intent，如下代码所示：</p>
+<pre><code>public static Intent createQuery(Context context, String query, String value) {
+    // 简单起见，重用MainActivity
+    Intent i = new Intent(context, MainActivity.class);
+    i.putExtra(&quot;QUERY&quot;, query);
+    i.putExtra(&quot;VALUE&quot;, value);
+    return i;
+}
+</code></pre><h3 id="6-2-__u5728app/build-gradle_u6587_u4EF6_u4E2D_u6DFB_u52A0Mockito_u4F9D_u8D56"><a href="#6-2-__u5728app/build-gradle_u6587_u4EF6_u4E2D_u6DFB_u52A0Mockito_u4F9D_u8D56" class="headerlink" title="6.2. 在app/build.gradle文件中添加Mockito依赖"></a>6.2. 在app/build.gradle文件中添加Mockito依赖</h3><pre><code>dependencies {
+    // Mockito 和 JUnit 的依赖
+    // instrumentation unit tests on the JVM
+    androidTestCompile &apos;junit:junit:4.12&apos;
+    androidTestCompile &apos;org.mockito:mockito-core:2.0.57-beta&apos;
+    androidTestCompile &apos;com.android.support.test:runner:0.3&apos;
+    androidTestCompile &quot;com.google.dexmaker:dexmaker:1.2&quot;
+    androidTestCompile &quot;com.google.dexmaker:dexmaker-mockito:1.2&quot;
+
+    // Mockito 和 JUnit 的依赖
+    // tests on the JVM
+    testCompile &apos;junit:junit:4.12&apos;
+    testCompile &apos;org.mockito:mockito-core:1.+&apos;
+
+}
+</code></pre><h3 id="6-3-__u521B_u5EFA_u6D4B_u8BD5"><a href="#6-3-__u521B_u5EFA_u6D4B_u8BD5" class="headerlink" title="6.3. 创建测试"></a>6.3. 创建测试</h3><p>使用 Mockito 创建一个单元测试来验证在传递正确 extra data 的情况下，intent 是否被触发。</p>
+<p>因此我们需要使用 Mockito 来 mock 一个<code>Context</code>对象，如下代码所示：</p>
+<pre><code>package com.vogella.android.testing.mockitocontextmock;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+public class TextIntentCreation {
+
+    @Test
+    public void testIntentShouldBeCreated() {
+        Context context = Mockito.mock(Context.class);
+        Intent intent = MainActivity.createQuery(context, &quot;query&quot;, &quot;value&quot;);
+        assertNotNull(intent);
+        Bundle extras = intent.getExtras();
+        assertNotNull(extras);
+        assertEquals(&quot;query&quot;, extras.getString(&quot;QUERY&quot;));
+        assertEquals(&quot;value&quot;, extras.getString(&quot;VALUE&quot;));
+    }
+}
+</code></pre><h2 id="7-__u5B9E_u4F8B_uFF1A_u4F7F_u7528_Mockito__u521B_u5EFA_u4E00_u4E2A_mock__u5BF9_u8C61"><a href="#7-__u5B9E_u4F8B_uFF1A_u4F7F_u7528_Mockito__u521B_u5EFA_u4E00_u4E2A_mock__u5BF9_u8C61" class="headerlink" title="7. 实例：使用 Mockito 创建一个 mock 对象"></a>7. 实例：使用 Mockito 创建一个 mock 对象</h2><h3 id="7-1-__u76EE_u6807"><a href="#7-1-__u76EE_u6807" class="headerlink" title="7.1. 目标"></a>7.1. 目标</h3><p>创建一个 Api，它可以被 Mockito 来模拟并做一些工作</p>
+<h3 id="7-2-__u521B_u5EFA_u4E00_u4E2ATwitter_API__u7684_u4F8B_u5B50"><a href="#7-2-__u521B_u5EFA_u4E00_u4E2ATwitter_API__u7684_u4F8B_u5B50" class="headerlink" title="7.2. 创建一个Twitter API 的例子"></a>7.2. 创建一个Twitter API 的例子</h3><p>实现 <code>TwitterClient</code>类，它内部使用到了 <code>ITweet</code> 的实现。但是<code>ITweet</code>实例很难得到，譬如说他需要启动一个很复杂的服务来得到。</p>
+<pre><code>public interface ITweet {
+
+        String getMessage();
+}
+
+
+public class TwitterClient {
+
+        public void sendTweet(ITweet tweet) {
+                String message = tweet.getMessage();
+
+                // send the message to Twitter
+        }
+}
+</code></pre><h3 id="7-3-__u6A21_u62DF_ITweet__u7684_u5B9E_u4F8B"><a href="#7-3-__u6A21_u62DF_ITweet__u7684_u5B9E_u4F8B" class="headerlink" title="7.3. 模拟 ITweet 的实例"></a>7.3. 模拟 ITweet 的实例</h3><p>为了能够不启动复杂的服务来得到 <code>ITweet</code>，我们可以使用 Mockito 来模拟得到该实例。</p>
+<pre><code>@Test
+public void testSendingTweet() {
+        TwitterClient twitterClient = new TwitterClient();
+
+        ITweet iTweet = mock(ITweet.class);
+
+        when(iTweet.getMessage()).thenReturn(&quot;Using mockito is great&quot;);
+
+        twitterClient.sendTweet(iTweet);
+}
+</code></pre><p>现在 <code>TwitterClient</code> 可以使用 <code>ITweet</code> 接口的实现，当调用 <code>getMessage()</code> 方法的时候将会打印 “Using Mockito is great” 信息。</p>
+<h3 id="7-4-__u9A8C_u8BC1_u65B9_u6CD5_u8C03_u7528"><a href="#7-4-__u9A8C_u8BC1_u65B9_u6CD5_u8C03_u7528" class="headerlink" title="7.4. 验证方法调用"></a>7.4. 验证方法调用</h3><p>确保 getMessage() 方法至少调用一次。</p>
+<pre><code>@Test
+public void testSendingTweet() {
+        TwitterClient twitterClient = new TwitterClient();
+
+        ITweet iTweet = mock(ITweet.class);
+
+        when(iTweet.getMessage()).thenReturn(&quot;Using mockito is great&quot;);
+
+        twitterClient.sendTweet(iTweet);
+
+        verify(iTweet, atLeastOnce()).getMessage();
+}
+</code></pre><h3 id="7-5-__u9A8C_u8BC1"><a href="#7-5-__u9A8C_u8BC1" class="headerlink" title="7.5. 验证"></a>7.5. 验证</h3><p>运行测试，查看代码是否测试通过。</p>
+<h2 id="8-__u6A21_u62DF_u9759_u6001_u65B9_u6CD5"><a href="#8-__u6A21_u62DF_u9759_u6001_u65B9_u6CD5" class="headerlink" title="8. 模拟静态方法"></a>8. 模拟静态方法</h2><h3 id="8-1-__u4F7F_u7528_Powermock__u6765_u6A21_u62DF_u9759_u6001_u65B9_u6CD5"><a href="#8-1-__u4F7F_u7528_Powermock__u6765_u6A21_u62DF_u9759_u6001_u65B9_u6CD5" class="headerlink" title="8.1. 使用 Powermock 来模拟静态方法"></a>8.1. 使用 Powermock 来模拟静态方法</h3><p>因为 Mockito 不能够 mock 静态方法，因此我们可以使用 <code>Powermock</code>。</p>
+<pre><code>import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+public final class NetworkReader {
+    public static String getLocalHostname() {
+        String hostname = &quot;&quot;;
+        try {
+            InetAddress addr = InetAddress.getLocalHost();
+            // Get hostname
+            hostname = addr.getHostName();
+        } catch ( UnknownHostException e ) {
+        }
+        return hostname;
+    }
+}
+</code></pre><p>我们模拟了 NetworkReader 的依赖，如下代码所示：</p>
+<pre><code>import org.junit.runner.RunWith;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+
+@RunWith( PowerMockRunner.class )
+@PrepareForTest( NetworkReader.class )
+public class MyTest {
+
+// 测试代码
+
+ @Test
+public void testSomething() {
+    mockStatic( NetworkUtil.class );
+    when( NetworkReader.getLocalHostname() ).andReturn( &quot;localhost&quot; );
+
+    // 与 NetworkReader 协作的测试
+}
+</code></pre><h3 id="8-2-_u7528_u5C01_u88C5_u7684_u65B9_u6CD5_u4EE3_u66FFPowermock"><a href="#8-2-_u7528_u5C01_u88C5_u7684_u65B9_u6CD5_u4EE3_u66FFPowermock" class="headerlink" title="8.2.用封装的方法代替Powermock"></a>8.2.用封装的方法代替Powermock</h3><p>有时候我们可以在静态方法周围包含非静态的方法来达到和 Powermock 同样的效果。</p>
+<pre><code>class FooWraper { 
+      void someMethod() { 
+           Foo.someStaticMethod() 
+       } 
+}
+</code></pre><h3 id="9-_Mockito__u53C2_u8003_u8D44_u6599"><a href="#9-_Mockito__u53C2_u8003_u8D44_u6599" class="headerlink" title="9. Mockito 参考资料"></a>9. Mockito 参考资料</h3><p><a href="http://site.mockito.org" target="_blank" rel="external">http://site.mockito.org</a> - Mockito 官网</p>
+<p><a href="https://github.com/mockito/mockito-" target="_blank" rel="external">https://github.com/mockito/mockito-</a> Mockito Github</p>
+<p><a href="https://github.com/mockito/mockito/blob/master/doc/release-notes/official.md" target="_blank" rel="external">https://github.com/mockito/mockito/blob/master/doc/release-notes/official.md</a> - Mockito 发行说明</p>
+<p><a href="http://martinfowler.com/articles/mocksArentStubs.html" target="_blank" rel="external">http://martinfowler.com/articles/mocksArentStubs.html</a> 与Mocks，Stub有关的文章</p>
+<p><a href="http://chiuki.github.io/advanced-android-espresso/" target="_blank" rel="external">http://chiuki.github.io/advanced-android-espresso/</a> 高级android教程（竟然是个妹子）</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/22/译-在-Android-中使用-VectorDrawable/" itemprop="url">
+                  [译] 在 Android 中使用 VectorDrawable
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-22T03:35:19+00:00" content="2016-06-22">
+              2016-06-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/22/译-在-Android-中使用-VectorDrawable/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/22/译-在-Android-中使用-VectorDrawable/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<ul>
+<li>原文链接 : <a href="https://blog.stylingandroid.com/vectors-for-all-almost/" target="_blank" rel="external">Vectors For All (almost)</a></li>
+<li>原文作者 : <a href="https://blog.stylingandroid.com" target="_blank" rel="external">stylingandroid</a></li>
+<li>译者 : <a href="https://github.com/edvardHua" target="_blank" rel="external">edvardhua</a></li>
+<li>校对者: <a href="https://github.com/SatanWoo" target="_blank" rel="external">SatanWoo</a>, <a href="https://github.com/joddiy" target="_blank" rel="external">zhangzhaoqi</a></li>
+</ul>
+</blockquote>
+<p>经常阅读 Styling Android 的读者会知道我有多么喜欢用 <em>VectorDrawable</em> 和 <em>AnimatedVectorDrawable</em> 。直到我在写这篇文章之前我还在等待 <em>VectorDrawableCompat</em> （译者注：之前大家以为官方会出兼容 Support ，后来官方使用了另外一种方案，详细内容可戳该<a href="http://blog.chengyunfeng.com/?p=836&amp;utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">链接</a>），所以目前矢量图只能够在 API 21+ (Lollipop) 上面使用。然而，Android Studio 1.4 增加了对旧 android 的兼容，所以，实际上可以在低于 Lollipop 版本的机器上面使用 <em>VectorDrawable</em> 。</p>
+<p>在使用之前先来快速回顾一下什么是 <em>VectorDrawable</em> 。 本质上来说它其实就是安卓对 SVG path data 的一层封装。而 SVG paths 是一种以 xml 方式描述复杂图形元素的东西。(译者注：感兴趣的可以阅读 W3C 的<a href="http://www.w3school.com.cn/svg/svg_reference.asp" target="_blank" rel="external">官方文档</a>) SVG 很适合用来储存线条和矢量图像，但不适合用来储存摄影图像。通常在Android中 <em>ShapeDrawable</em> 可以实现一些线条和形状的<a href="https://blog.stylingandroid.com/more-vector-drawables-part-2/" target="_blank" rel="external">绘画</a>。 但大多数情况我们会将这些矢量图转换成不同像素密度位图来使用。在这篇文章中，我们将会一起来探索如何使用它。</p>
+<p>Android Studio 1.4 介绍了如何将SVG图像导入到 Android Studio 然后再自动转换为 <em>VectorDrawable</em> 。这些图标可以来自 <a href="https://www.google.com/design/icons/" target="_blank" rel="external">material icons pack</a> 或者是单独的 SVG 文件。导入 material icons 的确可以和 VectorDrawable 配合的天衣无缝，同时 google 也提供了大量的 icon 供我们选择。然而，导入单独的 SVG 文件会产生诸多的问题。产生这些问题的主要原因是 <em>VectorDrawable</em> 只支持一部分的 SVG 特性，而像图像渐变，填充和本地 IRI 引用（能够给元素一个唯一的索引，然后在 SVG 内通过索引重用）以及图像的变换等一些我们经常使用的特性都不支持。</p>
+<p>举个例子，即使是如官网 LOGO 这样简单的一个<a href="http://www.w3.org/2009/08/svg-logos.html" target="_blank" rel="external">SVG图像</a>(如下图所示)都不能导入到 Android 中，因为他使用了本地的IRI引用。</p>
+<p><a href="https://blog.stylingandroid.com/wp-content/uploads/2015/10/svg_logo.svg" target="_blank" rel="external"><img src="http://upload-images.jianshu.io/upload_images/207577-9d6578147ce6d474.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></a></p>
+<p>现在还不太清楚 Android 去除这些特性是否是出于性能方面原因，（譬如，渐变效果的渲染会比较复杂一点）或者说是为了以后开发的考虑。</p>
+<p>如果你足夠了解 SVG 的格式（这个已经不属于本文的讨论范畴了）我们可以手动的修改图标，然后移除本地 IRI 引用，我们可以对刚才提到的图标可以使用这个方法。</p>
+<p><a href="https://blog.stylingandroid.com/wp-content/uploads/2015/10/svg_logo2.svg" target="_blank" rel="external"><img src="http://upload-images.jianshu.io/upload_images/207577-d593a728f8fe9108.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></a></p>
+<p>然而仍然不能够导入到 Android ，因为会抛出 “premature end of file” 的错误信息，并且会指出出现问题的那行。感谢来自<a href="https://plus.google.com/+WojtekKalicinski" target="_blank" rel="external">Wojtek Kaliciński</a> 的建议，我将 SVG 中 width 和 height 的值从百分比改成绝对值之后就可以导入到 Android 中去了。但是因为水平和竖直移动（Translations）特性不支持，导致所有的元素摆放位置不好。</p>
+<p><a href="https://i1.wp.com/blog.stylingandroid.com/wp-content/uploads/2015/10/svg_logo2.png?ssl=1" target="_blank" rel="external"><img src="http://upload-images.jianshu.io/upload_images/207577-97861874e252e20e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></a></p>
+<p>通过手动将所有的平移（translation）和旋转（rotation）变换从原来的 SVG 格式转换到 Android 中所支持的格式后（在<code>&lt;group&gt;&lt;/group&gt;</code>包含<code>&lt;path&gt;&lt;/path&gt;</code>来支持变换），我终于能够将 SVG 图标导入，并使用 VectorDrawable 将其在 Marshmallow 上正确渲染。</p>
+<p><a href="https://i0.wp.com/blog.stylingandroid.com/wp-content/uploads/2015/10/SVGLogo.png?ssl=1" target="_blank" rel="external"><img src="http://upload-images.jianshu.io/upload_images/207577-3f8bef8402127be9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></a></p>
+<p>使用 Juraj Novák 所开发的 <a href="http://inloop.github.io/svg2android/" target="_blank" rel="external">svg2android</a> 工具可以方便的将 SVG 转换成 <em>VectorDrawable</em> 。该工具也有限制，那就是不能处理渐变和本地 IRI 引用的问题。但是可以省去我们手动微调的工作还是很不错的，像我刚才提到的宽高的问题，使用该工具转换则没有抛出错误。该工具开启实验性模式后还支持图像的变换（Transformation）并且支持的很好。但是对于本地的IRI引用还是需要我们手动的去修改原生的 SVG 文件。</p>
+<p>将转换后的文件放到 <code>res/drawable</code> 文件夹后，我们可以直接当成 drawable 来引用，如下代码所示：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+  xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+  android:layout_width=&quot;match_parent&quot;
+  android:layout_height=&quot;match_parent&quot;
+  android:paddingBottom=&quot;@dimen/activity_vertical_margin&quot;
+  android:paddingLeft=&quot;@dimen/activity_horizontal_margin&quot;
+  android:paddingRight=&quot;@dimen/activity_horizontal_margin&quot;
+  android:paddingTop=&quot;@dimen/activity_vertical_margin&quot;
+  tools:context=&quot;.MainActivity&quot;&gt;
+
+  &lt;ImageView
+    android:layout_width=&quot;wrap_content&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:contentDescription=&quot;@null&quot;
+    android:src=&quot;@drawable/svg_logo2&quot; /&gt;
+&lt;/RelativeLayout&gt;
+</code></pre><p>假如我们使用的 gradle plugin 版本是 1.4.0 或者更高的话（截至到我写这篇文章之前，还未正式发布1.4.0，但是 <code>1.4.0-beta6</code> 已经可以实现这个效果了），那么他将适配到 Android API 1。</p>
+<p>那么，适配低版本的原因是什么呢？让我们来看一下Build文件夹里面所生成的代码，答案就已经很明显了。</p>
+<p><a href="https://i0.wp.com/blog.stylingandroid.com/wp-content/uploads/2015/10/Screen-Shot-2015-10-03-at-15.20.33.png?ssl=1" target="_blank" rel="external"><img src="https://i0.wp.com/blog.stylingandroid.com/wp-content/uploads/2015/10/Screen-Shot-2015-10-03-at-15.20.33.png?resize=386%2C509&amp;ssl=1" alt="Screen Shot 2015-10-03 at 15.20.33"></a></p>
+<p>针对于 API 21 或者更高版本的设备，我们导入的矢量 XML drawable 文件将会被使用，但是对于早起的版本，我们则使用 PNG 代替矢量的 drawable 。</p>
+<p>但是如果我们出于 apk 大小的考虑，并不想生成多个 PNG 文件来适配多个分辨率呢？我们可以通过设置 <code>generatedDensities</code> 的值来决定需要生成 PNG 的分辨率和数量。</p>
+<pre><code>apply plugin: &apos;com.android.application&apos;
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion &quot;23.0.1&quot;
+
+    defaultConfig {
+        applicationId &quot;com.stylingandroid.vectors4all&quot;
+        minSdkVersion 7
+        targetSdkVersion 23
+        versionCode 1
+        versionName &quot;1.0&quot;
+        generatedDensities = [&apos;mdpi&apos;, &apos;hdpi&apos;]
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: &apos;libs&apos;, include: [&apos;*.jar&apos;])
+    testCompile &apos;junit:junit:4.12&apos;
+    compile &apos;com.android.support:appcompat-v7:23.0.1&apos;
+}
+</code></pre><p>如果我们现在进行 build ，我们会发现它（记住，在 build 之前先清除上一次 build 生成的 PNG 文件）只生成了我们指定的分辨率大小的 PNG 文件。</p>
+<p><a href="https://i0.wp.com/blog.stylingandroid.com/wp-content/uploads/2015/10/Screen-Shot-2015-10-03-at-15.27.08.png?ssl=1" target="_blank" rel="external"><img src="https://i0.wp.com/blog.stylingandroid.com/wp-content/uploads/2015/10/Screen-Shot-2015-10-03-at-15.27.08.png?resize=384%2C509&amp;ssl=1" alt="Screen Shot 2015-10-03 at 15.27.08"></a></p>
+<p>所以，现在来看一下这些 PNG 图片里面的内容是什么：</p>
+<p><a href="https://i1.wp.com/blog.stylingandroid.com/wp-content/uploads/2015/10/svg_logo2.png?ssl=1" target="_blank" rel="external"><img src="http://upload-images.jianshu.io/upload_images/207577-0c4f9344166fcc17.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></a></p>
+<p>这些图片本质上跟我之前未修改的 SVG 图像的内容是相同的。我需要提醒大家，这里会抛出警告信息，告诉我们 <code>&lt;group&gt;&lt;/group&gt;</code>  元素不支持生成栅格化的图片格式。但是这并不能消除 <em>VectorDrawable</em> 是 Android 中特有的格式，而且该格式不支持上述特性，这让我们感到很困惑的事实。</p>
+<p>我们现在开始了解为什么图像的变换特性在导入工具中不被支持了，因为 <em>VectorDrawable</em> 中的 <code>&lt;group&gt;&lt;/group&gt;</code> 元素不支持导出栅格化的图片格式，从而导致不能够向前兼容的问题。这个看上去是一个重大的疏忽：因为在 Lollipop 上面渲染正常的 <em>VectorDrawable</em> 资源，在将他们转换成 PNG 后则不能够正确的渲染。</p>
+<p>总结：如果使用这些新的工具从 material icons 库导入资源，那么它们则能够完美无瑕的渲染。但是，我们需要注意的是它们只具备导入 SVG 的能力以及只支持 SVG 一部分特性的转换，所以这导致了它们不能够导入现实世界中大部分的 SVG 文件。此外，对于新工具中将 <em>VectorDrawable</em> 转换成 PNG 来适配低版本的机器的时候是不支持像素图转换的，这让我们觉得新工具的功能还没有完成还不能够拿来使用。</p>
+<p>其实这种层次的手动微调花不了太多的时间（譬如修改官方 logo ），尤其我们是先用转换工具将它们转换成 <em>VectorDrawable</em> 后。尽管我仍然需要手动的修改图像变换所涉及到的全部坐标，也就是 SVG pathData 的元素内容。</p>
+<p>让我们期望这些问题在新的工具上会得到解决。这样这些有潜力的新工具才能够开始达到它们原来的目标。</p>
+<p>这篇文章的源代码可以在<a href="https://github.com/StylingAndroid/Vectors4All/tree/master" target="_blank" rel="external">这里</a>找到。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/06/02/怎样用-JRebel-for-Android/" itemprop="url">
+                  [译] 怎样用 JRebel for Android
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-02T03:33:19+00:00" content="2016-06-02">
+              2016-06-02
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/06/02/怎样用-JRebel-for-Android/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/02/怎样用-JRebel-for-Android/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<ul>
+<li>原文链接 : <a href="https://medium.com/@shelajev/getting-started-with-jrebel-for-android-426633cde736#.dtldka9ua" target="_blank" rel="external">Getting started with JRebel for Android</a></li>
+<li>原文作者 : <a href="https://medium.com/@shelajev" target="_blank" rel="external">Oleg Šelajev</a></li>
+<li>译者 : <a href="https://github.com/edvardHua" target="_blank" rel="external">edvardhua</a></li>
+<li>校对者: <a href="https://github.com/DeadLion" target="_blank" rel="external">DeadLion</a>, <a href="https://github.com/circlelove" target="_blank" rel="external">circlelove</a></li>
+</ul>
+</blockquote>
+<p>只要你的项目相对较小，开发Android应用的用户体验还是很棒的。然而随着项目功能的增加，你会发现构建项目的时间也会随着增长。这种情况会导致你的大部分时间都花在如何更快的构建项目，而不是为应用增加更多的价值。</p>
+<p>网上有很多教你如何加快Gradle构建速度的教程。有一些很好的文章，譬如“<a href="http://zeroturnaround.com/rebellabs/making-gradle-builds-faster/" target="_blank" rel="external">Making Gradle builds faster</a>”。 通过这些方法我们可以节省几秒甚至几分钟的构建时间，但是仍然存在一些构建上的瓶颈。举个例子，基于注释的依赖注入使得项目架构清晰，但是这对项目构建时间是有很大影响的。</p>
+<p>但是你可以尝试一下使用<a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a>。每次改动代码后不需要重新安装新的 apk。而是在安装完一次应用后，通过增量包传递到设备或者模拟器上，并且能够在应用运行时进行更新。这个想法（热部署）已经在JRebel的java开发工具上面使用超过8年的时间。</p>
+<p>拿Google IO 2015 app来看看如何使用JRebel for Android，以及它能为我们节省多少宝贵的时间。</p>
+<h3 id="u5B89_u88C5_JRebel_for_Android"><a href="#u5B89_u88C5_JRebel_for_Android" class="headerlink" title="安装 JRebel for Android"></a>安装 JRebel for Android</h3><p><a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a> 是一个Android Studio的插件，你可以直接点击IDE的 <em>Plugins &gt; Browse Repositories</em> 键入“JRebel for Android”来搜索和安装插件。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-dd03443274413e8e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>如果因为某些原因你无法访问 maven 的公有仓库，你可以直接在 JetBrians 官网下载，然后通过 <em>Plugins &gt; Install plugin from disk…</em> 来安装插件。</p>
+<p>当你安装完插件后，你需要重启Android Studio，在重启之后，你需要提供你的姓名和邮箱来得到JRebel for Android的21天免费使用。</p>
+<h3 id="u7528_JRebel_for_Android__u6765_u8FD0_u884C_u4F60_u7684_u5E94_u7528_u7A0B_u5E8F"><a href="#u7528_JRebel_for_Android__u6765_u8FD0_u884C_u4F60_u7684_u5E94_u7528_u7A0B_u5E8F" class="headerlink" title="用 JRebel for Android 来运行你的应用程序"></a>用 JRebel for Android 来运行你的应用程序</h3><p>安装完插件后，只需要点击 <em>Run with JRebel for Android</em> 按钮，它会检测这次代码与上次是否有改动，然后决定是否构建一个新的apk。<em>Run with JRebel for Android</em> 其实和Android Studio中的 <em>Run</em> 操作是一样的。所以有同样的运行流程，首先需要你选择一个设备，然后再构建apk安装到那台设备上去。</p>
+<p>为了更新代码和资源，JRebel for Android 需要处理项目 classes，并嵌入一个代理应用。JRebel for Android只会运行在调试模式下，所以对于正式发布的版本来说是没有影响的。另外，使用该插件也不需要你在项目中做任何改动。想要知道更多JRebel for Android的细节，请看<a href="http://zeroturnaround.com/rebellabs/under-the-hood-of-jrebel-for-android/" target="_blank" rel="external">under the hood post</a>。（译者注：InfoQ的一篇介绍JRebel for Android的<a href="http://www.infoq.com/cn/news/2016/01/jrebel-for-android-stable?appinstall=0" target="_blank" rel="external">文章</a>写的不错。）</p>
+<p>所以在Google IO 2015应用上点击 <em>Run with JRebel for Android</em> 将会得到如下的结果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-84f2635271fc02af.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u5728JRebel_for_Android_u5E94_u7528_u4EE3_u7801_u4FEE_u6539"><a href="#u5728JRebel_for_Android_u5E94_u7528_u4EE3_u7801_u4FEE_u6539" class="headerlink" title="在JRebel for Android应用代码修改"></a>在JRebel for Android应用代码修改</h3><p> <em>Apply changes</em> 按钮是使用 JRebel for Android的关键，它将会做最少的工作来将你代码的改动更新到你的设备上去。如果你没有使用 <em>Run with JRebel for Android</em> 来部署应用的话，<em>Apply changes</em> 将会帮你做这部分的工作。</p>
+<p>现在让我们在应用上做一个简单的功能改动。针对于GoogleIO中每一个举行的子会场你都可以发送反馈问卷，我们给这个问卷添加多一个输入框输入你的姓名，当你完成反馈的时候会弹出Toast来感谢你的反馈。</p>
+<p><strong>步骤一：</strong> 在  _session_feedback<em>fragment.xml</em> 中添加一个EditTex组件。</p>
+<pre><code>&lt;FrameLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;&gt;
+    &lt;EditText
+        android:id=&quot;@+id/name_input&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;/&gt;
+&lt;/FrameLayout&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-97f6212b91eaa6f9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>步骤2：</strong> 调整间距</p>
+<pre><code>&lt;FrameLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:paddingLeft=&quot;@dimen/padding_normal&quot;
+    android:paddingStart=&quot;@dimen/padding_normal&quot;
+    android:paddingRight=&quot;@dimen/padding_normal&quot;
+    android:paddingEnd=&quot;@dimen/padding_normal&quot;
+    android:paddingTop=&quot;@dimen/spacing_micro&quot;
+    android:paddingBottom=&quot;@dimen/padding_normal&quot;&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-7d7e9601dc0bb07b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>步骤3：</strong> 添加提示</p>
+<pre><code>&lt;EditText
+    android:id=&quot;@+id/name_input&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:hint=&quot;@string/name_hint&quot;/&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-ede2be6834a19fc9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这些改动现在都是在同一个页面上，每一次按下 <em>Apply change</em>  按钮后，JRebel for Android都会调用<a href="https://developer.android.com/reference/android/app/Activity.html#recreate%28%29" target="_blank" rel="external">Activity.recreate()</a>。在最顶部的activity将会同样的回调方法，就像设备从纵向切换到横向那样。</p>
+<p>到目前为止我们都还只是改动resource文件，下面我们来改动Java代码。</p>
+<p><strong>步骤4：</strong> 在 <em>SessionFeedbackFragment.sumbitFeedback()</em> 方法中弹出Toast</p>
+<pre><code>EditText nameInput = (EditText) 
+
+getView().findViewById(R.id.name_input);
+
+Toast.makeText(getActivity(), &quot;Thanks for the feedback &quot; + 
+
+nameInput.getEditableText().toString(), Toast.LENGTH_SHORT).show();
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-ac59f6bcd587c12b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u5E94_u7528_u91CD_u542F_u52A8_vs_Activity_u91CD_u542F_u52A8"><a href="#u5E94_u7528_u91CD_u542F_u52A8_vs_Activity_u91CD_u542F_u52A8" class="headerlink" title="应用重启动 vs Activity重启动"></a>应用重启动 vs Activity重启动</h3><p>并不是所有的改动都会触发调用<a href="https://developer.android.com/reference/android/app/Activity.html#recreate%28%29" target="_blank" rel="external">Activity.recreate()</a>的。如果你在AndroidManifest改动了一些内容，一个新的 apk 将会被构建并增加安装。在这种情况下，应用将会重新启动。或者你替换或改动了已经被实现的superclass或者interfaces的时候也会导致应用重启动。下面有一份完整的对照表：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-a2318544ae109e19.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u4E3A_u4EC0_u4E48_u6211_u8981_u5C1D_u8BD5_u4F7F_u7528_JRebel_for_Android"><a href="#u4E3A_u4EC0_u4E48_u6211_u8981_u5C1D_u8BD5_u4F7F_u7528_JRebel_for_Android" class="headerlink" title="为什么我要尝试使用 JRebel for Android"></a>为什么我要尝试使用 JRebel for Android</h3><p>下面我列出了最有说服力的理由，来让你使用它。</p>
+<ul>
+<li>可以快速看到自己代码改动的效果。</li>
+<li>可以有时间打磨素完美的UI，而不用浪费时间在构建上。</li>
+<li>不需要在项目中做任何改动来支持 JRebel for Android。</li>
+<li>在调试程序的同时还能更新代码和资源文件。没错，<a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a>支持调试器的全部特性。</li>
+</ul>
+<h3 id="u8BD1_u8005_u6CE8"><a href="#u8BD1_u8005_u6CE8" class="headerlink" title="译者注"></a>译者注</h3><p>另外，Google 在前不久发布的 Android Studio 2.0 中也增加了类似 JRebel 功能，称之为 Instant Run。可谓良心，毕竟不用花银子去购买收费的 JRebel for Android, 不仅为我们节约了银子还节约了时间。使用方法也很简单，具体的可以查看<a href="https://developer.android.com/studio/run/index.html#instant-run" target="_blank" rel="external">官方文档</a></p>
+<p>但是 JRebel for Android 与 Instant Run 之间还是存在区别的，我在 JRebel 的官网中找到一篇对比的<a href="https://zeroturnaround.com/rebellabs/jrebel-for-android-and-instant-run-compared/" target="_blank" rel="external">文章</a>，他们之间的差别可以用下面这张图概括。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-8502953211211fad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="JRebel for Android vs Instant Run"></p>
+<p>从对比图中了解到其实 JRebel for Android 所支持的特性是比 Instant Run 多的多的，当然，希望 Google 后续能够让 Instant Run 支持更多的特性。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/" itemprop="url">
+                  [译] 我是如何为Mac应用Flinto设计UI图标的
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-22T03:37:54+00:00" content="2016-05-22">
+              2016-05-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/22/译-我是如何为Mac应用Flinto设计UI图标的/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<ul>
+<li>原文链接: <a href="https://medium.com/flinto-software/designing-the-icons-for-flinto-s-ui-ddd9e5788cce#.yr5asvf9c" target="_blank" rel="external">Designing the Icons for Flinto’s UI</a></li>
+<li>原文作者 : <a href="https://medium.com/@pnowelldesign" target="_blank" rel="external">Peter Nowell</a></li>
+<li>译者 : <a href="https://github.com/edvardHua" target="_blank" rel="external">edvardhua</a></li>
+<li>校对者 : <a href="https://github.com/Ruixi" target="_blank" rel="external">Ruixi</a>, <a href="https://github.com/CoderBOBO" target="_blank" rel="external">CoderBOBO</a></li>
+</ul>
+</blockquote>
+<p><a href="https://www.flinto.com/mac" target="_blank" rel="external">Flinto 团队</a> 最近采访了我关于Flinto用户界面图标背后的设计流程。</p>
+<h4 id="u4F60_u662F_u600E_u4E48_u4E3AMac_u7248_u672C_u7684Flinto_u8D21_u732E_u81EA_u5DF1_u7684_u8BBE_u8BA1_uFF1F"><a href="#u4F60_u662F_u600E_u4E48_u4E3AMac_u7248_u672C_u7684Flinto_u8D21_u732E_u81EA_u5DF1_u7684_u8BBE_u8BA1_uFF1F" class="headerlink" title="你是怎么为Mac版本的Flinto贡献自己的设计？"></a>你是怎么为Mac版本的Flinto贡献自己的设计？</h4><p>我参与了<a href="https://www.flinto.com/mac" target="_blank" rel="external">Flinto</a>新的Mac版本的用户界面部分和用户体验部分的设计，就在他发布之前的几个月。但是因为Flinto是一个特殊的工具，我们越是深入思考每一部分的用户体验，我们越感觉到Flinto需要大量的定制icons。譬如说Flinto应用的列表（List），工具栏（Toolbar），动画的设计面板（Transition Designer），下拉手势（Gestures dropdown）都需要他们独自的一套图标。所以，如何快速的设计图标变成了我的主要工作。</p>
+<h4 id="u5F53_u8BBE_u8BA1_u5927_u578B_u5E94_u7528_u7684_u56FE_u6807_u548C_u83DC_u5355_u7684_u65F6_u5019_uFF0C_u4F60_u91C7_u7528_u4EC0_u4E48_u6837_u7684_u8BBE_u8BA1_u7B56_u7565_uFF1F"><a href="#u5F53_u8BBE_u8BA1_u5927_u578B_u5E94_u7528_u7684_u56FE_u6807_u548C_u83DC_u5355_u7684_u65F6_u5019_uFF0C_u4F60_u91C7_u7528_u4EC0_u4E48_u6837_u7684_u8BBE_u8BA1_u7B56_u7565_uFF1F" class="headerlink" title="当设计大型应用的图标和菜单的时候，你采用什么样的设计策略？"></a>当设计大型应用的图标和菜单的时候，你采用什么样的设计策略？</h4><p>设计总是情境驱动的。我惊奇的发现专业Mac应用的情境设计是最复杂的工作之一，就算你只是设计图标。工具栏（Toolbar）的图标大小必须一致，而且最好根据图标知道用途。这与侧边栏的图标和下拉菜单看到的图标的设计原则上有所差异。 一些图标会以不同的尺寸和不同的样式重复出现在不同的地方。不是只要调整图标尺寸或者样式就能够适用于每一个用户界面的，所以我在设计图标的时候需要考虑到图标是否具有通用性以及不破坏用户界面的整体一致性。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-eb4535b74cc6a066.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>我都是在纸上开始设计图标的，我一直坚信这个原则。我会在纸上画下我想象中这个图标的所有可能性，譬如设计的这个图标包含了什么暗喻以及图标可能需要/产生的变化。所以在<strong>概念设计</strong>的这个阶段上，我尽量让自己将所有的内容都写在我的纸上，甚至是一些不相关的想法。下一步则<strong>分析</strong>概念设计中的内容如何能够更好符合我们设计的目标，已有的限制以及这个图标的情境联系。</p>
+<blockquote>
+<p>我发现将绘图构思和评估这两个过程分开进行是很至关重要的。前者的工作需要想象力，好奇心，而且持有自己主观的判断，是一个加法的过程，是心血来潮的创作。评估则需要批判性，实用性，以及需要考虑图标背后一连串所延伸出来的隐喻，是一个做减法的过程。如果你尝试同时做这两件事情，那么你会考虑不过来从而得不到任何结果。</p>
+</blockquote>
+<p>我最近还在网上授课讲述我认为在<a href="http://shrsl.com/?~boxl" target="_blank" rel="external">设计图标</a>中最重要的原则。里面还包含了我是如何来评估我的想法和草稿的。</p>
+<p>通常来说，只有一部分的设计想法会被保存到电脑里面。使用sketch可以提高我的生产效率并且在生产的过程中会有一些创造性的决定。但最主要的目的还是要完善和精炼图标的形式，保证每一个图标都是像素完美的。我对此具备相当大的热情，我对其他忽视这个细节的人感到很烦恼。</p>
+<h4 id="u80FD_u591F_u4E3A_u6211_u4EEC_u518D_u7A0D_u5FAE_u89E3_u91CA_u4E00_u4E0B_u4EC0_u4E48_u662F_u201C_u50CF_u7D20_u5B8C_u7F8E_u201D_u548C_u5982_u4F55_u5B9E_u73B0_uFF1F"><a href="#u80FD_u591F_u4E3A_u6211_u4EEC_u518D_u7A0D_u5FAE_u89E3_u91CA_u4E00_u4E0B_u4EC0_u4E48_u662F_u201C_u50CF_u7D20_u5B8C_u7F8E_u201D_u548C_u5982_u4F55_u5B9E_u73B0_uFF1F" class="headerlink" title="能够为我们再稍微解释一下什么是“像素完美”和如何实现？"></a>能够为我们再稍微解释一下什么是“像素完美”和如何实现？</h4><p>像素完美其实意味着很多东西，它更像是一个想法而不是一个能够具体描述的特征。像“注意细节”一样，当被忽视的时候我们能够很容易的感觉出来。完美的像素对小图标的可辨别度有巨大的影响。想要实现像素完美不仅仅是将设计元素的像素网格对齐（如下图）。这基本上来说就是在和锯齿做斗争。使用抗锯齿是很好的一件事情，但它会让图像一些地方产生模糊，尤其是在对角线和曲线中。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-17a1b170870ef331.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>举个例子，我们想在图层列表中加上一些注释来表明哪些层是被隐藏或者是被锁住的。当然给图层加上隐藏和锁定是很简单的事情，只需要点击按钮操作一下就好了。我们考虑的是我们有一个小的注释，他会占用一小部分空间，来注释两个已经隐藏和锁定图标。为了完成这个目标，我们的图标必须要做到像素完美。我对我设计的8x8大小的图标感到非常的自豪。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-eb3a9786bd5527f9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>对于使用retina显示屏的读者，我们显示<strong>“一半尺寸”</strong>的位图，如图1x的全像素图标。对于非retina显示屏的读者，则使用<strong>“双倍尺寸”</strong>的位图，如图2x的全像素图标。 请以横向模式显示上图来获得最好的显示效果。</p>
+<p>在一个理想的世界中，一枚制作精良矢量图标可以轻易地适应各种像素密度的输出，并在所有对应尺寸中显示效果良好。但是大部分时候，使用一倍大小的图标并不能够处理得到更高尺寸的图标。你可能需要先做一个完美的两倍尺寸的图标，然后再调整成一倍尺寸来创建一个新的视觉满意的图标。在Flinto中至少一半的图标都有其对应1倍和2倍尺寸，譬如贯穿整个过渡动画设计面板的”概念图层”图标。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-c4682f60d9bb207e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>针对于这块感兴趣的读者，这里有我是如何对Flinto图标的抗锯齿进行细调的技术细节。</strong></p>
+<ul>
+<li>重新调整和重新定位图形来获得看上去视觉舒服的图形，尽管这样处理后位置或者像素值会有小数点，但在这个阶段视觉是重点。</li>
+<li>只使用曲线或者圆角时，至少要使用2px来渲染 90° 角的半径圆，或者使用3px渲染180°角的半径圆，来作为圆的线段末尾（如下图）。1pt大小线的线段的圆角线帽的效果是很糟糕的，至少我们使用的屏幕都会将其放大三倍来显示。</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-731c377c2cdd35e2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>没有人想要模糊的线帽！只有三倍大小（或者更大）的显示器才能够对1pt大小的线条渲染清晰可见的圆角线帽。</p>
+<ul>
+<li>为了让线条粗细更加一致，调整边框宽度/粗细来达到稍宽或者稍厚会比使用1pt的细曲线或者斜线更好。</li>
+<li>消除不必要的模糊像素。这在你需要使用图形自身标记自己的时候将会很有效。</li>
+<li>通过复制图形或者边框（同一方向）来轻微调整图形的粗细。</li>
+<li>如果图标可以有小模糊锯齿能够为图标的其他部分提供一定帮助，这也是可以的。</li>
+</ul>
+<p>当然还有其他有关于如何平滑抗锯齿的技巧，但是我刚才所说的是我从中获益最大的。</p>
+<h4 id="u4EC0_u4E48_u9020_u5C31_u4E86_u4E00_u679A_u597D_u56FE_u6807_uFF1F"><a href="#u4EC0_u4E48_u9020_u5C31_u4E86_u4E00_u679A_u597D_u56FE_u6807_uFF1F" class="headerlink" title="什么造就了一枚好图标？"></a>什么造就了一枚好图标？</h4><p>这是个问题！尤其是当图标包含了很多设计原则的时候。我在我的<a href="http://shrsl.com/?~boxl" target="_blank" rel="external">图标设计课程</a>里面通过讲我在Flinto工作遇到的一些故事来描述我是如何造就一枚好图标的。</p>
+<p>其中的一个原则就是<strong>使用熟悉的符号并且让他显眼</strong>。当我们开始为Flinto的主页面的画布设计图标的时候，内森有一个想法，我们可以设计一个图标让我们回忆起<a href="http://www.sj33.cn/architecture/slsj/jiaju/201405/38754_3.html" target="_blank" rel="external">艾西勒的住宅</a>。艾西勒是一位建筑师，他设计了中世纪现代建筑的住宅，这种风格的住宅在加州很流行。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-95366f77f1183a52.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-763cf2afdcb517db.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<figcaption>艾西勒的中世纪现代建筑的住宅给了我们灵感去探索设计一个独特的“home”图标。</figcaption>
+
+<p>我们认为这个想法很酷而且内森也买了一套使用这种设计元素的房子，所以我们对这个想法很有热情。我做了很多个home图标的概念设计，尝试着将艾西勒住宅的特点萃取到一个16*16正方形的图标里面，而且在图标不添加色彩和透明度效果。我们发现这些看似巧妙的图标并没有很好展现图标本身的职责而且作为home图标也不够显眼。于是我们决定做一个直观并且能够表达艾西勒住宅不对称特点而且对其他用户而言有高辨别度的图标。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-71f9f6c03b48ec04.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>直观胜过巧妙，我们选择了底部中间图标作为home键。</p>
+<p>另外评价一个好图标的原则是他是否能够与周围的元素看上去融洽。这些元素包括图标周围的UI，邻接文本的大小和 权重，操作系统的约定（譬如说，在mac os下cmd+s是保存，而在win下则是ctrl + s），以及其他图标的集合。</p>
+<p>所以尽管home图标基本上是单独存在的，但是工具图标，手势图标，排版图标都是集合方式存在的。设计图标的集合的挑战是很大的。你会在设计一个图标集合设计到一半的时候发现你所使用的视觉隐喻不能够适应每一个这个集合里面需要的图标，这意味着你需要重新做一遍。 🙈</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-244218bf2af2aaf2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这种情况通常发生在手势图标上（上图是以200%比例显示）现在这些图标看上去很简单和直观，然而我们在设计他时是有很多限制条件的，并且还要考虑未来的兼容性。一些我们在这里展示的图标还没有出现在Flinto中…但很重要的一点是，在遇到有需要的时候，我们设计的图标集能够扩展并且容纳它们。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
 
     
       
@@ -242,7 +1215,7 @@
               
                 
                 <a class="post-title-link" href="/2016/03/03/译-在Android中使用并发提高应用性能/" itemprop="url">
-                  (译)在Android中使用并发提高应用性能
+                  [译] 在Android中使用并发提高应用性能
                 </a>
               
             
@@ -290,50 +1263,222 @@
       
         
           
-            <ul>
-<li>原文链接 : <a href="https://medium.com/@ali.muzaffar/using-concurrency-and-speed-and-performance-on-android-d00ab4c5c8e3#.rt9z1k25u" target="_blank" rel="external">Using concurrency to improve speed and performance in Android</a></li>
-<li>原文作者 : <a href="https://medium.com/@ali.muzaffar" target="_blank" rel="external">Ali Muzaffar</a></li>
-<li>译文出自 : <a href="https://github.com/xitu/gold-miner" target="_blank" rel="external">掘金翻译计划</a></li>
-<li>译者 : <a href="https://github.com/edvardHua" target="_blank" rel="external">edvardHua</a></li>
-<li>校对者:</li>
-<li>状态 : 翻译完成</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/9b5c8bd8jw1f1cvbu9fzaj20m80fj48q.jpg" alt=""></p>
-<h3 id="u524D_u8A00"><a href="#u524D_u8A00" class="headerlink" title="前言"></a>前言</h3><p>我们知道，在Android框架中提供了很多异步处理的工具类。然而，他们中大部分实现是通过提供单一的后台线程来处理任务队列的。如果我们需要更多的后台线程的时候该怎么办呢？</p>
-<p>大家都知道Android的UI更新是在UI线程中进行的（也称之为主线程）。所以如果我们在UI线程中编写耗时任务都可能会阻塞UI线程更新UI。为了避免这种情况我们可以使用 AsyncTask, IntentService和Threads。在之前我写的一篇文章介绍了<a href="https://medium.com/android-news/8-ways-to-do-asynchronous-processing-in-android-and-counting-f634dc6fae4e#.bkk6mudb4" target="_blank" rel="external">Android 中异步处理的8种方法</a>。但是，Android提供的<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">AsyncTasks</a>和<a href="http://developer.android.com/reference/android/os/AsyncTask.html" target="_blank" rel="external">IntentService</a>都是利用单一的后台线程来处理异步任务的。那么，开发人员如何创建多个后台线程呢？</p>
-<p><strong>更新:</strong> <a href="https://medium.com/u/b49242be2be7" target="_blank" rel="external">Marco Kotz</a> <a href="https://medium.com/@mrcktz/hi-ali-nice-article-thanks-for-sharing-ba72b07f1fb3" target="_blank" rel="external">指出</a>结合使用ThreadPool Executor和AsyncTask，后台可以有多个线程（默认为5个）同时处理AsyncTask。 </p>
-<h3 id="u521B_u5EFA_u591A_u7EBF_u7A0B_u5E38_u7528_u7684_u65B9_u6CD5"><a href="#u521B_u5EFA_u591A_u7EBF_u7A0B_u5E38_u7528_u7684_u65B9_u6CD5" class="headerlink" title="创建多线程常用的方法"></a>创建多线程常用的方法</h3><p>在大多数使用场景下，我们没有必要产生多个后台线程，简单的创建AsyncTasks或者使用基于任务队列的IntentService就可以很好的满足我们对异步处理的需求。然而当我们真的需要多个后台线程的时候，我们常常会使用下面的代码简单的创建多个线程。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">String[] urls = …</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">final</span> String url : urls) &#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 调用API、下载数据或图片</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>该方法有几个问题。一方面，操作系统限制了同一域下连接数（限制为4）。这意味着，你的代码并没有真的按照你的意愿执行。新建的线程如果超过数量限制则需要等待旧线程执行完毕。 另外，每一个线程都被创建来执行一个任务，然后销毁。这些线程也没有被重用。</p>
-<h3 id="u5E38_u7528_u65B9_u6CD5_u5B58_u5728_u7684_u95EE_u9898"><a href="#u5E38_u7528_u65B9_u6CD5_u5B58_u5728_u7684_u95EE_u9898" class="headerlink" title="常用方法存在的问题"></a>常用方法存在的问题</h3><p>举个例子，如果你想开发一个连拍应用能在1秒钟连拍10张图片（或者更多）。应用该具备如下的子任务：</p>
+            <blockquote>
 <ul>
-<li>在一秒的时间内扑捉10张以byte[]形式储存的照片，并且不能够阻塞UI线程。</li>
-<li>将byte[]储存的数据格式从YUV转换成RGB。</li>
-<li>使用转换后的数据创建Bitmap。</li>
-<li>变换Bitmap的方向。</li>
-<li>生成缩略图大小的Bitmap。</li>
-<li>将全尺寸的Bitmap以Jpeg压缩文件的格式写入磁盘中。</li>
-<li>使用上传队列将图片保存到服务器中。</li>
+<li>原文链接 : <a href="https://medium.com/@shelajev/getting-started-with-jrebel-for-android-426633cde736#.dtldka9ua" target="_blank" rel="external">Getting started with JRebel for Android</a></li>
+<li>原文作者 : <a href="https://medium.com/@shelajev" target="_blank" rel="external">Oleg Šelajev</a></li>
+<li>译者 : <a href="https://github.com/edvardHua" target="_blank" rel="external">edvardhua</a></li>
+<li>校对者: <a href="https://github.com/DeadLion" target="_blank" rel="external">DeadLion</a>, <a href="https://github.com/circlelove" target="_blank" rel="external">circlelove</a></li>
 </ul>
-<p>很明显，如果你将太多的子任务放在UI线程中，你的应用在性能上的表现将不会太好。在这种情况下，唯一的解决方案就是先将相机预览的数据缓存起来，当UI线程闲置的时候再来利用缓存的数据执行剩下的任务。</p>
-<p>另外一个可选的解决方案是创建一个长时间在后台运行的HandlerThread，它能够接受相机预览的数据，并处理完剩下的全部任务。当然这种做法的性能会好些，但是如果用户想再连拍的话，将会面临较大的延迟，因为他需要等待HandlerThread处理完前一次连拍。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line">    public class CameraHandlerThread extends HandlerThread</span><br><span class="line">            implements Camera.PictureCallback, Camera.PreviewCallback &#123;</span><br><span class="line">        private static String TAG = "CameraHandlerThread";</span><br><span class="line">       private static final int WHAT_PROCESS_IMAGE = 0;</span><br><span class="line"></span><br><span class="line">        Handler mHandler = null;</span><br><span class="line">        WeakReference&lt;camerapreviewfragment&gt; ref = null;</span><br><span class="line"></span><br><span class="line">        private PictureUploadHandlerThread mPictureUploadThread;</span><br><span class="line">        private boolean mBurst = false;</span><br><span class="line">        private int mCounter = 1;</span><br><span class="line"></span><br><span class="line">        CameraHandlerThread(CameraPreviewFragment cameraPreview) &#123;</span><br><span class="line">            super(TAG);</span><br><span class="line">            start();</span><br><span class="line">            mHandler = new Handler(getLooper(), new Handler.Callback() &#123;</span><br><span class="line"></span><br><span class="line">                @Override</span><br><span class="line">                public boolean handleMessage(Message msg) &#123;</span><br><span class="line">                    if (msg.what == WHAT_PROCESS_IMAGE) &#123;</span><br><span class="line">                        // 业务逻辑</span><br><span class="line">                    &#125;</span><br><span class="line">                    return true;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">            ref = new WeakReference&lt;&gt;(cameraPreview);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">       ...</span><br><span class="line"></span><br><span class="line">        @Override</span><br><span class="line">        public void onPreviewFrame(byte[] data, Camera camera) &#123;</span><br><span class="line">            if (mBurst) &#123;</span><br><span class="line">                CameraPreviewFragment f = ref.get();</span><br><span class="line">                if (f != null) &#123;</span><br><span class="line">                    mHandler.obtainMessage(WHAT_PROCESS_IMAGE, data)</span><br><span class="line">                   .sendToTarget();</span><br><span class="line">                    try &#123;</span><br><span class="line">                        sleep(100);</span><br><span class="line">                    &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                        e.printStackTrace();</span><br><span class="line">                    &#125;</span><br><span class="line">                    if (f.isAdded()) &#123;</span><br><span class="line">                        f.readyForPicture();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                if (mCounter++ == 10) &#123;</span><br><span class="line">                    mBurst = false;</span><br><span class="line">                    mCounter = 1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">```    </span><br><span class="line"></span><br><span class="line">**提醒：** 如果你需要学习更多有关于HandlerThreads内容以及如何使用它，请阅读[我发表的关于HandlerThreads的文章。](https://medium.com/@ali.muzaffar/handlerthreads-and-why-you-should-be-using-them-in-your-android-apps-dc8bf1540341#.co4ilm67m)</span><br><span class="line"></span><br><span class="line">看起来所有的任务都被后台的单一线程处理完毕了，我们性能提升主要得益于后台线程长期运行并不会被销毁和重建。然而，我们后台的单一线程却要和其他优先等级更高的任务共享，而且这些任务只能够顺序执行。</span><br><span class="line"></span><br><span class="line">我们也可以创建第二个HandlerThread来处理我们的图像，然后创建第三个HandlerThread来将照片写入磁盘，最后再创建第四个HandlerThread来将照片上传到服务器中。我们能够加快拍照的速度，但是，这些线程相互之间还是遵循顺序执行的规则，并不是真的并发。因为每张照片是顺序处理的，而且处理每一张照片需要一定的时间，导致用户在点击拍照按钮到显示全部缩略图的时候仍然能够明显的感觉到延迟。</span><br><span class="line"></span><br><span class="line">### 使用ThreadPool并发处理任务</span><br><span class="line"></span><br><span class="line">我们可以根据需求创建多个线程，但是创建过多的线程会消耗CPU周期影响性能，并且线程的创建和销毁也需要时间成本。所以我们不想创建多余的线程，但是又想能够充分的利用设备的硬件资源。这个时候我们可以使用ThreadPool。</span><br><span class="line"></span><br><span class="line">通过创建ThreadPool对象的单例来在你的应用中使用ThreadPool。</span><br><span class="line"></span><br><span class="line">```java</span><br><span class="line">    public class BitmapThreadPool &#123;</span><br><span class="line">        private static BitmapThreadPool mInstance;</span><br><span class="line">        private ThreadPoolExecutor mThreadPoolExec;</span><br><span class="line">        private static int MAX_POOL_SIZE;</span><br><span class="line">        private static final int KEEP_ALIVE = 10;</span><br><span class="line">        BlockingQueue&lt;runnable&gt; workQueue = new LinkedBlockingQueue&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        public static synchronized void post(Runnable runnable) &#123;</span><br><span class="line">            if (mInstance == null) &#123;</span><br><span class="line">                mInstance = new BitmapThreadPool();</span><br><span class="line">            &#125;</span><br><span class="line">            mInstance.mThreadPoolExec.execute(runnable);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        private BitmapThreadPool() &#123;</span><br><span class="line">            int coreNum = Runtime.getRuntime().availableProcessors();</span><br><span class="line">            MAX_POOL_SIZE = coreNum * 2;</span><br><span class="line">            mThreadPoolExec = new ThreadPoolExecutor(</span><br><span class="line">                    coreNum,</span><br><span class="line">                    MAX_POOL_SIZE,</span><br><span class="line">                    KEEP_ALIVE,</span><br><span class="line">                    TimeUnit.SECONDS,</span><br><span class="line">                    workQueue);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public static void finish() &#123;</span><br><span class="line">            mInstance.mThreadPoolExec.shutdown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>然后，在上面的代码中，简单的修改Handler的回调函数为：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mHandler = <span class="keyword">new</span> Handler(getLooper(), <span class="keyword">new</span> Handler.Callback() &#123;</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (msg.what == WHAT_PROCESS_IMAGE) &#123;</span><br><span class="line">            BitmapThreadPool.post(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">                <span class="annotation">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                    <span class="comment">// 做你想做的任何事情</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>优化已经完成！通过下面的视频，我们观察到加载缩略图的速度提升是非常明显的。</p>
-<p>这种做法的优点是我们可以定义线程池的大小并且指定空余线程保持活动的时间。我们也可以创建多个ThreadPools来处理多个任务或者使用单个ThreadPool来处理多个任务。但是在使用完后记得清理资源。</p>
-<p>我们甚至可以为每一个功能创建一个独立的ThreadPool。譬如说在这个例子中我们可以创建三个ThreadPool,第一个ThreadPool负责数据转换成Bitmap，第二个ThreadPool负责写数据到磁盘中去，第三个ThreadPool上传Bitmap到服务器中去。这样做的话，如果我们的ThreadPool最大拥有4条线程，那么我们就能够同时的转换，写入，上传四张相片。用户将看到4张缩略图是同时显示而不是一个个的显示出来的。</p>
-<p>上面这个简单例子代码可以在<a href="https://github.com/alphamu/ThreadPoolWithCameraPreview" target="_blank" rel="external">我的GitHub</a>上得到，欢迎看完代码后给我反馈</p>
-<p>另外，你也可以在<a href="https://play.google.com/store/apps/details?id=au.com.alphamu.camerapreviewcaptureimage" target="_blank" rel="external">Google Play</a>上面下载演示应用。</p>
-<p><strong>使用ThreadPool前:</strong> 如果可以，从顶部观察计数器的变化来得知当底部缩略图从开始显示到全部显示完成所耗费的时间。在程序中除了adapter中的notifyDataSetChanged()方法外，我已经将大部分的操作从主线程中剥离，所以计数器的运行是很流畅的。</p>
-<figure><iframe frameborder="0" allowfullscreen="1" title="YouTube video player" width="640" height="360" src="https://www.youtube.com/embed/YmU8ogom_5g?wmode=opaque&amp;widget_referrer=https%3A%2F%2Fmedium.com%2Fmedia%2F6a9266d6d49e3e234f9d60f5763602df%3FmaxWidth%3D640&amp;enablejsapi=1&amp;origin=https%3A%2F%2Fcdn.embedly.com"></iframe></figure>
+</blockquote>
+<p>只要你的项目相对较小，开发Android应用的用户体验还是很棒的。然而随着项目功能的增加，你会发现构建项目的时间也会随着增长。这种情况会导致你的大部分时间都花在如何更快的构建项目，而不是为应用增加更多的价值。</p>
+<p>网上有很多教你如何加快Gradle构建速度的教程。有一些很好的文章，譬如“<a href="http://zeroturnaround.com/rebellabs/making-gradle-builds-faster/" target="_blank" rel="external">Making Gradle builds faster</a>”。 通过这些方法我们可以节省几秒甚至几分钟的构建时间，但是仍然存在一些构建上的瓶颈。举个例子，基于注释的依赖注入使得项目架构清晰，但是这对项目构建时间是有很大影响的。</p>
+<p>但是你可以尝试一下使用<a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a>。每次改动代码后不需要重新安装新的 apk。而是在安装完一次应用后，通过增量包传递到设备或者模拟器上，并且能够在应用运行时进行更新。这个想法（热部署）已经在JRebel的java开发工具上面使用超过8年的时间。</p>
+<p>拿Google IO 2015 app来看看如何使用JRebel for Android，以及它能为我们节省多少宝贵的时间。</p>
+<h3 id="u5B89_u88C5_JRebel_for_Android"><a href="#u5B89_u88C5_JRebel_for_Android" class="headerlink" title="安装 JRebel for Android"></a>安装 JRebel for Android</h3><p><a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a> 是一个Android Studio的插件，你可以直接点击IDE的 <em>Plugins &gt; Browse Repositories</em> 键入“JRebel for Android”来搜索和安装插件。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-dd03443274413e8e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>如果因为某些原因你无法访问 maven 的公有仓库，你可以直接在 JetBrians 官网下载，然后通过 <em>Plugins &gt; Install plugin from disk…</em> 来安装插件。</p>
+<p>当你安装完插件后，你需要重启Android Studio，在重启之后，你需要提供你的姓名和邮箱来得到JRebel for Android的21天免费使用。</p>
+<h3 id="u7528_JRebel_for_Android__u6765_u8FD0_u884C_u4F60_u7684_u5E94_u7528_u7A0B_u5E8F"><a href="#u7528_JRebel_for_Android__u6765_u8FD0_u884C_u4F60_u7684_u5E94_u7528_u7A0B_u5E8F" class="headerlink" title="用 JRebel for Android 来运行你的应用程序"></a>用 JRebel for Android 来运行你的应用程序</h3><p>安装完插件后，只需要点击 <em>Run with JRebel for Android</em> 按钮，它会检测这次代码与上次是否有改动，然后决定是否构建一个新的apk。<em>Run with JRebel for Android</em> 其实和Android Studio中的 <em>Run</em> 操作是一样的。所以有同样的运行流程，首先需要你选择一个设备，然后再构建apk安装到那台设备上去。</p>
+<p>为了更新代码和资源，JRebel for Android 需要处理项目 classes，并嵌入一个代理应用。JRebel for Android只会运行在调试模式下，所以对于正式发布的版本来说是没有影响的。另外，使用该插件也不需要你在项目中做任何改动。想要知道更多JRebel for Android的细节，请看<a href="http://zeroturnaround.com/rebellabs/under-the-hood-of-jrebel-for-android/" target="_blank" rel="external">under the hood post</a>。（译者注：InfoQ的一篇介绍JRebel for Android的<a href="http://www.infoq.com/cn/news/2016/01/jrebel-for-android-stable?appinstall=0" target="_blank" rel="external">文章</a>写的不错。）</p>
+<p>所以在Google IO 2015应用上点击 <em>Run with JRebel for Android</em> 将会得到如下的结果：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-84f2635271fc02af.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u5728JRebel_for_Android_u5E94_u7528_u4EE3_u7801_u4FEE_u6539"><a href="#u5728JRebel_for_Android_u5E94_u7528_u4EE3_u7801_u4FEE_u6539" class="headerlink" title="在JRebel for Android应用代码修改"></a>在JRebel for Android应用代码修改</h3><p> <em>Apply changes</em> 按钮是使用 JRebel for Android的关键，它将会做最少的工作来将你代码的改动更新到你的设备上去。如果你没有使用 <em>Run with JRebel for Android</em> 来部署应用的话，<em>Apply changes</em> 将会帮你做这部分的工作。</p>
+<p>现在让我们在应用上做一个简单的功能改动。针对于GoogleIO中每一个举行的子会场你都可以发送反馈问卷，我们给这个问卷添加多一个输入框输入你的姓名，当你完成反馈的时候会弹出Toast来感谢你的反馈。</p>
+<p><strong>步骤一：</strong> 在  _session_feedback<em>fragment.xml</em> 中添加一个EditTex组件。</p>
+<pre><code>&lt;FrameLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;&gt;
+    &lt;EditText
+        android:id=&quot;@+id/name_input&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;wrap_content&quot;/&gt;
+&lt;/FrameLayout&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-97f6212b91eaa6f9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>步骤2：</strong> 调整间距</p>
+<pre><code>&lt;FrameLayout
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:paddingLeft=&quot;@dimen/padding_normal&quot;
+    android:paddingStart=&quot;@dimen/padding_normal&quot;
+    android:paddingRight=&quot;@dimen/padding_normal&quot;
+    android:paddingEnd=&quot;@dimen/padding_normal&quot;
+    android:paddingTop=&quot;@dimen/spacing_micro&quot;
+    android:paddingBottom=&quot;@dimen/padding_normal&quot;&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-7d7e9601dc0bb07b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><strong>步骤3：</strong> 添加提示</p>
+<pre><code>&lt;EditText
+    android:id=&quot;@+id/name_input&quot;
+    android:layout_width=&quot;match_parent&quot;
+    android:layout_height=&quot;wrap_content&quot;
+    android:hint=&quot;@string/name_hint&quot;/&gt;
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-ede2be6834a19fc9.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>这些改动现在都是在同一个页面上，每一次按下 <em>Apply change</em>  按钮后，JRebel for Android都会调用<a href="https://developer.android.com/reference/android/app/Activity.html#recreate%28%29" target="_blank" rel="external">Activity.recreate()</a>。在最顶部的activity将会同样的回调方法，就像设备从纵向切换到横向那样。</p>
+<p>到目前为止我们都还只是改动resource文件，下面我们来改动Java代码。</p>
+<p><strong>步骤4：</strong> 在 <em>SessionFeedbackFragment.sumbitFeedback()</em> 方法中弹出Toast</p>
+<pre><code>EditText nameInput = (EditText) 
 
-<p><strong>使用ThreadPool后:</strong> 通过顶部的计数器，我们发现使用了ThreadPool后，照片的缩略图加载速度明显变快。</p>
-<figure><iframe frameborder="0" allowfullscreen="1" title="YouTube video player" width="640" height="360" src="https://www.youtube.com/embed/77Lh9XpXArw?wmode=opaque&amp;widget_referrer=https%3A%2F%2Fmedium.com%2Fmedia%2F53c35a233037c20ad1c4f2cba7528580%3FmaxWidth%3D640&amp;enablejsapi=1&amp;origin=https%3A%2F%2Fcdn.embedly.com"></iframe></figure>
+getView().findViewById(R.id.name_input);
 
-<h3 id="u6700_u540E"><a href="#u6700_u540E" class="headerlink" title="最后"></a>最后</h3><p>如果想要开发更加快的应用程序, <a href="https://medium.com/@ali.muzaffar" target="_blank" rel="external">请阅读我的文章</a>.</p>
-<p>文章已经到底了，在Medium上Follow我吧。 <a href="https://www.linkedin.com/in/alimuzaffar" target="_blank" rel="external">LinkedIn</a>, <a href="https://plus.google.com/+AliMuzaffar" target="_blank" rel="external">Google+</a> or <a href="https://twitter.com/ali_muzaffar" target="_blank" rel="external">Twitter</a>.</p>
+Toast.makeText(getActivity(), &quot;Thanks for the feedback &quot; + 
 
+nameInput.getEditableText().toString(), Toast.LENGTH_SHORT).show();
+</code></pre><p><img src="http://upload-images.jianshu.io/upload_images/207577-ac59f6bcd587c12b.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u5E94_u7528_u91CD_u542F_u52A8_vs_Activity_u91CD_u542F_u52A8"><a href="#u5E94_u7528_u91CD_u542F_u52A8_vs_Activity_u91CD_u542F_u52A8" class="headerlink" title="应用重启动 vs Activity重启动"></a>应用重启动 vs Activity重启动</h3><p>并不是所有的改动都会触发调用<a href="https://developer.android.com/reference/android/app/Activity.html#recreate%28%29" target="_blank" rel="external">Activity.recreate()</a>的。如果你在AndroidManifest改动了一些内容，一个新的 apk 将会被构建并增加安装。在这种情况下，应用将会重新启动。或者你替换或改动了已经被实现的superclass或者interfaces的时候也会导致应用重启动。下面有一份完整的对照表：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-a2318544ae109e19.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="u4E3A_u4EC0_u4E48_u6211_u8981_u5C1D_u8BD5_u4F7F_u7528_JRebel_for_Android"><a href="#u4E3A_u4EC0_u4E48_u6211_u8981_u5C1D_u8BD5_u4F7F_u7528_JRebel_for_Android" class="headerlink" title="为什么我要尝试使用 JRebel for Android"></a>为什么我要尝试使用 JRebel for Android</h3><p>下面我列出了最有说服力的理由，来让你使用它。</p>
+<ul>
+<li>可以快速看到自己代码改动的效果。</li>
+<li>可以有时间打磨素完美的UI，而不用浪费时间在构建上。</li>
+<li>不需要在项目中做任何改动来支持 JRebel for Android。</li>
+<li>在调试程序的同时还能更新代码和资源文件。没错，<a href="https://zeroturnaround.com/software/jrebel-for-android/?utm_source=medium&amp;utm_medium=getting-started-jra-post&amp;utm_campaign=medium" target="_blank" rel="external">JRebel for Android</a>支持调试器的全部特性。</li>
+</ul>
+<h3 id="u8BD1_u8005_u6CE8"><a href="#u8BD1_u8005_u6CE8" class="headerlink" title="译者注"></a>译者注</h3><p>另外，Google 在前不久发布的 Android Studio 2.0 中也增加了类似 JRebel 功能，称之为 Instant Run。可谓良心，毕竟不用花银子去购买收费的 JRebel for Android, 不仅为我们节约了银子还节约了时间。使用方法也很简单，具体的可以查看<a href="https://developer.android.com/studio/run/index.html#instant-run" target="_blank" rel="external">官方文档</a></p>
+<p>但是 JRebel for Android 与 Instant Run 之间还是存在区别的，我在 JRebel 的官网中找到一篇对比的<a href="https://zeroturnaround.com/rebellabs/jrebel-for-android-and-instant-run-compared/" target="_blank" rel="external">文章</a>，他们之间的差别可以用下面这张图概括。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/207577-8502953211211fad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="JRebel for Android vs Instant Run"></p>
+<p>从对比图中了解到其实 JRebel for Android 所支持的特性是比 Instant Run 多的多的，当然，希望 Google 后续能够让 Instant Run 支持更多的特性。</p>
+
+          
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/02/03/Docker安装与入门/" itemprop="url">
+                  Docker安装与入门
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-02-03T05:21:58+00:00" content="2016-02-03">
+              2016-02-03
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/02/03/Docker安装与入门/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/03/Docker安装与入门/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Docker_u5B89_u88C5_u4E0E_u5165_u95E8"><a href="#Docker_u5B89_u88C5_u4E0E_u5165_u95E8" class="headerlink" title="Docker安装与入门"></a>Docker安装与入门</h2><hr>
+<blockquote>
+<p><a href="https://docs.docker.com/linux/" target="_blank" rel="external">官方教程</a>的翻译简化版，环境为Ubuntu14.04</p>
+</blockquote>
+<hr>
+<h3 id="u5B89_u88C5Docker"><a href="#u5B89_u88C5Docker" class="headerlink" title="安装Docker"></a>安装Docker</h3><p>打开终端,如果没有wget，键入下面命令安装</p>
+<pre><code>$ sudo apt-get update
+$ sudo apt-get install wget
+</code></pre><p>随后，键入下面命令安装Docker,最好加上sudo，避免文件权限问题</p>
+<pre><code>$ sudo wget -qO- https://get.docker.com/ | sh
+</code></pre><p>然后，键入</p>
+<pre><code>$ docker run hello-world
+</code></pre><p>验证安装是否成功。但是我这里遇到问题，提示</p>
+<pre><code>`Cannot connect to the Docker daemon. Is the docker daemon running on this host?`
+</code></pre><p>谷歌后，原因是Docker用户和当前用户不在一个组的原因，键入下面命令修改</p>
+<pre><code>$ sudo usermod -aG docker &lt;your username&gt;
+</code></pre><p>随后，<code>重启系统</code></p>
+<hr>
+<h3 id="u8FD0_u884Cwhaleasy_image"><a href="#u8FD0_u884Cwhaleasy_image" class="headerlink" title="运行whaleasy image"></a>运行whaleasy image</h3><p>首先，需要在<a href="https://hub.docker.com" target="_blank" rel="external">DockerHub</a>注册一个账号，</p>
+<p>随后在搜索栏键入docker/whaleasy,可以看到搜索结果。<br>接下来键入下面命令</p>
+<pre><code>$ docker run docker/whalesay cowsay boo
+</code></pre><p>将DockerHub上的whaleasy下载下来在本机运行。</p>
+<img src="/2016/02/03/Docker安装与入门/whaleasy.png" alt="运行结果" title="运行结果">
+<hr>
+<h3 id="u521B_u5EFA_u81EA_u5DF1_u7684Image"><a href="#u521B_u5EFA_u81EA_u5DF1_u7684Image" class="headerlink" title="创建自己的Image"></a>创建自己的Image</h3><h4 id="u521B_u5EFADockerfile_u6587_u4EF6"><a href="#u521B_u5EFADockerfile_u6587_u4EF6" class="headerlink" title="创建Dockerfile文件"></a>创建Dockerfile文件</h4><p>选择一个目录，键入下面命令</p>
+<pre><code>$ mkdir mydockerbuild
+$ cd mydockerbuild
+$ touch Dockerfile 
+</code></pre><p>用一个文本编辑器打开Dockerfile，填入下面的内容</p>
+<pre><code>FROM docker/whalesay:latest
+RUN apt-get -y update &amp;&amp; apt-get install -y fortunes
+CMD /usr/games/fortune -a | cowsay
+</code></pre><p>其中，FROM命令表示你的基image，RUN表示你要为自己的image安装啥程序，在这里安装了一个fortune，这个东西可以让命令行的鲸鱼讲话，安装完成后。用CMD命令让fortune给一句俏皮的话给cowsay程序执行。</p>
+<h4 id="u7528Dockerfile_u521B_u5EFAImage"><a href="#u7528Dockerfile_u521B_u5EFAImage" class="headerlink" title="用Dockerfile创建Image"></a>用Dockerfile创建Image</h4><p> 在当前路径打开终端，键入命令</p>
+<pre><code>$ docker build -t docker-whale .
+</code></pre><p><strong>特别要注意不要忘记键入最后的</strong><code>.</code></p>
+<h4 id="u8FD0_u884C_u81EA_u5DF1_u7684Image"><a href="#u8FD0_u884C_u81EA_u5DF1_u7684Image" class="headerlink" title="运行自己的Image"></a>运行自己的Image</h4><p> 很简单，键入</p>
+<pre><code>$ docker run docker-whale
+</code></pre><p>待出现Successfully built之后，便创建了属于自己的Image，可以通过键入</p>
+<pre><code>$ docker images
+</code></pre><p>来查看本机上存在多少个images，其中有一个便是docker-whale。</p>
+<hr>
+<h3 id="Push_Image__u81F3_DockerHub"><a href="#Push_Image__u81F3_DockerHub" class="headerlink" title="Push Image 至 DockerHub"></a>Push Image 至 DockerHub</h3><p>这里Push刚才创建的docker-whale<br>首先需要在DockerHub创建一个Repository，并设置为公开，这个跟使用GitHub有点类似。<br>记住刚才创建的Repository Name，通过在终端键入docker iamges来得到docker-whale的IMAGE ID。<br>随后用docker tag来给你的docker-whale打上tag，键入如下命令</p>
+<pre><code>$ docker tag &lt;IMAGE ID&gt; &lt;DockerHub username&gt;/&lt;Repository Name&gt;:latest
+</code></pre><p>接下来，再次键入docker images可以看到本地新增了一个REPOSITORY，便是我们刚才创建的。最后在终端键入下面两条命令登录并Push到DockerHub上</p>
+<pre><code>$ docker login --username=yourhubusername --email=youremail@company.com
+$ docker push &lt;DockerHub username&gt;/&lt;Repository Name&gt;
+</code></pre><p>对应的，Pull Docker Image的命令如下</p>
+<pre><code>$ docker pull &lt;Repository Name&gt;/&lt;Repository Name&gt;
+</code></pre><p>如果要删除本地的Image，可以使用下面的命令</p>
+<pre><code>$ docker rmi -f &lt;IMAGE ID&gt;
+</code></pre>
           
         
       
@@ -395,7 +1540,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -409,7 +1554,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

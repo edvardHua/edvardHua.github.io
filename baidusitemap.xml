@@ -4,11 +4,79 @@
 
     
   <url>
-    <loc>http://yoursite.com/2016/03/03/%E8%AF%91-%E5%9C%A8Android%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%B9%B6%E5%8F%91%E6%8F%90%E9%AB%98%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD/</loc>
-    <lastmod>2016-03-07T05:05:53.574Z</lastmod>
+    <loc>http://yoursite.com/2016/06/22/%E8%AF%91-%E5%9C%A8-Android-%E4%B8%AD%E4%BD%BF%E7%94%A8-VectorDrawable/</loc>
+    <lastmod>2016-07-22T03:40:18.651Z</lastmod>
     <data>
         <display>
-        <title>(译)在Android中使用并发提高应用性能</title>
+        <title>[译] 在 Android 中使用 VectorDrawable</title>
+        <pubTime>2016-06-22T03:35:19.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2016/05/22/%E8%AF%91-%E6%88%91%E6%98%AF%E5%A6%82%E4%BD%95%E4%B8%BAMac%E5%BA%94%E7%94%A8Flinto%E8%AE%BE%E8%AE%A1UI%E5%9B%BE%E6%A0%87%E7%9A%84/</loc>
+    <lastmod>2016-07-22T03:40:09.423Z</lastmod>
+    <data>
+        <display>
+        <title>[译] 我是如何为Mac应用Flinto设计UI图标的</title>
+        <pubTime>2016-05-22T03:37:54.000Z</pubTime>
+        
+        <tag>Design</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2016/07/22/%E8%AF%91-%E4%BD%BF%E7%94%A8%E5%BC%BA%E5%A4%A7%E7%9A%84-Mockito-%E6%9D%A5%E6%B5%8B%E8%AF%95%E4%BD%A0%E7%9A%84%E4%BB%A3%E7%A0%81/</loc>
+    <lastmod>2016-07-22T03:40:01.483Z</lastmod>
+    <data>
+        <display>
+        <title>[译] 使用强大的 Mockito 来测试你的代码</title>
+        <pubTime>2016-07-22T03:39:06.000Z</pubTime>
+        
+        <tag>Software Engineering</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2016/06/02/%E6%80%8E%E6%A0%B7%E7%94%A8-JRebel-for-Android/</loc>
+    <lastmod>2016-07-22T03:37:26.043Z</lastmod>
+    <data>
+        <display>
+        <title>[译] 怎样用 JRebel for Android</title>
+        <pubTime>2016-06-02T03:33:19.000Z</pubTime>
+        
+        <tag>Android</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://yoursite.com/2016/03/03/%E8%AF%91-%E5%9C%A8Android%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%B9%B6%E5%8F%91%E6%8F%90%E9%AB%98%E5%BA%94%E7%94%A8%E6%80%A7%E8%83%BD/</loc>
+    <lastmod>2016-07-22T03:36:38.231Z</lastmod>
+    <data>
+        <display>
+        <title>[译] 在Android中使用并发提高应用性能</title>
         <pubTime>2016-03-03T08:11:54.000Z</pubTime>
         
         <tag>Android</tag>
