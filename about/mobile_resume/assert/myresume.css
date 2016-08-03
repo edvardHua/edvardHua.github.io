@@ -1,0 +1,460 @@
+@charset "utf-8";
+/*reset css*/
+html,body{width:100%;margin:0;padding:0; font:normal 100% Arial,"Hiragino Sans GB","微软雅黑","宋体"; color:#333;background:#f9f9f9;overflow: hidden;}
+a{text-decoration: none;}
+p{margin:0px;}
+.mb80{margin-bottom: 80px;}
+h1{margin:0;font-size: 1.5em; font-weight: normal;}
+h2{margin:0;font-size: 1.3em;font-weight: normal;}
+h3{margin:0;font-size: 1.2em;font-weight: normal;}
+h4{margin:0;font-size: 1.1em;font-weight: normal;}
+ul{list-style-type: none;}
+.c8{color:#888;}
+input{font:normal 100% Arial,"Hiragino Sans GB","微软雅黑","宋体";outline:none;width:94%;font-size:1.3em;border: 1px solid #019875;padding: 10px 3%; margin-top:10px;border-radius:5px;}
+textarea{font:normal 100% Arial,"Hiragino Sans GB","微软雅黑","宋体"; outline:none;width:94%;font-size:1.3em;border: 1px solid #019875;padding: 10px 3%; margin-top:10px;border-radius:5px;}
+select{font:normal 100% Arial,"Hiragino Sans GB","微软雅黑","宋体";width: 100%;font-size:1.3em;border: 1px solid #019875; background: #fff; padding: 5px 0; margin:10px 0 20px 0;}
+
+/*main css*/
+#wrapper{width:96%;padding: 0 2%;background:#f9f9f9;margin-top: 10px;}
+#wrapper .box_wrapper:nth-of-type(2){
+	border-top:none;
+	border-radius:0px;
+}
+#wrapper .box_wrapper:nth-of-type(1){
+	border-bottom:3px solid #dbdbdb;
+}
+
+#wrapper .box_wrapper.wrapper-border{
+	border:none;
+}
+.box_wrapper{
+	border: 1px solid #dbdbdb;
+	border-radius: 5px;
+	margin-bottom: 30px;
+	background:#fff;
+	position:relative;
+}
+.box_wrapper h2{
+	font-size: 1.2em;
+	padding: 8px 15px;
+	margin: 0;
+	font-weight: normal;
+	border-top: 1px solid #dbdbdb;
+	border-bottom:none;
+	background: #eeeeee;
+}
+.box_wrapper h2 i{
+	float: left;
+	width: 7px;
+	height: 16px;
+	background: #019875;
+	margin: 3px 7px 0 0px;
+}
+
+.box_wrapper em{
+	width:15px; 
+	height:15px; 
+	font-size:0; 
+	display: block;
+	position:absolute;
+	left: 25px;
+	bottom: -11px;
+	background:#fff;
+	border-left: 3px solid #dbdbdb;
+	border-bottom: 3px solid #dbdbdb;
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+.box_wrapper .resume_section .special{
+	height:49px;
+}
+#deliverPreivew{
+	background:none;
+}
+.status_details{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.status_details .status_bar{
+	display:inline-block;
+	width:2px;
+	background:#d0d0d0 ;
+    border-radius:10px;
+    -webkit-border-radius:10px;
+    border:1px solid #d0d0d0;
+    height:172px;
+    position:absolute;
+    left:3px;
+    bottom:0px;
+}
+
+.status_time{
+	font-size: 1em;
+	overflow:hidden;
+}
+
+.status_text{
+	margin: 4px 0px 4px 3px;
+	padding: 1px 0px 1px 14px;
+}
+
+.status_text b{
+	color:#333333;
+	font-weight:normal;
+}
+
+.status_text a{
+	color:#00b88d;
+}
+
+.status_details li{
+	position:relative;
+}
+
+.status_details li:last-child .status_bar {
+	height:0px;
+	width:0px;
+	border:none;
+}
+
+.deliverDetails{
+	padding:10px 20px;
+	line-height: 1.5em;
+	position:relative;
+}
+.deliverDetails a{
+	text-decoration: underline;
+	color: #333;
+}
+
+.resume_header{
+	border-left: 1px solid #dbdbdb;
+	border-right: 1px solid #dbdbdb;
+}
+
+.resume_head{
+	height: 78px;
+	background: #ffffff url(resume_head.png) left top no-repeat;
+	background-size: 100%;
+	overflow: hidden;
+	margin: 0 -1px;
+	padding:0px 1px;
+}
+
+.none-work{
+	height:30px;
+	background-color:#ffffff; 
+	position: relative;
+}
+
+.none-work span{
+	display: block;
+	width:65px;
+	height:65px;
+	border-radius: 65px;
+	-webkit-border-radius:65px;
+	position: absolute;
+	top:-55px;
+	left:48%;
+	margin-left:-29px;
+	background:#ffffff;
+	border:5px solid #f7f7f7;
+	z-index:100;
+}
+
+.none-work img{
+	border-radius: 32px;
+	-webkit-border-radius:32px;
+	position: absolute;
+	bottom:15px;
+	left: 49.7%;
+	margin-left:-29px;
+	z-index:100;
+   }
+div.person{
+	width:90%;
+	font-size: 1.8em;
+	color: #333333;
+	margin: 0 auto;
+	text-align:center;
+}
+
+div.person i.man{
+	display: inline-block;
+	width: 11px;
+	height: 16px;
+	background-size: 100% ;
+	margin-left: 10px;
+	vertical-align: center;
+}
+
+div.person i.women{
+	display: inline-block;
+	width: 11px;
+	height: 16px;
+	background-size: 100% ;
+	margin-left: 10px;
+	vertical-align: center;
+}
+
+.resume_text{
+	width: 95%;
+	margin: 10px auto;
+	padding: 0px;
+}
+
+.resume_text p{
+	text-align: center ;
+	margin-top: 0px;
+}
+
+.social_wrap{
+	width:100%;
+	height:auto;
+	position:relative;
+}
+
+.social_logo{
+    width: 216px;
+    height: 40px;
+    margin: 20px auto;
+    overflow:hidden;
+    position:relative;
+}
+
+.logo_content{
+	height:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+	clear:both;
+}
+
+.logo_content a{
+	float:left ;
+	width: 44px;
+	height: 100% ;
+	margin:0 5px;
+	padding:0px;
+	text-decoration:none;
+}
+
+.resumeDetails{
+	width:87%;
+	padding:15px 20px;
+	line-height: 1.5em;
+}
+.resumeDetails p{
+	word-break:break-all;
+}
+.link_email{
+	overflow:hidden;
+}
+.link_email span:first-child{
+	float:left;
+}
+.link_email span:last-child{
+	float:left;
+	word-break:break-all;
+}
+.wish_position{
+	overflow:hidden;
+}
+.wish_position span:first-child{
+	float:left;
+}
+.wish_position span:last-child{
+	float:left;
+	word-break:break-all;
+}
+.wish_city{
+	overflow:hidden;
+}
+.wish_city span:first-child{
+	float:left;
+}
+.wish_city span:last-child{
+	float:left;
+	word-break:break-all;
+}
+.resume_section{
+	font-size: 1em;
+	line-height: 1.6em;
+	padding: 10px 20px 15px 20px;
+	width: 87%;
+}
+
+.resume_section h3{
+	font-size: 1em;
+}
+
+.resume_section p,h3,span{
+	word-break:break-all;
+}
+
+.resume_section .status_time i{
+	float: left;
+	font-size: 0;
+	width: 6px;
+	height: 6px;
+	border: 2px solid #d0d0d0;
+	border-radius: 6px;
+	margin: 7px 10px 0 0;
+}
+
+#works_show ul{
+	width: 100% ;
+	margin: 0px auto;
+	padding: 0px;
+}
+
+#works_show ul li{
+	width: 100%;
+	margin: 0 auto 10px;
+}
+
+#works_show span{
+	display: block;
+	color:#ffffff;
+	width: 86%;
+	margin: 0 auto;
+}
+
+#works_show span:first-child{
+	font-size: 1.5em;
+	margin-bottom: 7px;
+}
+
+#works_show span:nth-child(2){
+	font-size: 1em;
+}
+
+#works_show a{
+   display: block;
+   background-color:#00b88d;
+   width: 100%;
+   height: 100%;
+   border-radius: 3px;
+   -webkit-border-radius:3px;
+   padding: 10px 0;
+}
+
+.skill_judge ul{
+	width: 100% ;
+	margin: 0px auto;
+	padding: 0px;
+}
+
+.skill_judge ul li:last-child{
+	border-bottom:none;
+}
+
+.skill_judge ul li{
+	width: 100%;
+	margin: 0px auto;
+	border-bottom: 1px dotted #eeeeee;
+	margin-bottom: 10px;
+	padding-bottom: 20px;
+}
+
+.skill_judge h3{
+   margin-bottom: 30px;
+}
+
+.skill_judge .skill_bar{
+	height: 10px;
+	width: 100%;
+	background-color: #eeeeee;
+	border-radius: 10px;
+	-webkit-border-radius:10px;
+	position: relative;
+}
+
+.skill_judge .bar_inner{
+	height: 100%;
+    position: absolute;
+    left: 0px;
+    top:0px;
+    background-color: #00b88d ;
+    border-radius: 10px;
+	-webkit-border-radius:10px;
+}
+
+.skill_judge .skill_img{
+	position: absolute;
+	right: -18px;
+	top: -35px;
+	width: 40px;
+	height: 30px;
+	background-size: 100%;
+	text-align: center ;
+	vertical-align: top;
+	padding: 0px;
+	color:#ffffff;
+	font-size: 1em;
+}
+
+.footer{
+	background-color:#eeeeee;
+	color:#333333;
+	font-size: 1.1em ;
+	height: 70px;
+	line-height: 70px;
+	text-align: center;
+}
+.status_text span{
+	display: block;
+	font-size: 1em;
+	line-height: 1.3em;
+	margin-bottom: 3px;
+	word-break:break-all;
+}
+.status_text p{
+	margin:0;
+}
+.onlyname{
+	text-align:center;
+}
+.status_text a.no-project{
+	color:#555;
+}
+.resume_section .font-bold{
+	font-weight:bold;
+}
+@media screen and (min-device-width: 360px){
+	.none-work img{
+	border-radius: 32px;
+	-webkit-border-radius:32px;
+	position: absolute;
+	bottom:15px;
+	left: 49.5%;
+	margin-left:-29px;
+	z-index:100;
+   }
+} 
+/*end*/
+/*查看联系方式 form表单*/
+.contact_txt p{
+	padding:1% 3%;
+}
+.btn_green{
+ display: block;
+  width: 100%;
+  font-size: 1.4em;
+  color: #fff;
+  border-radius: 5px;
+  text-align: center;
+  padding: 11px 0;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background: #019875;
+}
+#hrCcontact input.error {
+  border: 1px solid #e43636;
+}
